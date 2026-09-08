@@ -9,6 +9,7 @@ from core.scene_planner import ScenePlanner
 from core.script_writer import ScriptWriter
 from core.story_generator import StoryGenerator
 from core.tts_generator import NarrationGenerator
+from core.video_renderer import VideoRenderer
 
 
 def main() -> None:
@@ -17,6 +18,7 @@ def main() -> None:
     parser.add_argument("--minutes", type=int, default=30)
     parser.add_argument("--project", default=None, help="Project ID; generated automatically when omitted")
     parser.add_argument("--no-tts", action="store_true", help="Skip narration generation")
+    parser.add_argument("--no-render", action="store_true", help="Skip final MP4 rendering")
     args = parser.parse_args()
 
     if args.minutes < 10 or args.minutes > 120:
@@ -64,6 +66,25 @@ def main() -> None:
     else:
         print("\n⏭ Озвучку пропущено (--no-tts)")
 
+    if not args.no_render:
+        if args.no_tts:
+            print("\n⛔ Рендер пропущено: для фінального відео потрібна озвучка.")
+        else:
+            print("\n🎬 Збираю фінальне MP4 через FFmpeg...")
+            output = VideoRenderer(
+                ffmpeg_bin=settings.ffmpeg_bin,
+                fps=settings.output_fps,
+                width=settings.video_width,
+                height=settings.video_height,
+            ).render(
+                scene_plan=scene_plan,
+                project_dir=project,
+                music_file=next(project.joinpath("music").glob("*.wav"), None),
+            )
+            print(f"Фінальне відео: {output}")
+    else:
+        print("\n⏭ Рендер пропущено (--no-render)")
+
     print(f"\nГотово. Проєкт збережено: {project}")
     print(f"Сценарій: {project / 'script.md'}")
     print(f"Character Bible: {project / 'character_bible.json'}")
@@ -71,6 +92,8 @@ def main() -> None:
     if not args.no_tts:
         print(f"Озвучка: {project / 'audio'}")
         print(f"Маніфест озвучки: {project / 'narration.json'}")
+    if not args.no_render and not args.no_tts:
+        print(f"Фінальне відео: {project / 'final' / 'story.mp4'}")
 
 
 if __name__ == "__main__":
