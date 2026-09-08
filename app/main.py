@@ -4,7 +4,7 @@ from datetime import datetime
 
 from app.config import settings
 from core.character_bible import CharacterBibleGenerator
-from core.final_package import FinalProjectPackager
+from core.final_package import FinalPackageError, FinalProjectPackager
 from core.project import StoryProject
 from core.scene_planner import ScenePlanner
 from core.script_writer import ScriptWriter
@@ -47,7 +47,7 @@ def main() -> None:
 
     if not args.no_tts:
         print("\n🎙 Створюю українську озвучку через FilmDubUA/Piper...")
-        manifest = NarrationGenerator().generate(
+        narration = NarrationGenerator().generate(
             scene_plan=scene_plan,
             output_dir=project / "audio",
             voice_profile=settings.filmdubua_voice_profile,
@@ -55,10 +55,10 @@ def main() -> None:
             volume=settings.tts_volume,
         )
         (project / "narration.json").write_text(
-            json.dumps(manifest.model_dump(), ensure_ascii=False, indent=2), encoding="utf-8"
+            json.dumps(narration.model_dump(), ensure_ascii=False, indent=2), encoding="utf-8"
         )
-        print(f"Озвучено сцен: {len(manifest.segments)}")
-        print(f"Тривалість озвучки: {manifest.total_duration_seconds / 60:.1f} хв")
+        print(f"Озвучено сцен: {len(narration.segments)}")
+        print(f"Тривалість озвучки: {narration.total_duration_seconds / 60:.1f} хв")
     else:
         print("\n⏭ Озвучку пропущено (--no-tts)")
 
@@ -91,15 +91,20 @@ def main() -> None:
         print("\n⏭ Рендер пропущено (--no-render)")
 
     packager = FinalProjectPackager()
-    report = packager.validate(project, require_video=not args.no_render and not args.no_tts)
+    require_video = not args.no_render and not args.no_tts
+    report = packager.validate(project, require_video=require_video)
     manifest_path = packager.write_manifest(project, report)
     print(f"\n📦 Маніфест проєкту: {manifest_path}")
 
     if args.package:
-        archive = packager.package(project)
-        print(f"ZIP-пакет: {archive}")
+        try:
+            archive = packager.package(project, require_video=require_video)
+        except FinalPackageError as exc:
+            print(f"\n⛔ ZIP не створено: {exc}")
+        else:
+            print(f"ZIP-пакет: {archive}")
     elif report["valid"]:
-        print("Проєкт повністю готовий до упаковки. Для ZIP додай --package.")
+        print("Проєкт пройшов перевірку. Для ZIP додай --package.")
     else:
         print("Проєкт ще не повністю готовий:")
         for item in report["missing"]:
