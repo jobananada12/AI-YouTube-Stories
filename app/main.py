@@ -1,6 +1,7 @@
 import argparse
 from datetime import datetime
 
+from core.character_bible import CharacterBible
 from core.project import StoryProject
 from core.scene_planner import ScenePlanner
 from core.script_writer import ScriptWriter
@@ -22,6 +23,10 @@ def main() -> None:
     print(f"ЖАНР: {story.genre}")
     print(f"ЛОГЛАЙН: {story.logline}\n")
 
+    print("Створюю Character Bible...")
+    character_bible = CharacterBible().generate(story)
+    print(f"Персонажів: {len(character_bible['characters'])}")
+
     script = ScriptWriter().write(story, args.minutes)
     print("Створюю режисерський план сцен...")
     scene_plan = ScenePlanner().plan(story, script, args.minutes)
@@ -29,10 +34,11 @@ def main() -> None:
     print(f"Орієнтовна тривалість: {scene_plan.total_duration_seconds // 60} хв")
 
     project_id = args.project or datetime.now().strftime("story_%Y%m%d_%H%M%S")
-    project = StoryProject().create(story, script, project_id, scene_plan)
+    project = StoryProject().create(story, script, project_id, scene_plan, character_bible)
 
     print(f"Готово. Проєкт збережено: {project}")
     print(f"Сценарій: {project / 'script.md'}")
+    print(f"Character Bible: {project / 'character_bible.json'}")
     print(f"Режисерський план: {project / 'scenes.json'}")
 
 
