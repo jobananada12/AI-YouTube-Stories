@@ -1,11 +1,14 @@
 import argparse
+import json
 from datetime import datetime
 
+from app.config import settings
 from core.character_bible import CharacterBibleGenerator
 from core.project import StoryProject
 from core.scene_planner import ScenePlanner
 from core.script_writer import ScriptWriter
 from core.story_generator import StoryGenerator
+from core.tts_generator import NarrationGenerator
 
 
 def main() -> None:
@@ -13,6 +16,7 @@ def main() -> None:
     parser.add_argument("topic", help="Seed or idea for the original story")
     parser.add_argument("--minutes", type=int, default=30)
     parser.add_argument("--project", default=None, help="Project ID; generated automatically when omitted")
+    parser.add_argument("--no-tts", action="store_true", help="Skip narration generation")
     args = parser.parse_args()
 
     if args.minutes < 10 or args.minutes > 120:
@@ -42,10 +46,31 @@ def main() -> None:
         character_bible.model_dump(),
     )
 
-    print(f"Готово. Проєкт збережено: {project}")
+    if not args.no_tts:
+        print("\n🎙 Створюю українську озвучку через FilmDubUA/Piper...")
+        manifest = NarrationGenerator().generate(
+            scene_plan=scene_plan,
+            output_dir=project / "audio",
+            voice_profile=settings.filmdubua_voice_profile,
+            rate=settings.tts_rate,
+            volume=settings.tts_volume,
+        )
+        (project / "narration.json").write_text(
+            json.dumps(manifest.model_dump(), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"Озвучено сцен: {len(manifest.segments)}")
+        print(f"Тривалість озвучки: {manifest.total_duration_seconds / 60:.1f} хв")
+    else:
+        print("\n⏭ Озвучку пропущено (--no-tts)")
+
+    print(f"\nГотово. Проєкт збережено: {project}")
     print(f"Сценарій: {project / 'script.md'}")
     print(f"Character Bible: {project / 'character_bible.json'}")
     print(f"Режисерський план: {project / 'scenes.json'}")
+    if not args.no_tts:
+        print(f"Озвучка: {project / 'audio'}")
+        print(f"Маніфест озвучки: {project / 'narration.json'}")
 
 
 if __name__ == "__main__":
