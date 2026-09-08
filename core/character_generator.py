@@ -60,4 +60,3 @@ class CharacterBibleGenerator:
         if missing:
             raise ValueError('Character Bible не містить персонажів: ' + ', '.join(sorted(missing)))
         return bible
-'''
