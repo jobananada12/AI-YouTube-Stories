@@ -18,37 +18,54 @@ Local-first studio for creating original long-form narrated YouTube stories.
 2. Long-form script — implemented
 3. Character bible — implemented
 4. Scene breakdown — implemented
-5. Image prompts/images — in progress
+5. Image prompts/images — **in progress**
 6. Narration audio — implemented
-7. Music/SFX — in progress
-8. Video rendering — **implemented**
-9. Thumbnail — planned
-10. YouTube metadata — planned
-11. Final project package — planned
+7. Music/SFX — **in progress**
+8. Video rendering — implemented
+9. Thumbnail — implemented when a scene image exists
+10. YouTube metadata — **in progress**
+11. Final project package — implemented
+12. Final validation / packaging gate — **implemented**
+
+## Step 12 — Final validation gate
+
+Before a project can be marked ready, the packager checks the core story files plus actual generated narration WAV segments and scene PNG files. A final MP4 is required when normal rendering is enabled.
+
+The manifest is written to `projects/<project_id>/project_manifest.json` and records which optional assets are present, including thumbnail, YouTube metadata, music and SFX.
+
+`--package` now uses the same validation mode as the current run, so `--no-render --package` can create an asset-only ZIP when the required non-video assets are present, while a normal run requires `final/story.mp4`.
 
 ## Video rendering
 
-Step 8 uses the local FFmpeg executable to:
+The local FFmpeg renderer:
 
-1. validate the required scene images and narration WAV files;
-2. normalize each scene image to the configured 16:9 output size;
-3. create a continuous visual timeline from the scene durations;
-4. concatenate all narration segments;
-5. optionally mix the generated background music;
-6. encode the final MP4 as H.264 video + AAC audio with `+faststart`.
+1. validates the required scene images and narration WAV files;
+2. normalizes each scene image to the configured 16:9 output size;
+3. creates a continuous visual timeline from scene durations;
+4. concatenates narration segments;
+5. optionally mixes generated background music;
+6. encodes H.264 video + AAC audio with `+faststart`.
 
 The final file is written to `projects/<project_id>/final/story.mp4`, with a render manifest at `final/render.json`.
 
-Run the full pipeline with:
+## Run
+
+Full run:
 
 ```powershell
 python -m app.main "Твоя оригінальна тема" --minutes 30
 ```
 
-If you only want to generate the project assets without rendering the MP4 yet:
+Asset-only run:
 
 ```powershell
 python -m app.main "Твоя оригінальна тема" --minutes 30 --no-render
+```
+
+Create a ZIP after the current validation passes:
+
+```powershell
+python -m app.main "Твоя оригінальна тема" --minutes 30 --package
 ```
 
 FFmpeg must be installed and available through `FFMPEG_BIN` (default: `ffmpeg`).
