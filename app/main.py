@@ -4,10 +4,12 @@ from datetime import datetime
 
 from app.config import settings
 from core.character_bible import CharacterBibleGenerator
+from core.final_package import FinalProjectPackager
 from core.project import StoryProject
 from core.scene_planner import ScenePlanner
 from core.script_writer import ScriptWriter
 from core.story_generator import StoryGenerator
+from core.thumbnail_generator import ThumbnailGenerator
 from core.tts_generator import NarrationGenerator
 from core.video_renderer import VideoRenderer
 
@@ -19,6 +21,7 @@ def main() -> None:
     parser.add_argument("--project", default=None, help="Project ID; generated automatically when omitted")
     parser.add_argument("--no-tts", action="store_true", help="Skip narration generation")
     parser.add_argument("--no-render", action="store_true", help="Skip final MP4 rendering")
+    parser.add_argument("--package", action="store_true", help="Create a ZIP package when the project is complete")
     args = parser.parse_args()
 
     if args.minutes < 10 or args.minutes > 120:
@@ -40,13 +43,7 @@ def main() -> None:
     print(f"Орієнтовна тривалість: {scene_plan.total_duration_seconds // 60} хв")
 
     project_id = args.project or datetime.now().strftime("story_%Y%m%d_%H%M%S")
-    project = StoryProject().create(
-        story,
-        script,
-        project_id,
-        scene_plan,
-        character_bible.model_dump(),
-    )
+    project = StoryProject().create(story, script, project_id, scene_plan, character_bible.model_dump())
 
     if not args.no_tts:
         print("\n🎙 Створюю українську озвучку через FilmDubUA/Piper...")
@@ -58,19 +55,27 @@ def main() -> None:
             volume=settings.tts_volume,
         )
         (project / "narration.json").write_text(
-            json.dumps(manifest.model_dump(), ensure_ascii=False, indent=2),
-            encoding="utf-8",
+            json.dumps(manifest.model_dump(), ensure_ascii=False, indent=2), encoding="utf-8"
         )
         print(f"Озвучено сцен: {len(manifest.segments)}")
         print(f"Тривалість озвучки: {manifest.total_duration_seconds / 60:.1f} хв")
     else:
         print("\n⏭ Озвучку пропущено (--no-tts)")
 
+    first_image = project / "images" / "scene_001.png"
+    if first_image.exists():
+        print("\n🖼 Створюю thumbnail...")
+        thumbnail = ThumbnailGenerator().generate(story.title, first_image, project / "thumbnail")
+        print(f"Thumbnail: {thumbnail}")
+    else:
+        print("\n⏭ Thumbnail пропущено: ще немає scene_001.png")
+
     if not args.no_render:
         if args.no_tts:
             print("\n⛔ Рендер пропущено: для фінального відео потрібна озвучка.")
         else:
             print("\n🎬 Збираю фінальне MP4 через FFmpeg...")
+            music_files = sorted(project.joinpath("music").glob("*.wav"))
             output = VideoRenderer(
                 ffmpeg_bin=settings.ffmpeg_bin,
                 fps=settings.output_fps,
@@ -79,21 +84,28 @@ def main() -> None:
             ).render(
                 scene_plan=scene_plan,
                 project_dir=project,
-                music_file=next(project.joinpath("music").glob("*.wav"), None),
+                music_file=music_files[0] if music_files else None,
             )
             print(f"Фінальне відео: {output}")
     else:
         print("\n⏭ Рендер пропущено (--no-render)")
 
+    packager = FinalProjectPackager()
+    report = packager.validate(project, require_video=not args.no_render and not args.no_tts)
+    manifest_path = packager.write_manifest(project, report)
+    print(f"\n📦 Маніфест проєкту: {manifest_path}")
+
+    if args.package:
+        archive = packager.package(project)
+        print(f"ZIP-пакет: {archive}")
+    elif report["valid"]:
+        print("Проєкт повністю готовий до упаковки. Для ZIP додай --package.")
+    else:
+        print("Проєкт ще не повністю готовий:")
+        for item in report["missing"]:
+            print(f"  - {item}")
+
     print(f"\nГотово. Проєкт збережено: {project}")
-    print(f"Сценарій: {project / 'script.md'}")
-    print(f"Character Bible: {project / 'character_bible.json'}")
-    print(f"Режисерський план: {project / 'scenes.json'}")
-    if not args.no_tts:
-        print(f"Озвучка: {project / 'audio'}")
-        print(f"Маніфест озвучки: {project / 'narration.json'}")
-    if not args.no_render and not args.no_tts:
-        print(f"Фінальне відео: {project / 'final' / 'story.mp4'}")
 
 
 if __name__ == "__main__":
