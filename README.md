@@ -12,24 +12,47 @@ Local-first studio for creating original long-form narrated YouTube stories.
 - Generate story-specific YouTube title, description, keywords, tags and hashtags.
 - Keep secrets and API tokens outside Git (`.env`).
 
-## Planned pipeline
+## Pipeline status
 
-1. Story concept
-2. Long-form script
-3. Character bible
-4. Scene breakdown
-5. Image prompts and images
-6. Narration audio
-7. Music/SFX
-8. Video rendering
-9. Thumbnail
-10. YouTube metadata
-11. Final project package
+1. Story concept — implemented
+2. Long-form script — implemented
+3. Character bible — implemented
+4. Scene breakdown — implemented
+5. Image prompts/images — in progress
+6. Narration audio — implemented
+7. Music/SFX — in progress
+8. Video rendering — **implemented**
+9. Thumbnail — planned
+10. YouTube metadata — planned
+11. Final project package — planned
+
+## Video rendering
+
+Step 8 uses the local FFmpeg executable to:
+
+1. validate the required scene images and narration WAV files;
+2. normalize each scene image to the configured 16:9 output size;
+3. create a continuous visual timeline from the scene durations;
+4. concatenate all narration segments;
+5. optionally mix the generated background music;
+6. encode the final MP4 as H.264 video + AAC audio with `+faststart`.
+
+The final file is written to `projects/<project_id>/final/story.mp4`, with a render manifest at `final/render.json`.
+
+Run the full pipeline with:
+
+```powershell
+python -m app.main "Твоя оригінальна тема" --minutes 30
+```
+
+If you only want to generate the project assets without rendering the MP4 yet:
+
+```powershell
+python -m app.main "Твоя оригінальна тема" --minutes 30 --no-render
+```
+
+FFmpeg must be installed and available through `FFMPEG_BIN` (default: `ffmpeg`).
 
 ## Security
 
 Never commit tokens, passwords, cookies, or private credentials. Use `.env` locally and keep it ignored by Git.
-
-## Status
-
-Initial project skeleton is being built from scratch.
