@@ -1,4 +1,4 @@
-import sys
+import importlib.util
 import wave
 from pathlib import Path
 
@@ -15,19 +15,23 @@ class NarrationGenerator:
         self._tts = None
 
     def _load_filmdubua_tts(self):
+        if self._tts is not None:
+            return self._tts
+        tts_path = self.filmdubua_path / "core" / "tts.py"
         if not self.filmdubua_path.exists():
             raise FileNotFoundError(f"FilmDubUA не знайдено: {self.filmdubua_path}. Вкажи FILMDUBUA_PATH у .env.")
-        core_path = self.filmdubua_path / "core"
-        if not (core_path / "tts.py").exists():
+        if not tts_path.exists():
             raise FileNotFoundError(f"У {self.filmdubua_path} немає core/tts.py. Потрібна актуальна версія FilmDubUA.")
-        if str(self.filmdubua_path) not in sys.path:
-            sys.path.insert(0, str(self.filmdubua_path))
-        try:
-            from core import tts
-        except Exception as exc:
-            raise RuntimeError(f"Не вдалося підключити FilmDubUA TTS: {exc}") from exc
-        self._tts = tts
-        return tts
+
+        # Load by absolute path so FilmDubUA's `core` package cannot collide
+        # with this project's own `core` package.
+        spec = importlib.util.spec_from_file_location("filmdubua_tts", tts_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"Не вдалося завантажити FilmDubUA TTS: {tts_path}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self._tts = module
+        return module
 
     @staticmethod
     def _wav_duration(path: Path) -> float:
