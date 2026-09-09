@@ -1,0 +1,243 @@
+{
+  "version": "3.4.4",
+  "source_of_truth": "structured_scene_fields",
+  "legacy_prompt_used": false,
+  "summary": {
+    "processed": 3,
+    "pass": 2,
+    "fail": 1
+  },
+  "scenes": [
+    {
+      "id": 1,
+      "status": "PASS",
+      "attempts": 1,
+      "prompt": "Alexander, a quiet man in a gray jacket and blue sweater, strolls through an old park in the city district. He stops near an aged building that seems uninhabitable. Alexander develops a cautious interest in this building and begins to investigate it, observing from a distance. He notices a closed door in the middle section of the building.",
+      "requirements": {
+        "character": [
+          "Олександр"
+        ],
+        "time": "Пізень ранок, 10:30",
+        "location": "Старий парк у містяної громаді",
+        "clothing": [
+          "сіруватий куртці",
+          "синьому джемпері"
+        ],
+        "actions": [
+          {
+            "id": "a1",
+            "text": "прогулюється через старий парк",
+            "mandatory": true
+          },
+          {
+            "id": "a2",
+            "text": "зупиняється поза будиночком",
+            "mandatory": true
+          },
+          {
+            "id": "a3",
+            "text": "прив'язує обережну інтерес до цього будинку",
+            "mandatory": true
+          },
+          {
+            "id": "a4",
+            "text": "починає досліджувати будинок, спостерігає за ним",
+            "mandatory": true
+          }
+        ],
+        "objects": [
+          {
+            "id": "o1",
+            "text": "закрита двері у середньому секторі будинку",
+            "mandatory": true
+          }
+        ],
+        "relations": [],
+        "atmosphere": [
+          "Мистецьке та загадкове"
+        ],
+        "source_facts": [
+          "Олександр прогулюється через старий парк у містяної громаді",
+          "Він зупиняється поза будиночком, що виглядає залежно від років але не прийнятим для життя",
+          "Олександр прив'язує обережну інтерес до цього будинку і починає досліджувати його, спостерігаючи за ним",
+          "Він натрапляє на закриту двері у середньому секторі будинку"
+        ],
+        "forbidden_inventions": [],
+        "coverage_notes": [
+          "description: Олександр, тихий і спокійний чоловік у сіруватий куртці та синьому джемпері, прогулюється через старий парк.",
+          "location: Старий парк у містяної громаді",
+          "time: Пізень ранок, 10:30",
+          "action: Олександр спостерігає за будинком, вивчає його форму та розміри. Він спочатку натрапляє на закриту двері у середньому секторі будинку.",
+          "camera: Високорозібровий план будинку з кімнатою, яка виглядає замкненою. Схована камера в джерлі парку спостерігає за Олександром.",
+          "mood: Мистецьке та загадкове"
+        ]
+      },
+      "deterministic_errors": [],
+      "llm_validation": {
+        "ok": true,
+        "missing": [],
+        "invented": [],
+        "contradictions": [],
+        "order_errors": [],
+        "covered": []
+      }
+    },
+    {
+      "id": 2,
+      "status": "PASS",
+      "attempts": 4,
+      "prompt": "Olexander observes a modern historical site across the park for several days, noting its current and past significance at 12:00 in the late morning. He waits by a closed door that appears old and broken, but no rooms are shown behind it. The atmosphere is calm and mysterious.",
+      "requirements": {
+        "character": [
+          "Олександр"
+        ],
+        "time": "пізень ранок, 12:00",
+        "location": "старий парк у містяної громаді",
+        "clothing": [],
+        "actions": [
+          {
+            "id": "a1",
+            "text": "Олександр спостерігає за будинком у протяжності кількох днів, вивчаючи його сучасне історичне місце.",
+            "mandatory": true
+          },
+          {
+            "id": "a2",
+            "text": "Олександр спостерігає за закритою дверню та не може заспокоїтися, чекаючи на те, що вона буде відкрита.",
+            "mandatory": true
+          }
+        ],
+        "objects": [
+          {
+            "id": "o1",
+            "text": "закрита дверь, яка здається старим та розбитим",
+            "mandatory": true
+          },
+          {
+            "id": "o2",
+            "text": "кімната поза дверю (не показана в планах)",
+            "mandatory": false
+          }
+        ],
+        "relations": [
+          {
+            "id": "r1",
+            "text": "Олександр спостерігає за будинком, здається сучасним історичним місцем",
+            "mandatory": true
+          },
+          {
+            "id": "r2",
+            "text": "закрита дверь лежить перед Олександром, вона здається старою та розбитою",
+            "mandatory": true
+          }
+        ],
+        "atmosphere": [
+          "тихе і загадкове"
+        ],
+        "source_facts": [
+          "Олександр спостерігає за будинком у протяжності кількох днів, вивчаючи його сучасне історичне місце.",
+          "Натомість він натрапляє на закриту двері, яка здається старим та розбитим, але жодний план не показує цієї кімнати."
+        ],
+        "forbidden_inventions": [
+          "не створювати догадки про що може бути за дверями",
+          "не приписувати жодних дій Олександру, окрім спостереження та чекання"
+        ],
+        "coverage_notes": [
+          "description: Олександр спостерігає за будинком у протяжності кількох днів.",
+          "location: старий парк у містяної громаді",
+          "time: пізень ранок, 12:00",
+          "action: Олександр спостерігає за будинком та закритою дверню.",
+          "camera: Замкнута камера показує Олександра спостерігаючим за закритою дверню. Слухнімо шум блискучого листя та птахів.",
+          "mood: Тихе і загадкове"
+        ]
+      },
+      "deterministic_errors": [],
+      "llm_validation": {
+        "ok": true,
+        "missing": [],
+        "invented": [],
+        "contradictions": [],
+        "order_errors": [],
+        "covered": []
+      }
+    },
+    {
+      "id": 3,
+      "status": "FAIL",
+      "attempts": 4,
+      "prompt": "Oleksandr searches for other entry ways at the old park in the city council district at 11 PM. They notice one of the upper windows might be cut or blocked. Oleksandr opens this window and climbs through. They observe and examine a dim, empty room containing an old desk with books on ecology and nature.",
+      "requirements": {
+        "character": [
+          "Олександр"
+        ],
+        "time": "Одинадцять вечора, 23:00",
+        "location": "Старий парк у містяної громаді",
+        "clothing": [],
+        "actions": [
+          {
+            "id": "a1",
+            "text": "шукати інші способи входу",
+            "mandatory": true
+          },
+          {
+            "id": "a2",
+            "text": "бачать, що одна з верхнє вікно може бути відрізаною або заблокованою",
+            "mandatory": true
+          },
+          {
+            "id": "a3",
+            "text": "відкриває це вікно",
+            "mandatory": true
+          },
+          {
+            "id": "a4",
+            "text": "обокладують до кімнати",
+            "mandatory": true
+          },
+          {
+            "id": "a5",
+            "text": "спостерігати та розглядати кімнату, яка виглядає диким і пустим",
+            "mandatory": true
+          }
+        ],
+        "objects": [
+          {
+            "id": "o1",
+            "text": "старий стіл з книгами про екологію та природу",
+            "mandatory": true
+          }
+        ],
+        "relations": [],
+        "atmosphere": [
+          "Мистецьке"
+        ],
+        "source_facts": [
+          "Олександр починає шукати інші способи входу",
+          "Вони бачать, що одна з верхнє вікно може бути відрізаною або заблокованою",
+          "Олександр відкриває це вікно та обокладують до кімнати",
+          "Вони спостерігають та розглядати кімнату, яка виглядає диким і пустим",
+          "Старий стіл з книгами про екологію та природу знаходиться у кімнаті"
+        ],
+        "forbidden_inventions": [],
+        "coverage_notes": [
+          "description: шукати інші способи входу, бачать верхнє вікно",
+          "location: старий парк у містяної громаді",
+          "time: одинадцять вечора, 23:00",
+          "action: спостерігати та розглядати кімнату, яка виглядає диким і пустим, стовпець з книгами про екологію та природу",
+          "camera: внутрішній план закритої кімнати з Олександром, що розглядає старі книги і посилається на свої власні",
+          "mood: мистецьке"
+        ]
+      },
+      "deterministic_errors": [],
+      "llm_validation": {
+        "ok": false,
+        "missing": [],
+        "invented": [
+          "climbs through the window"
+        ],
+        "contradictions": [],
+        "order_errors": [],
+        "covered": []
+      }
+    }
+  ]
+}
