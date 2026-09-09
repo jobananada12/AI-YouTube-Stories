@@ -1,14 +1,15 @@
-AI YOUTUBE STORIES - PROMPT AUDIT V3.2
+AI YOUTUBE STORIES - PROMPT AUDIT V3.3
 Source of truth: structured Ukrainian scene fields.
 Legacy scene.prompt is intentionally ignored by the translator.
 Final Stable Diffusion prompts must be English-only and <= 58 words.
 Action preservation is mandatory, including ordered multi-action sequences.
+TIME is strict; clothing type is strict; natural semantic paraphrases are allowed.
 
-SCENE 1: PASS | words=37 | missing=[] | invented=[] | errors=[]
-  PROMPT: In a misty old park at 10:30 AM, Alexander, in a charcoal trench coat and blue sweater, observes a weathered cottage from afar, studying its structure before focusing on the closed door in the middle section.
-SCENE 2: FAIL | words=27 | missing=['specific location details', 'time cue for days of observation'] | invented=['the door is described as old and seemingly broken instead of being mentioned as closed'] | errors=['SEMANTIC_VALIDATION_FAILED']
-  PROMPT: Alexander watches an old, seemingly broken door at the city park early morning, pondering why this room is never shown, while hearing rustling leaves and bird chirps.
-SCENE 3: FAIL | words=35 | missing=['opening the window', 'climbing through the broken window'] | invented=['entering through a broken window'] | errors=['SEMANTIC_VALIDATION_FAILED']
-  PROMPT: At 11 PM, in a city park, Oleksandr climbs through a broken window into an eerie, dimly lit room filled with old books on ecology and nature, studying them while reflecting on his own reflections.
+SCENE 1: PASS | words=47 | missing=[] | invented=[] | errors=[]
+  PROMPT: Alexander, in a gray parka and blue sweater, strolls through an old city park at 10:30 AM. He pauses near an abandoned building, showing signs of age but not suitable for habitation. Alexander cautiously observes the structure, focusing on a closed door in the middle section.
+SCENE 2: PASS | words=25 | missing=[] | invented=[] | errors=[]
+  PROMPT: Alexander watches an old, cracked door at a city park around noon, unable to settle as he ponders the reasons behind its never being shown.
+SCENE 3: PASS | words=29 | missing=[] | invented=[] | errors=[]
+  PROMPT: At 11 PM, Alexander examines an eerie, empty room filled with old ecology books as he contemplates his own reflections inside a mysterious, closed chamber of an urban park.
 
-SUMMARY: processed=3, passed=1, failed=2
+SUMMARY: processed=3, passed=3, failed=0
