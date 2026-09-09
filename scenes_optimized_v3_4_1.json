@@ -1,0 +1,785 @@
+[
+  {
+    "id": 1,
+    "title": "Знайомство з закритою кімнатою",
+    "description": "Олександр, тихий і спокійний чоловік у серовиртній куртці та синьому джемпері, прогулюється через старий парк. Він зупиняється поза будиночком, що виглядає залежно від років але не прийнятим для життя. Олександр прив'язує обережну інтерес до цього будинку і починає досліджувати його.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Пізень ранок, 10:30",
+    "action": "Олександр спостерігає за будинком, вивчає його форму та розміри. Він спочатку натрапляє на закриту дверь у середньому секторі будинку.",
+    "camera": "Високорозібровий план будинку з кімнатою, яка виглядає замкненою. Схована камера в джерлі парку спостерігає за Олександром.",
+    "mood": "Мистецьке та загадкове",
+    "prompt": "Alexander in a grey coat and blue jumper observes the old suburban building, studying its form and dimensions near a closed door in the middle sector.",
+    "prompt_requirements_v3_4_1": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "Late morning, 10:30",
+      "location": "A park in a suburban community",
+      "clothing": [
+        "grey coat",
+        "blue jumper"
+      ],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Observes the building, studying its form and dimensions.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "The building",
+          "mandatory": true
+        },
+        {
+          "id": "o2",
+          "text": "Closed door in the middle sector of the building",
+          "mandatory": true
+        }
+      ],
+      "relations": [],
+      "atmosphere": [
+        "Mysterious and artistic"
+      ]
+    },
+    "prompt_v3_4_1": "Alexander in a grey coat and blue jumper observes the old suburban building, studying its form and dimensions near a closed door in the middle sector.",
+    "prompt_source": "structured_scene_v3_4_1_requirements",
+    "prompt_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [],
+      "contradictions": [],
+      "covered": [
+        {
+          "character": "Alexander in a grey coat and blue jumper"
+        },
+        {
+          "time": "Late morning, 10:30 (implied)"
+        },
+        {
+          "location": "A park in a suburban community (implied by old suburban building)"
+        },
+        {
+          "actions": [
+            {
+              "id": "a1",
+              "text": "Observes the building, studying its form and dimensions."
+            }
+          ]
+        },
+        {
+          "objects": [
+            {
+              "id": "o1",
+              "text": "The building"
+            },
+            {
+              "id": "o2",
+              "text": "Closed door in the middle sector of the building (near a closed door implies it is present)"
+            }
+          ]
+        },
+        {
+          "atmosphere": [
+            "Mysterious and artistic (implied by observations)"
+          ]
+        }
+      ]
+    },
+    "prompt_errors": []
+  },
+  {
+    "id": 2,
+    "title": "Замкнена дверь",
+    "description": "Олександр спостерігає за будинком у протяжності кількох днів, вивчаючи його сучасне історичне місце. Натомість він натрапляє на закриту дверь, яка здається старим та розбитим, але жодний план не показує цієї кімнати.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Пізень ранок, 12:00",
+    "action": "Олександр спостерігає за дверю та не може заспокоїтися, чекаючи на те, що вона буде відкрита. Він починає думати про сценарії і причини того, що така кімната ніколи не зображена.",
+    "camera": "Замкнута камера показує Олександра спостерігаючим за закритою дверню. Слухнімо шум блискучого листя та птахів.",
+    "mood": "Тихе і загадкове",
+    "prompt": "Alexander observes a closed, old, seemingly broken door in an old park at late morning, 12:00. He ponders the reasons why this room is never shown.",
+    "prompt_requirements_v3_4_1": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "Late morning, 12:00",
+      "location": "Old park in a city district",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Observes the building for several days.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "Notices an old and seemingly broken closed door.",
+          "mandatory": true
+        },
+        {
+          "id": "a3",
+          "text": "Starts to think about scenarios and reasons why such a room is never shown.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "Old and seemingly broken closed door",
+          "mandatory": true
+        }
+      ],
+      "relations": [],
+      "atmosphere": [
+        "Quiet and mysterious"
+      ]
+    },
+    "prompt_v3_4_1": "Alexander observes a closed, old, seemingly broken door in an old park at late morning, 12:00. He ponders the reasons why this room is never shown.",
+    "prompt_source": "structured_scene_v3_4_1_requirements",
+    "prompt_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [],
+      "contradictions": [],
+      "covered": [
+        {
+          "action_id": "a1",
+          "text": "Observes the building for several days."
+        },
+        {
+          "action_id": "a2",
+          "text": "Notices an old and seemingly broken closed door."
+        },
+        {
+          "action_id": "a3",
+          "text": "Starts to think about scenarios and reasons why such a room is never shown."
+        },
+        {
+          "object_id": "o1",
+          "text": "Old and seemingly broken closed door"
+        }
+      ]
+    },
+    "prompt_errors": []
+  },
+  {
+    "id": 3,
+    "title": "Виявлення закритої кімнати",
+    "description": "Олександр, очевидно не вдаючись впливати на двері, починає шукати інші способы вхіду. Вони бачать, що одна з верхніх вікон може бути відрізаною або заблокованою. Вони розкривають це вікно та обокладують до кімнати.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Одинадцять вечора, 23:00",
+    "action": "Олександр вже здатний спостерігати та розглядати кімнату, яка виглядає диким і пустим. Вони бачать старий стол з книгами про екологію та природу.",
+    "camera": "Внутрішній план закритої кімнати з Олександром, що розглядає старі книги і посилається на свої власні.",
+    "mood": "Мистецьке",
+    "prompt": "At 11:00 PM, Alexander searches for another entrance in a city park, notices an upper or blocked window, opens it, climbs through, enters the messy and empty room, observing old books about ecology on an old table.",
+    "prompt_requirements_v3_4_1": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "11:00 PM, 23:00",
+      "location": "A park in a city district",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": " Searches for another entrance",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": " Notices an upper or blocked window",
+          "mandatory": true
+        },
+        {
+          "id": "a3",
+          "text": " Opens the window",
+          "mandatory": true
+        },
+        {
+          "id": "a4",
+          "text": " Climbs through it",
+          "mandatory": true
+        },
+        {
+          "id": "a5",
+          "text": " Enters the room",
+          "mandatory": true
+        },
+        {
+          "id": "a6",
+          "text": " Observes and examines the room, which appears messy and empty",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "Old table with books about ecology and nature",
+          "mandatory": true
+        }
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "text": "The old table holds the books about ecology and nature.",
+          "mandatory": true
+        }
+      ],
+      "atmosphere": [
+        "Mystical"
+      ]
+    },
+    "prompt_v3_4_1": "At 11:00 PM, Alexander searches for another entrance in a city park, notices an upper or blocked window, opens it, climbs through, enters the messy and empty room, observing old books about ecology on an old table.",
+    "prompt_source": "structured_scene_v3_4_1_requirements",
+    "prompt_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [],
+      "contradictions": [],
+      "covered": [
+        {
+          "id": "a1",
+          "text": " Searches for another entrance"
+        },
+        {
+          "id": "a2",
+          "text": " Notices an upper or blocked window"
+        },
+        {
+          "id": "a3",
+          "text": " Opens the window"
+        },
+        {
+          "id": "a4",
+          "text": " Climbs through it"
+        },
+        {
+          "id": "a5",
+          "text": " Enters the room"
+        },
+        {
+          "id": "a6",
+          "text": " Observes and examines the room, which appears messy and empty"
+        },
+        {
+          "id": "o1",
+          "text": "Old table with books about ecology and nature"
+        },
+        {
+          "id": "r1",
+          "text": "The old table holds the books about ecology and nature."
+        }
+      ]
+    },
+    "prompt_errors": []
+  },
+  {
+    "id": 4,
+    "title": "Знаходження сокровища",
+    "description": "Олександр починає розглядувати книги на столі і вдивляється до одного з них. Він бачить старий кот, який спокоїно спить у кутку кімнати, що додає загадковості до ситуації.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Одинадцять вечора, 23:15",
+    "action": "Олександр починає читати одну з книг і натрапляє на певну речення, яке спричиняє йому думки. Він відкриває саквояж і бере з неї старий переплетений тетрадь.",
+    "camera": "Олександр читає книгу, а потім збирається з саквояжу. Камера прослідує за ним.",
+    "mood": "Загадкове",
+    "prompt": "The man opening the mysterious hidden door, an impossible dark corridor stretching into darkness"
+  },
+  {
+    "id": 5,
+    "title": "Розкриття та поглиблення",
+    "description": "Олександр починає переглядати стару тетрадь, яка містить рисунки і записи про екологію та природу. Вони починають зрозумілювати, що ця кімната виглядає диким і загадковим.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Одинадцять вечора, 23:30",
+    "action": "Олександр починає читати тетрадь і збирається з саквояжу. Вони починають розкривати його та відкривають старий переплетений тетрадь.",
+    "camera": "Олександр читає тетрадь, кот спокоїно сне у кутку. Камера прослідує за ним і зазначає їхнє враження.",
+    "mood": "Загадкове",
+    "prompt": "The man standing inside a mysterious impossible room, old photographs covering the walls, eerie atmosphere"
+  },
+  {
+    "id": 6,
+    "title": "Загадковий звук",
+    "description": "Олександр прослуховує розумірний шепот, який додому доноситься. Тихий шуршання та щелкання викликають у нього привидне тривоги. Він прагне знайти источник шума, але не може з’ясувати, від якого куту йдеться.",
+    "location": "Старий будинок",
+    "time": "10:30 вечора",
+    "action": "Олександр починає шукати джерело шуму, блискучим світлом фонарика пошукавши за всього.",
+    "camera": "Високо поза Олександром, роблячи подібне до нього, але невід’ємно виявлюючи деталі.",
+    "mood": "Напружена та загадкова",
+    "prompt": "cinematic realistic scene of a dimly lit old house at night, with Alexander, the thin and weathered man in his mid-thirties, searching for the source of an eerie whisper. He shines a flashlight around the room, casting shadows on the walls. The atmosphere is tense and mysterious, with a soft glow from the flashlight highlighting his determined face."
+  },
+  {
+    "id": 7,
+    "title": "Знайшов повітряний шар",
+    "description": "Вони знайшли маленький повітряний шар під креслам, який веде до ще однієї скритої двері. Олександр з'ясовує, що ця дверь закрита на гайку.",
+    "location": "Старий будинок",
+    "time": "10:45 вечора",
+    "action": "Олександр намагається відкрити дверь за допомогою ключа, знайденого у книзі.",
+    "camera": "Декоративний блиск на ключу та його вставляння до замка.",
+    "mood": "Напружена, але відчувається розслаблення через щось, що зблизило його до розвитку загадки.",
+    "prompt": "cinematic realistic scene in an old house at night, Alexander, the weathered man in his mid-thirties, trying to open a hidden door using a key found in a book. The light of the flashlight creates intricate shadows on the walls and floor as he works the lock. The atmosphere is tense but relieved as he nears the solution to the mystery."
+  },
+  {
+    "id": 8,
+    "title": "Заметка на задній стіนі",
+    "description": "Після відкриття двері Олександр зупинився перед повітряним шаром і побачив незначну білу бяку на задньому стіні. Вони починає її прокладати, обнаружуючи стару ручку.",
+    "location": "Старий будинок",
+    "time": "10:57 вечора",
+    "action": "Олександр почине прокладати бяку, знайдену на задній стіні. Вони зрозуміли, що це веде до нової та загадкової кімнати.",
+    "camera": "Озброєний фонарь показує деталі ручки, яка дивиться на їхнє рухоме світло.",
+    "mood": "Відчувається ком'юти і любопитство.",
+    "prompt": "cinematic realistic scene inside an old house at night, Alexander, the weathered man in his mid-thirties, carefully peeling away a faint white mark on the back wall. The flashlight reveals an old handle hidden behind it. The atmosphere is filled with curiosity and anticipation as he discovers a new and mysterious room."
+  },
+  {
+    "id": 9,
+    "title": "Нове обличчя",
+    "description": "Після відкриття ручки Олександр зустрівся з новою кімнатою, яка мала посиланий вікно на задньому боку. На стіні була портретна фотографія дідуся з густими сивими волосинями та добрим обличчям.",
+    "location": "Старий будинок",
+    "time": "11:05 вечора",
+    "action": "Олександр починає переглядати фотографію, впевненний, що це дідуся, який був у попередніх рисунках та записах.",
+    "camera": "Замкнений камера на портрету з дужим деталізованним відображенням обличчя дідуся.",
+    "mood": "Тихий, спокійний і загадковий.",
+    "prompt": "A cinematic realistic scene of Alexander, a thin and weathered man with a rugged short haircut and a gentle face with a stubble, standing in an old house by a window with a portrait of a kind elderly woman on the wall. The lighting is soft and warm, casting a calm atmosphere. He is wearing a worn-out brown jacket, jeans, and hiking boots. The camera focuses on his detailed facial expression as he examines the photograph, with a close-up shot of the portrait."
+  },
+  {
+    "id": 10,
+    "title": "Заключення",
+    "description": "Олександр починає розуміючи, що кімната та вихід від неї мають велику історичну значимість. Вони починають зберігати всі знайдені предмети в якості екологічного наследства.",
+    "location": "Старий будинок",
+    "time": "11:30 вечора",
+    "action": "Олександр починає записувати свої думки та історію в дневнику, що було знайдено у кімнаті. Вони вирішили зберегти цю кімнату для наступних поколінь.",
+    "camera": "Замкнена камера, показуюча Олександра записування в дневнику та виділяючи його глибоку майстерну.",
+    "mood": "Розслаблене і прагнення до розвитку.",
+    "prompt": "A cinematic realistic scene of Alexander in an old house at midnight, writing in a journal found in the room. He is wearing a worn-out brown jacket, jeans, and hiking boots. The lighting is dim but warm, creating a peaceful atmosphere. The camera captures his focused expression as he writes, with a close-up shot of his hands and the journal."
+  },
+  {
+    "id": 11,
+    "title": "Знайомство з котом",
+    "description": "Олександр розглядає стару, сонячної коліркування кота. Кот привабливо мурляє і додається до Олександра.",
+    "location": "Закрита кімната у старому будинку",
+    "time": "Полудень",
+    "action": "Олександр зустріває кота, прихований поза виглядом, та починає їх шлюб. Кот починає мурлити і госто бігати по кімнаті.",
+    "camera": "Мішане видження - перша особиста з Олександром в центру, а потім широке планує, щоб показати кота у кімнаті.",
+    "mood": "Дружнє та спокійне",
+    "prompt": "A cinematic realistic scene of Alexander in an old house at noon, meeting a friendly cat with golden fur that is basking in sunlight. The lighting is bright but soft, creating a warm and friendly atmosphere. He is wearing a worn-out brown jacket, jeans, and hiking boots. The camera captures the interaction between him and the cat, with a wide shot of the room."
+  },
+  {
+    "id": 12,
+    "title": "Прочитання книги про природу",
+    "description": "Олександр засідає на жаркою лавочці перед вікном і починає читати стару книгу про природу. Над ним є портрет дідуся, який також очікує.",
+    "location": "Закрита кімната у старому будинку",
+    "time": "Пізної рані",
+    "action": "Олександр починає читати про тварин належності лісових порід, звертаючи увагу на мелкі деталі. Кот приблизноться до нього і починає сонячитися на коліні.",
+    "camera": "Карманный візьми Олександра, який читає книгу і має кота поза кадром",
+    "mood": "Приховане та мудре",
+    "prompt": "Cinematic realistic image of Alexander sitting on a warm bench in front of a window, reading an old book about nature. A portrait of his grandfather hangs above him. The sunlight filters through the windows casting soft shadows. His appearance is thin and weathered from years of work in the park and evening walks. He wears a dirty gray sweatshirt, shorts, and worn-out sneakers. A cat is sleeping on his lap. The atmosphere is calm and wise. Camera shot: Alexander's pocket camera capturing him reading with the cat out of frame."
+  },
+  {
+    "id": 13,
+    "title": "Обговорення зі співробітниками парку",
+    "description": "Олександр зустрівається з колегами у парку і розповідає про свої знайomy в старому будинку. Колеги вдосконалюють його думки.",
+    "location": "Парк містяної громади",
+    "time": "Офіційний час роботи",
+    "action": "Колеги сприймають інтерес до Олександра, вимикаючи обов'язки та запропонуючи йому зберегти знайомство. Вони діляться своїми власними історіями про природу.",
+    "camera": "Панорамний план парку, який переходить до кадру Олександра та колег",
+    "mood": "Дружнє та спілкувальне",
+    "prompt": "Cinematic realistic scene of Alexander meeting colleagues in the city park, discussing his discovery in an old building. The location is a panoramic view of the park during working hours. His appearance remains consistent as he shares stories about nature with his coworkers who are intrigued and supportive. They share their own experiences related to nature. The atmosphere is friendly and communicative. Camera shot: Transition from a wide-angle view of the park to Alexander and his colleagues."
+  },
+  {
+    "id": 14,
+    "title": "Відкриття нової части бути",
+    "description": "Олександр відкриває двері, які ведуть до сени, і знайомиться з новою частине будинку.",
+    "location": "Старий будинок",
+    "time": "Ввечері",
+    "action": "Олександр входить у нову кімнату та починає розглядати старі листи і фоліювання стін. Вони ведуть до багатьох екологічних знань.",
+    "camera": "Поступовий план від дверей до нової кімнати",
+    "mood": "Загадкове та інтригуюче",
+    "prompt": "Cinematic realistic image of Alexander opening doors leading to new parts of an old building, exploring a newly discovered room filled with old papers and wall coverings. The lighting is dim as evening falls, casting a mysterious glow on the ancient documents. His appearance remains consistent, as he steps into the new space to examine the wealth of ecological knowledge it contains. The atmosphere is intriguing and enigmatic. Camera shot: A gradual pan from the doors to the newly discovered room."
+  },
+  {
+    "id": 15,
+    "title": "Кінець дня у кімнаті",
+    "description": "Олександр сидить у кімнаті, кот спящий на лавочці перед вікном. Вони починають писати дневник про свій день.",
+    "location": "Закрита кімната у старому будинку",
+    "time": "Ніч",
+    "action": "Олександр записує свої враження і подумки, а потім засипає на лавочці поза котом. Кот починає сонячити його.",
+    "camera": "Відкритий план Олександра та кота на лавочці",
+    "mood": "Покойне та спокійне",
+    "prompt": "Cinematic realistic scene of Alexander, a thin and weathered man with a stubble beard and weary eyes, sitting on a bench in a dimly lit room within an old building. He is wearing a worn-out brown jacket and faded jeans. His cat, sleeping beside him, starts to write in his journal as the night falls. Soft ambient lighting casts gentle shadows around them, creating a tranquil atmosphere. The camera focuses on Alexander and the cat sharing the bench, with a warm glow highlighting their peaceful moment."
+  },
+  {
+    "id": 16,
+    "title": "Знайомство з невиданим",
+    "description": "Олександр відвідує старий будинок рано ранку, коли сонце ще не озарює неба. Він шукає двері, які привели його до сени, і проводить час з котом, використовуючи кілька рухливих кутів камери, щоб подати динамічну атмосферу.",
+    "location": "Старий будинок",
+    "time": "Ранок",
+    "action": "Олександр відвідує старий будинок і шукає відкриття дверей, які привели його до сени. Він починає знакомство з невиданим простором.",
+    "camera": "Камера кілька разів перемикається між Олександром та котом, що спить на лавочці, використовуючи кольорове освітлення для підкреслення емоцій.",
+    "mood": "Тихий і задумний",
+    "prompt": "Cinematic realistic scene of Alexander exploring an old building early in the morning before sunrise. He is wearing his usual brown jacket and faded jeans as he searches for doors leading to a spacious area. The camera captures dynamic movements between Alexander and his sleeping cat, using colorful lighting to emphasize their interaction and the mysterious atmosphere. Soft natural light filters through the windows, adding depth to the scene."
+  },
+  {
+    "id": 17,
+    "title": "Знайомство з невідомими",
+    "description": "Олександр виводить кота на розважлення по сени та починає прохати світло за стінами, використовуючи кольорове освітлення для підкреслення інтер'єру. Вони зустрічають різні предмети та книги, що досягають різних тем.",
+    "location": "Старий будинок",
+    "time": "Ранок",
+    "action": "Олександр починає прохати світло за стінами сени та виводить кота на розважлення. Вони зустрічають різні предмети і книги, що досягають різних тем.",
+    "camera": "Камера держиться за котом та Олександром, використовуючи кольорове освітлення для підкреслення інтер'єру сени.",
+    "mood": "Загадковий і експериментальний",
+    "prompt": "Cinematic realistic scene of Alexander leading his cat through a spacious area in an old building during the morning. He is wearing his usual brown jacket and faded jeans as he explores the space by following the light across the walls. The camera follows both Alexander and the cat, using colorful lighting to highlight various objects and books they encounter, creating an adventurous yet enigmatic atmosphere. Soft ambient lighting casts gentle shadows around them."
+  },
+  {
+    "id": 18,
+    "title": "Дослідження",
+    "description": "Олександр починає дослідження нової кімнати, використовуючи світло для підсвітлення різних деталей. Він зазначає важливі деталі та приводить у повну роботу свої знання про екологію та історичне значення.",
+    "location": "Старий будинок",
+    "time": "Ранок",
+    "action": "Олександр починає дослідження нової кімнати, використовуючи світло для підсвітлення різних деталей. Вони зазначають важливі деталі та приводять у повну роботу свої знання про екологію та історичне значення.",
+    "camera": "Камера фокусується на Олександру та предметах, які він досліджує, з різними планами для кращого зміцнення деталей.",
+    "mood": "Тихий і концентрований",
+    "prompt": "cinematic realistic portrait of Alexander in a dimly lit old house, studying the new room with a flashlight, his weathered face and hands visible, books and documents scattered around, soft natural light filtering through the windows, creating a mysterious atmosphere, camera focused on Alexander's determined expression as he meticulously examines each detail, capturing the intricate textures and realistic details of the environment."
+  },
+  {
+    "id": 19,
+    "title": "Розкриття",
+    "description": "Олександр знайомиться з різними документами та фотографіями, що вказують на історичне значення будинку. Вони розкривають важливу інформацію про стародавні пожежі та життя людськості у місті.",
+    "location": "Старий будинок",
+    "time": "Ранок",
+    "action": "Олександр знайомиться з різними документами та фотографіями, що вказують на історичне значення будинку. Вони розкривають важливу інформацію про стародавні пожежі та життя людськості у місті.",
+    "camera": "Камера фокусується на документах та фотографіях, що вказують на історичне значення будинку. Використовується кольорове освітлення для підкреслення важливості.",
+    "mood": "Загадковий і інформаційний",
+    "prompt": "cinematic realistic scene in an old house with Alexander exploring historical documents and photographs, revealing important information about ancient fires and life in the city, warm colored lighting highlighting the significance of the artifacts, camera focused on the documents and photos, capturing the detailed textures and realistic details of the environment, creating a mysterious and informative atmosphere."
+  },
+  {
+    "id": 20,
+    "title": "Кінець дня",
+    "description": "Олександр записує в дневник свою розуміння та знання про нове простре, поглиблюючи свої думки. Вони готують собі щось на обід і дихають емоційний пространство.",
+    "location": "Старий будинок",
+    "time": "Ввечері",
+    "action": "Олександр записує в дневник свої розуміння та знання про нове простре, поглиблюючи свої думки. Вони готують собі щось на обід і дихають емоційний пространство.",
+    "camera": "Камера фокусується на Олександру та коті, як вони записують в дневник та готують їжу. Використовується мілке освітлення для підкреслення емоцій.",
+    "mood": "Тихий і задумний",
+    "prompt": "cinematic realistic evening scene in an old house with Alexander journaling about his new space, preparing a simple meal with his cat by his side, soft ambient lighting casting gentle shadows, camera focused on the intimate moment of writing and cooking, capturing the tender emotions and realistic details of the setting."
+  },
+  {
+    "id": 21,
+    "title": "Історичне звернення",
+    "description": "Олександр, розкриваючи старі документи у ново знайденій кімнаті, натрапляє на відомки про пожежу, що спалило близький будинок 50 років тому. Він чуває своїх друзів-волонтерів парку, як вони борються з вугіл'м і спасають кінологічний сад.",
+    "location": "Старий будинок",
+    "time": "16:00",
+    "action": "Олександр чуває голоси та рушта з парку, порівнює це з відомками у документах. Він заснував думки про своїх друзів і як важливо є співпраця людини та природи.",
+    "camera": "Уявлення Олександра перетворюється на зовнішню камеру, показуючи вигляд парку та пожежну команду.",
+    "mood": "Мистецький і глибокий",
+    "prompt": "cinematic realistic scene of Alexander, a thin yet weathered man with a gentle demeanor and a small stubble, standing in an old building with a retro phone in his hand. The location is dimly lit by the light filtering through dusty windows, casting long shadows on the floor. His appearance is rugged from years of working at the city park and evening walks. Alexander's face, marked by lines and wisdom, reflects deep thoughts as he listens to the sounds of the park volunteers fighting a fire. The camera captures his focused expression, with the background showing the bustling activity outside. The atmosphere is both mysterious and nostalgic, with a sense of connection to the past."
+  },
+  {
+    "id": 22,
+    "title": "Контакт з прошлістю",
+    "description": "Використовуючи ретро телефон, Олександр спробує зв'язатися з ближчими, щоб поділитися своїми знаннями та думками про історичне значення будинку. Вони не відповідають.",
+    "location": "Старий будинок",
+    "time": "18:00",
+    "action": "Олександр намагається дозвонитися до близьких, використовуючи старі технології. Він чуває тільки сумітні голоси і помилкові спроби.",
+    "camera": "Від боку — Олександр намагається дозвонитися, зовсім як він намагався знайти свого місця у цьому світі.",
+    "mood": "Залишення",
+    "prompt": "cinematic realistic scene of Alexander in an old building, surrounded by books and modern equipment. He is using an outdated phone to try and contact his loved ones but only hears static and busy signals. The lighting is dim, with a soft glow from the windows highlighting his determined face. His appearance remains consistent as he stands by a table filled with documents and books, his eyes reflecting a mix of determination and isolation. The camera shot is from the side, emphasizing his solitary effort to connect. The atmosphere is one of longing and disconnection."
+  },
+  {
+    "id": 23,
+    "title": "Накази та запорожчання",
+    "description": "Використовуючи свої знання про екологію, Олександр намагається зробити будинок безпечним та поліпшуватими місце життя. Вони створюють план роботи та запускають спробу її реалізувати.",
+    "location": "Старий будинок",
+    "time": "20:00",
+    "action": "Олександр і кот приступають до чистки та оновлення кімнати. Вони намагаються створити комфортну атмосферу.",
+    "camera": "Від кута — вид на роботу Олександра та кота, як вони приступають до чистки.",
+    "mood": "Реалізаційний",
+    "prompt": "cinematic realistic scene of Alexander in an old building, working alongside his cat to clean and renovate a room. The lighting is soft and warm, with natural light streaming through the windows. His appearance remains unchanged as he works diligently, surrounded by books and modern tools. The camera captures the composition from a corner angle, showing both Alexander and his cat engaged in their task. The atmosphere is one of determination and hope for improvement."
+  },
+  {
+    "id": 24,
+    "title": "Новий додаток",
+    "description": "Олександр знайшов в документах стару фотографію з будинком. Він намагається створити новий контент, який би допомогло пам'яті про це місце.",
+    "location": "Старий будинок",
+    "time": "23:00",
+    "action": "Олександр робить фотографії та записує відео. Вони намагаються показати нове значення старого місця.",
+    "camera": "Від кута — Олександр намагається створити контент, супроводжуючи це власним голосом.",
+    "mood": "Деталевий",
+    "prompt": "cinematic realistic portrait of Alexander, a thin and weathered man with a thoughtful gaze and a slight stubble, wearing his usual worn-out light brown jacket, dark shorts, and simple sneakers. He stands in the dimly lit old building at night, holding a camera and microphone, surrounded by bookshelves filled with ecological and historical texts. The atmosphere is quiet and focused as he captures images and records videos to preserve the memory of this place. Soft lighting from the camera highlights his determined expression. Composition shows him from an angle capturing content while narrating into the camera."
+  },
+  {
+    "id": 25,
+    "title": "Відкриття",
+    "description": "Олександр розкриває, що документи зазначають про історичне значення будинку. Вони намагаються використовувати цю інформацію для пам'яті та розширення знань.",
+    "location": "Старий будинок",
+    "time": "01:00",
+    "action": "Олександр читає документи вслух, а кот спокоїно снує. Вони намагаються зрозуміти значення та використати його.",
+    "camera": "Від кута — Олександр читає документи вслух, а кот спокоїно снує.",
+    "mood": "Заключний",
+    "prompt": "cinematic realistic scene of Alexander, a thin and weathered man with a thoughtful gaze and a slight stubble, wearing his usual worn-out light brown jacket, dark shorts, and simple sneakers. He sits in the old building at midnight, reading historical documents aloud while his cat sleeps peacefully beside him. The atmosphere is calm as they try to understand the significance of this place. Soft lighting from the document pages illuminates his face and hands. Composition captures Alexander from a low angle reading documents while his cat snores nearby."
+  },
+  {
+    "id": 26,
+    "title": "Знайомство з історією",
+    "description": "Олександр, роблячи у парку, спостерігає за старим будинком на дзеркальному поверхні води. Він намагається визначити, чи є кімнату, якої не існувало на жодному плані, пов'язану з історією будинку.",
+    "location": "Парк",
+    "time": "Ранок",
+    "action": "Олександр розглядає старий будинок, спостерігає за його стінами та дверьми. Він намагається знайти певну кімнату на планах, але не знаходить її.",
+    "camera": "Високою камерою з неба, показуючи будинок та парк.",
+    "mood": "Тихий і задумаваний",
+    "prompt": "cinematic realistic early morning scene of Alexander, a thin and weathered man with a thoughtful gaze and a slight stubble, wearing his usual worn-out light brown jacket, dark shorts, and simple sneakers. He stands by the lake in the park, observing the old building reflected on its surface. The atmosphere is serene as he tries to identify if there's a room that doesn't exist on any plan within the building’s history. Soft morning light bathes the scene, highlighting his focused expression. Composition captures Alexander from above, showing him observing the reflection of the old building in the water."
+  },
+  {
+    "id": 27,
+    "title": "Знайомство з підрядником",
+    "description": "Олександр зустрічає старого підрядника, який працює у парку. Вони починають обговорювати можливості використання будинку для екологічних проектів.",
+    "location": "Парк",
+    "time": "День",
+    "action": "Олександр зустрічає підрядника, який розгортує планшет з планами будинку. Вони обговорюють можливості використання кімнати, якої не існувало на жодному плані.",
+    "camera": "Відстанню між Олександром та підрядником, показуючи їх обговорення.",
+    "mood": "Розмовна",
+    "prompt": "cinematic realistic portrait of Alexander, a thin but muscular man with a weathered face and a slight stubble, wearing a dirty brown jacket, standing in a park during the day, discussing plans for an old building with a construction worker using a tablet. Soft sunlight filters through the trees, casting gentle shadows on their faces. The atmosphere is calm and thoughtful as they exchange ideas."
+  },
+  {
+    "id": 28,
+    "title": "Знайомство з істориком",
+    "description": "Олександр відвідує місцевий архів, де знаходить документи про будинок. Вони намагаються знайти більше інформації про кімнату, якої не існувало на жодному плані.",
+    "location": "Місцевий архів",
+    "time": "Ввечері",
+    "action": "Олександр просимо документи про будинок у відповідному кабінеті. Вони намагаються знайти більше інформації про кімнату, якої не існувало на жодному плані.",
+    "camera": "Відстанню від документів та Олександра, показуючи його думки.",
+    "mood": "Задумаваний",
+    "prompt": "cinematic realistic scene of Alexander in a local archive at night, surrounded by documents about an old building, trying to find more information about the room that did not exist on any plans. The lighting is dim and focused on his intense gaze as he reads through papers. The atmosphere is quiet and reflective."
+  },
+  {
+    "id": 29,
+    "title": "Знайомство з котом",
+    "description": "Олександр, стоячи поза дверими закритої кімнати, намагається визначити, чи є там житля. Він спостерігає за котом, який звісно живе у кімнаті і завжди прагне до свободи.",
+    "location": "Старий будинок",
+    "time": "Вранці",
+    "action": "Олександр спостерігає за котом, який впивається у двері. Кот намагається проникнути до свіжого повітря.",
+    "camera": "Камера стоять поза дверими, показуючи обидві сторони кімнати.",
+    "mood": "Тихий та спокійний",
+    "prompt": "cinematic realistic shot of Alexander standing outside a closed door in an old building early in the morning, observing a cat trying to squeeze through the cracks. Soft light from dawn filters in, creating a serene and contemplative atmosphere. The composition highlights both sides of the room."
+  },
+  {
+    "id": 30,
+    "title": "Знайомство з мистецтвом",
+    "description": "Олександр відвідує музей літератури і екології, де знаходить старе та цікаве мистецтво. Вони намагаються знайти посилання на будинок або кімнату.",
+    "location": "Музей літератури і екології",
+    "time": "Вранці",
+    "action": "Олександр пролистує старі книги та глядить на картини, намагаючись знайти посилання на будинок.",
+    "camera": "Камера пливуче проходить між шкірками книг та зображеннями природи.",
+    "mood": "Звичайний та спокійний",
+    "prompt": "Cinematic, realistic, early morning light filtering through the museum windows, a quiet and calm atmosphere. Alexander, with his weathered face and thoughtful eyes, sits among old books and paintings in the Literature and Ecology Museum, flipping pages and looking for references to the house or room. The camera floats between bookshelves and nature-themed illustrations, capturing the subtle details of the scene."
+  },
+  {
+    "id": 31,
+    "title": "Знайомство з істориком",
+    "description": "Олександр відвідує місцевий архів, де знаходить документи про будинок. Вони намагаються знайти більше інформації про кімнату, якої не існувало на жодному плані.",
+    "location": "Місцевий архів",
+    "time": "Вранці",
+    "action": "Олександр спілкується з істориком, який намагається знайти більше документів про будинок.",
+    "camera": "Камера фокусується на лицях Олександра та історика.",
+    "mood": "Занятий та спілкувальний",
+    "prompt": "Cinematic, realistic, soft morning light in the local archive, an engaged and communicative atmosphere. Alexander, with his weathered face and thoughtful eyes, discusses with a historian who is trying to find more documents about the house. The camera focuses on their faces, capturing the interaction between them."
+  },
+  {
+    "id": 32,
+    "title": "Знайомство з попередньою обитальцею",
+    "description": "Олександр відвідує музей і знаходить стару книгу про екологію. Вона містить інтересну інформацію про будинок, який він знайшов. Кот починає дивитися на нього з інтересом.",
+    "location": "Музей літератури та екології",
+    "time": "14:00",
+    "action": "Олександр читає книгу, кот дивиться на нього з інтересом. Вони намагаються знайти більше про будинок.",
+    "camera": "План-захоплення Олександра та кота, як вони читають книгу разом.",
+    "mood": "Тихий і задумаваний",
+    "prompt": "Cinematic, realistic, afternoon light in the museum, a quiet and contemplative atmosphere. Alexander, with his weathered face and thoughtful eyes, reads an old ecology book while a cat watches him intently. They are trying to find more information about the house. The camera captures a close-up of Alexander and the cat as they read together."
+  },
+  {
+    "id": 33,
+    "title": "Знайомство з старим житлом",
+    "description": "Олександр відвідує старе житло, де знаходить стару фотографію з кімнатою, якої не існувало на жодному плані. Він намагається розуміти, чи є ця кімната пов'язана з будинком.",
+    "location": "Старе житло",
+    "time": "16:00",
+    "action": "Олександр переглядає стару фотографію та намагається розуміти, чи є кімната пов'язана з будинком. Кот починає дивитися на фотографію.",
+    "camera": "План-захоплення фотографії та Олександра, який намагається розуміти її.",
+    "mood": "Задуманий і поглиблюваний",
+    "prompt": "cinematic realistic portrait of Alexander, a thin but muscular man with a weathered face and short, tousled hair, wearing a worn brown jacket, standing in an old house by the light of a dimly lit room. He is examining an old photograph on a dusty shelf, his cat looking curiously at him. The atmosphere is mysterious and задумчивий, with soft lighting casting shadows on the walls."
+  },
+  {
+    "id": 34,
+    "title": "Розкриття загадки",
+    "description": "Олександр знайшов документи, які вказують на те, що кімната існувала як резервна місце для екологічних досліджень. Вони намагаються знайти більше про це.",
+    "location": "Місцевий архів",
+    "time": "18:00",
+    "action": "Олександр вивчає документи і намагається розуміти їх. Вони намагаються знайти більше про кімнату та її історію.",
+    "camera": "План-захоплення документів та Олександра, який вивчає їх.",
+    "mood": "Розкриття загадки",
+    "prompt": "cinematic realistic scene of Alexander, a thin but muscular man with a weathered face and short, tousled hair, wearing a worn brown jacket, studying documents in a dimly lit room at an old archive. His cat is nearby, also examining the documents intently. The atmosphere is investigative and задумчивий, with soft lighting highlighting the documents."
+  },
+  {
+    "id": 35,
+    "title": "Знайомство з документами",
+    "description": "Олександр просмікається в бібліотеку, де знаходить старі книги та архівні матеріали. Вони містять інтересну інформацію про кімнату, яку він знайшов у будинку. Кот розбирається з книгами та починає дивитися на Олександра.",
+    "location": "Музей",
+    "time": "Понеділок, 14:00",
+    "action": "Олександр переглядає документи, кот розбирається з книгами",
+    "camera": "Висока швидкість об'єктиву для детального вивчення документів та кота",
+    "mood": "Загадковий",
+    "prompt": "cinematic realistic scene of Alexander, a thin but muscular man with a weathered face and short, tousled hair, wearing a worn brown jacket, browsing through old books in a dimly lit library. His cat is nearby, also exploring the books. The atmosphere is mysterious and задумчивий, with soft lighting emphasizing the details of the documents and the cat."
+  },
+  {
+    "id": 36,
+    "title": "Розкриття нової інформації",
+    "description": "Олександр знайшов документи, які вказують на те, що кімната була залишенням для екологічних досліджень. Вони також містять інформацію про старого наукового співробітника, який використовував цю кімнату. Кот починає поглиблено дивитися на документи.",
+    "location": "Старе житло",
+    "time": "Вівторок, 10:30",
+    "action": "Олександр вчителіть документи та розмовляє з котом про них",
+    "camera": "План-зум на документах та кот",
+    "mood": "Рефлексивний",
+    "prompt": "cinematic realistic scene of Alexander, a thin but muscled man with weathered skin from his work in the park and evening walks, sitting by an old wooden table in a dimly lit room filled with books on ecology. He is dressed in a worn dark gray jacket, loose shorts, and a blue sweater with tree patterns. A cat sits beside him, intently studying the documents spread out before them. Soft natural light filters through the windows, casting a warm glow over the scene. The atmosphere is reflective and mysterious as Alexander reads the documents aloud to his feline companion."
+  },
+  {
+    "id": 37,
+    "title": "Знайомство з старим науковцем",
+    "description": "Олександр відвідує музей і знаходить стару фотографію з багатою інформацією про старого наукового співробітника. Вони намагаються знайти його дочірню, щоб отримати більше інформації про кімнату.",
+    "location": "Музей",
+    "time": "Середа, 15:00",
+    "action": "Олександр переглядає фотографію та намагається знайти старого наукового співробітника",
+    "camera": "План-зум на фотографії та документах",
+    "mood": "Пошуковий",
+    "prompt": "cinematic realistic scene of Alexander perusing an old photograph in a museum, surrounded by historical documents related to ecological research. He wears the same weathered appearance with a worn dark gray jacket and blue sweater. The lighting is soft and ambient, enhancing the nostalgic mood as he examines the photo closely. A plan-zoom captures his focused gaze on the image, with other documents scattered around him. The atmosphere is investigative and curious."
+  },
+  {
+    "id": 38,
+    "title": "Знайомство з дочерою старого науковця",
+    "description": "Олександр зустрічається з дочею старого наукового співробітника у музейному кабінеті. Вони обговорюють інформацію про кімнату та розуміють, що вона має важливе значення для екології.",
+    "location": "Музей",
+    "time": "Відбуватиметься після обіду",
+    "prompt": "cinematic realistic scene of Alexander meeting the daughter of an old scientist in a museum cabinet. He wears his usual weathered appearance, dressed in a worn dark gray jacket and blue sweater. The lighting is soft and ambient, creating a warm and inviting atmosphere as they discuss the importance of the room for ecology. A plan-zoom captures their focused conversation, with historical documents visible in the background."
+  },
+  {
+    "id": 39,
+    "title": "Розкриття історичних та екологічних документів",
+    "description": "Олександр та дочь старого науковця вивчають інформацію про кімнату, знайдену у будинку. Вони знаходять документи, які вказують на важливість екологічних досліджень та потенційне ризик, пов'язаний з закриттям кімнати.",
+    "location": "Старий будинок",
+    "time": "Вечерня",
+    "prompt": "cinematic realistic evening light in an old house, Alexander with his weathered face and tanned skin from years of work in the park and evening walks, wearing a worn brown jacket, faded jeans, and leather boots, surrounded by documents on ancient scientific research and ecological history, the camera captures him examining these papers with curiosity and determination, soft warm light filtering through dusty windows, atmosphere filled with intrigue and discovery, composition highlighting Alexander's focused expression"
+  },
+  {
+    "id": 40,
+    "title": "Розуміння майбутнього ризику",
+    "description": "Олександр та дочь старого науковця висловлюють свою здачу щодо потенційного небезпеки, яка може бути пов'язана з закриттям кімнати. Вони обговорюють можливості для позбавлення ризику та захисту екологічних досліджень.",
+    "location": "Старий будинок",
+    "time": "Вечерня",
+    "prompt": "cinematic realistic evening light in an old house, Alexander with his weathered face and tanned skin from years of work in the park and evening walks, wearing a worn brown jacket, faded jeans, and leather boots, discussing potential risks and solutions for ecological research with his daughter Irina, soft warm light illuminating their faces, atmosphere filled with concern and thoughtful discussion, composition focusing on both characters engaged in conversation"
+  },
+  {
+    "id": 41,
+    "title": "Знайомство з документами",
+    "description": "Олександр та дочь старого науковця, Ірина, розглядають знайдені документи про кімнату. Вони визуалізують можливості їх використання для екологічних досліджень.",
+    "location": "Музейний кабінет",
+    "time": "14:00",
+    "action": "Олександр та Ірина переглядають документи, обговорюють ідеї їх використання для екологічних досліджень. Вони зазначають потенційну важливість та ризики.",
+    "camera": "Висока кадр, показуючи документи та перегляд Олександра та Ірини",
+    "mood": "Розмовне",
+    "prompt": "cinematic realistic 2pm in a museum cabinet, Alexander with his weathered face and tanned skin from years of work in the park and evening walks, wearing a worn brown jacket, faded jeans, and leather boots, perusing documents on ancient scientific research and ecological history with his daughter Irina, high camera shot showing both characters examining the papers intently, soft natural light filtering through glass, atmosphere filled with intellectual curiosity and discovery, composition emphasizing their focused expressions"
+  },
+  {
+    "id": 42,
+    "title": "План захисту",
+    "description": "Олександр та Ірина обговорюють можливості для захисту кімнати та екологічних досліджень. Вони визначають стратегії для збереження цінності.",
+    "location": "Музейний кабінет",
+    "time": "15:30",
+    "action": "Олександр та Ірина обговорюють можливості захисту, використовуючи знайдені документи. Вони розробляють план для збереження кімнати та її досліджень.",
+    "camera": "Загальний кадр, показуючи взаємодію Олександра та Ірини",
+    "mood": "Реалістичне",
+    "prompt": "cinematic realistic depiction of Alexander, a thin but muscled man with a weathered face and short, tousled hair, standing in a museum cabinet, discussing plans for protecting the hidden room with Irina. The lighting is warm and focused on their faces as they review documents. The atmosphere is serious yet hopeful. Composition focuses on their interaction, with detailed backgrounds of old books and artifacts. Camera shot: wide angle showing Alexander and Irina's dialogue."
+  },
+  {
+    "id": 43,
+    "title": "Представництво ідеї",
+    "description": "Олександр та Ірина готовяться представити свої знайдені документи та план захисту у міському відділенні екології. Вони розуміють важливість своєї ідеї.",
+    "location": "Міське управління екологією",
+    "time": "16:00",
+    "action": "Олександр та Ірина представлють знайдені документи та план захисту у міському відділенні екології. Вони обговорюють можливості для сподівання підтримки.",
+    "camera": "Загальний кадр, показуючи взаємодію Олександра та Ірини з офіцерами відділення",
+    "mood": "Деталеве",
+    "prompt": "cinematic realistic portrayal of Alexander and Irina preparing to present their findings at the city environmental office. The lighting is natural but slightly dramatic, highlighting their determined expressions as they discuss strategies for support. Atmosphere is tense yet optimistic. Composition includes detailed views of documents and their interaction with officials. Camera shot: wide angle capturing their interaction with the officials."
+  },
+  {
+    "id": 44,
+    "title": "Знайомство з котом",
+    "description": "Олександр та Ірина залишаються у кімнаті, де живе кот. Кот прагне до власного простору і не бажає друкуватися. Олександр спробує заспокоїти кота та знайти зв'язок з ним.",
+    "location": "Старий будинок",
+    "time": "Вечір",
+    "action": "Олександр спробує поговорити з котом, використовуючи різні голоси та мовлення. Ірина спостерігає за ним.",
+    "camera": "З点 of view (POV) кота",
+    "mood": "Тихий, спокійний",
+    "prompt": "cinematic realistic scene showing Alexander, a thin but muscled man with a weathered face and short, tousled hair, trying to connect with a cat in an old house. The lighting is soft and focused on the cat's POV as it observes Alexander. Atmosphere is calm and quiet. Composition captures both Alexander and the cat from the cat’s perspective. Camera shot: point of view (POV) of the cat."
+  },
+  {
+    "id": 45,
+    "title": "Розкриття історії кімнати",
+    "description": "Олександр та Ірина розглядають старі документи про кімнату. Вони знаходять згадку про багато років тому, коли ця кімната використовувалася як лабораторія для екологічних досліджень.",
+    "location": "Старий будинок",
+    "time": "Ввечері",
+    "action": "Олександр та Ірина глядять на документи, обговорюють їх і визуалізують можливості для використання цього дослідження.",
+    "camera": "З点 of view (POV) Олександра",
+    "mood": "Розкриття, загадка",
+    "prompt": "Cinematic realistic scene of Alexander in a dimly lit old building, surrounded by ancient documents and books. He is wearing his usual worn-out khaki jacket and faded jeans. The camera captures the details of his thoughtful face as he examines the papers with Irene, their eyes reflecting curiosity and determination. Soft lighting from an old lamp casts a warm glow on the documents, creating a mysterious atmosphere. The composition focuses on the interaction between Alexander and Irene, highlighting the historical significance of the room."
+  },
+  {
+    "id": 46,
+    "title": "План захисту кімнати",
+    "description": "Олександр та Ірина обговорюють стратегії для збереження кімнати і її використання для екологічних досліджень. Вони розробляють план, який враховує необхідні ресурси та підтримку.",
+    "location": "Старий будинок",
+    "time": "Ввечері",
+    "action": "Олександр та Ірина обговорюють свої плани, створюючи детальний список дій для збереження кімнати.",
+    "camera": "З点 of view (POV) Ірини",
+    "mood": "Реалізація ідеї",
+    "prompt": "Cinematic realistic scene of Alexander and Irene planning in an old building by candlelight. Alexander is dressed as usual, with his weathered face and rugged appearance. The camera captures their focused expressions as they discuss strategies for protecting the room and using it for ecological research. Soft, warm lighting from the flickering candles creates a cozy yet determined atmosphere. The composition emphasizes their interaction and the detailed plan they are creating."
+  },
+  {
+    "id": 47,
+    "title": "Знайомство з документами",
+    "description": "Олександр та Ірина розглядають старі документи про кімнату. Вони знаходять згадку про багато років тому, коли ця кімната використовувалася як лабораторія для екологічних досліджень.",
+    "location": "Старий будинок",
+    "time": "Вечір",
+    "action": "Олександр та Ірина переглядають старі документи, обговорюють історію кімнати. Вони зазначають, що можливо, ця лабораторія могла б використовуватися для нових екологічних досліджень.",
+    "camera": "Відбір кадри, показуючи документи та взаємодію героїв",
+    "mood": "Невинна інтерес",
+    "prompt": "Cinematic realistic scene of Alexander and Irene examining old documents in an old building by candlelight. Alexander is wearing his usual worn-out khaki jacket and faded jeans, with a thoughtful expression on his face as he looks at the papers. The camera captures the details of their interaction, highlighting the historical significance of the room and their interest in potential new ecological research. Soft lighting from the candles casts a warm glow, creating an atmosphere of curiosity and discovery. The composition focuses on their faces and the documents."
+  },
+  {
+    "id": 48,
+    "title": "Перегляд лабораторії",
+    "description": "Олександр та Ірина відвідувають стару лабораторію, де був розміщений закритий будь-яким способом вход до кімнати. Вони спостерігають за стовпами та приладами, які можуть бути корисні для екологічних досліджень.",
+    "location": "Старий будинок",
+    "time": "Ввечері",
+    "action": "Олександр та Ірина проходять через стару лабораторію, спостерігаючи за різними приладами та документами. Вони обговорюють можливість використання цього простору для екологічних досліджень.",
+    "camera": "Відбір кадри, показуючи лабораторію та взаємодію героїв",
+    "mood": "Загадковий інтерес",
+    "prompt": "cinematic realistic portrayal of Alexander, a thin and weathered man with a stubble beard and sun-kissed skin from his work in the park. He wears a worn-out brown jacket, short-cropped hair, and a casual t-shirt with tree designs. The old laboratory is dimly lit by the evening light, with various equipment and documents scattered around. Alexander and Irina walk through the lab, discussing potential uses for the space. The atmosphere is mysterious and intriguing, with shadows playing across the room. Camera shot from above, capturing the interaction between the characters."
+  },
+  {
+    "id": 49,
+    "title": "Розкриття загадки",
+    "description": "Олександр та Ірина знайшов в документах згадку про старого наукового співробітника, який був обов'язковою частиною лабораторії. Вони розкривають, що цей будь-який вход до кімнати може бути запобігом ворогам та зашитою для даних.",
+    "location": "Старий будинок",
+    "time": "Ввечері",
+    "action": "Олександр та Ірина обговорюють знайдену інформацію, визначаючи, що кімната може бути зашитою для важливих даних. Вони розробляють план для збереження та використання цього простору.",
+    "camera": "Відбір кадри, показуючи документи та взаємодію героїв",
+    "mood": "Реалізм і загадковий",
+    "prompt": "cinematic realistic depiction of Alexander and Irina examining old documents in the dimly lit laboratory. They discuss the findings, realizing that the hidden room might be a secure storage area for important data. The atmosphere is both realist and mysterious, with subtle lighting highlighting their focused expressions. Camera shot from above, showing the interaction between the characters and the documents."
+  },
+  {
+    "id": 50,
+    "title": "Розкриття",
+    "description": "Олександр та Ірина роблять звичайну прогулянку по парку, коли вони спостерігають за старим будинком. Вони входять у кімнату, якої не існувало на жодному плані, та знаходять там новий документ про старого наукового співробітника. Цей документ розкриває загадку про кімнату: вона був запобігом для зашити даних та захищення від ворогів.",
+    "location": "Старий будинок у парку",
+    "time": "Після сонячного дня",
+    "action": "Олександр і Ірина розглядають новий документ, спостерігають за кімнатою та засмучуються від загадки.",
+    "camera": "Висока камера, показуюча обставини кімнати та емоції героя",
+    "mood": "Мистецький та захоплюючий",
+    "prompt": "cinematic realistic scene of Alexander and Irina walking through the park on a sunny day, observing an old building. They enter a hidden room not shown on any plans, finding new documents about a former scientist who protected important data from enemies. The atmosphere is mysterious and captivating, with natural light filtering into the room. High camera shot capturing the details of the room and the characters' emotions."
+  }
+]

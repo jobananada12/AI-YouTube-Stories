@@ -1,0 +1,24 @@
+AI YouTube Stories — V3.4.1 semantic requirements pipeline
+
+SCENE 1: PASS | words=26
+TITLE: Знайомство з закритою кімнатою
+REQUIREMENTS: {"character": ["Alexander"], "time": "Late morning, 10:30", "location": "A park in a suburban community", "clothing": ["grey coat", "blue jumper"], "actions": [{"id": "a1", "text": "Observes the building, studying its form and dimensions.", "mandatory": true}], "objects": [{"id": "o1", "text": "The building", "mandatory": true}, {"id": "o2", "text": "Closed door in the middle sector of the building", "mandatory": true}], "relations": [], "atmosphere": ["Mysterious and artistic"]}
+PROMPT: Alexander in a grey coat and blue jumper observes the old suburban building, studying its form and dimensions near a closed door in the middle sector.
+VALIDATION: {"ok": true, "missing": [], "invented": [], "contradictions": [], "covered": [{"character": "Alexander in a grey coat and blue jumper"}, {"time": "Late morning, 10:30 (implied)"}, {"location": "A park in a suburban community (implied by old suburban building)"}, {"actions": [{"id": "a1", "text": "Observes the building, studying its form and dimensions."}]}, {"objects": [{"id": "o1", "text": "The building"}, {"id": "o2", "text": "Closed door in the middle sector of the building (near a closed door implies it is present)"}]}, {"atmosphere": ["Mysterious and artistic (implied by observations)"]}]}
+ERRORS: []
+
+SCENE 2: PASS | words=27
+TITLE: Замкнена дверь
+REQUIREMENTS: {"character": ["Alexander"], "time": "Late morning, 12:00", "location": "Old park in a city district", "clothing": [], "actions": [{"id": "a1", "text": "Observes the building for several days.", "mandatory": true}, {"id": "a2", "text": "Notices an old and seemingly broken closed door.", "mandatory": true}, {"id": "a3", "text": "Starts to think about scenarios and reasons why such a room is never shown.", "mandatory": true}], "objects": [{"id": "o1", "text": "Old and seemingly broken closed door", "mandatory": true}], "relations": [], "atmosphere": ["Quiet and mysterious"]}
+PROMPT: Alexander observes a closed, old, seemingly broken door in an old park at late morning, 12:00. He ponders the reasons why this room is never shown.
+VALIDATION: {"ok": true, "missing": [], "invented": [], "contradictions": [], "covered": [{"action_id": "a1", "text": "Observes the building for several days."}, {"action_id": "a2", "text": "Notices an old and seemingly broken closed door."}, {"action_id": "a3", "text": "Starts to think about scenarios and reasons why such a room is never shown."}, {"object_id": "o1", "text": "Old and seemingly broken closed door"}]}
+ERRORS: []
+
+SCENE 3: PASS | words=38
+TITLE: Виявлення закритої кімнати
+REQUIREMENTS: {"character": ["Alexander"], "time": "11:00 PM, 23:00", "location": "A park in a city district", "clothing": [], "actions": [{"id": "a1", "text": " Searches for another entrance", "mandatory": true}, {"id": "a2", "text": " Notices an upper or blocked window", "mandatory": true}, {"id": "a3", "text": " Opens the window", "mandatory": true}, {"id": "a4", "text": " Climbs through it", "mandatory": true}, {"id": "a5", "text": " Enters the room", "mandatory": true}, {"id": "a6", "text": " Observes and examines the room, which appears messy and empty", "mandatory": true}], "objects": [{"id": "o1", "text": "Old table with books about ecology and nature", "mandatory": true}], "relations": [{"id": "r1", "text": "The old table holds the books about ecology and nature.", "mandatory": true}], "atmosphere": ["Mystical"]}
+PROMPT: At 11:00 PM, Alexander searches for another entrance in a city park, notices an upper or blocked window, opens it, climbs through, enters the messy and empty room, observing old books about ecology on an old table.
+VALIDATION: {"ok": true, "missing": [], "invented": [], "contradictions": [], "covered": [{"id": "a1", "text": " Searches for another entrance"}, {"id": "a2", "text": " Notices an upper or blocked window"}, {"id": "a3", "text": " Opens the window"}, {"id": "a4", "text": " Climbs through it"}, {"id": "a5", "text": " Enters the room"}, {"id": "a6", "text": " Observes and examines the room, which appears messy and empty"}, {"id": "o1", "text": "Old table with books about ecology and nature"}, {"id": "r1", "text": "The old table holds the books about ecology and nature."}]}
+ERRORS: []
+
+SUMMARY: PASS=3 FAIL=0
