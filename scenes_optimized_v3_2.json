@@ -8,17 +8,13 @@
     "action": "Олександр спостерігає за будинком, вивчає його форму та розміри. Він спочатку натрапляє на закриту дверь у середньому секторі будинку.",
     "camera": "Високорозібровий план будинку з кімнатою, яка виглядає замкненою. Схована камера в джерлі парку спостерігає за Олександром.",
     "mood": "Мистецьке та загадкове",
-    "prompt": "",
-    "prompt_v3_2": "",
+    "prompt": "In a misty early morning park, Alex, in a gray parka and blue sweater, observes an old, weathered house that seems abandoned but intriguing. He focuses on a closed door in the middle of the structure.",
+    "prompt_v3_2": "In a misty early morning park, Alex, in a gray parka and blue sweater, observes an old, weathered house that seems abandoned but intriguing. He focuses on a closed door in the middle of the structure.",
     "prompt_source": "structured_scene_v3_2",
     "prompt_validation": {
-      "ok": false,
-      "missing": [],
-      "invented": []
+      "ok": true
     },
-    "prompt_errors": [
-      "PIPELINE_ERROR:ConnectionError:HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение\"))"
-    ]
+    "prompt_errors": []
   },
   {
     "id": 2,
@@ -29,17 +25,15 @@
     "action": "Олександр спостерігає за дверю та не може заспокоїтися, чекаючи на те, що вона буде відкрита. Він починає думати про сценарії і причини того, що така кімната ніколи не зображена.",
     "camera": "Замкнута камера показує Олександра спостерігаючим за закритою дверню. Слухнімо шум блискучого листя та птахів.",
     "mood": "Тихе і загадкове",
-    "prompt": "",
-    "prompt_v3_2": "",
+    "prompt": "Alexander observes an old park in a city district over several days, focusing on a mysterious closed door that seems ancient and broken, while internally pondering why this room is never shown, in the quiet early afternoon.",
+    "prompt_v3_2": "Alexander observes an old park in a city district over several days, focusing on a mysterious closed door that seems ancient and broken, while internally pondering why this room is never shown, in the quiet early afternoon.",
     "prompt_source": "structured_scene_v3_2",
     "prompt_validation": {
-      "ok": false,
+      "ok": true,
       "missing": [],
       "invented": []
     },
-    "prompt_errors": [
-      "PIPELINE_ERROR:ConnectionError:HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение\"))"
-    ]
+    "prompt_errors": []
   },
   {
     "id": 3,
@@ -50,17 +44,15 @@
     "action": "Олександр вже здатний спостерігати та розглядати кімнату, яка виглядає диким і пустим. Вони бачать старий стол з книгами про екологію та природу.",
     "camera": "Внутрішній план закритої кімнати з Олександром, що розглядає старі книги і посилається на свої власні.",
     "mood": "Мистецьке",
-    "prompt": "",
-    "prompt_v3_2": "",
+    "prompt": "At 11 PM in a city park, Alexander peeks inside a dim, abandoned room filled with old books on nature and ecology, his gaze reflecting on personal reflections.",
+    "prompt_v3_2": "At 11 PM in a city park, Alexander peeks inside a dim, abandoned room filled with old books on nature and ecology, his gaze reflecting on personal reflections.",
     "prompt_source": "structured_scene_v3_2",
     "prompt_validation": {
-      "ok": false,
+      "ok": true,
       "missing": [],
       "invented": []
     },
-    "prompt_errors": [
-      "PIPELINE_ERROR:ConnectionError:HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение\"))"
-    ]
+    "prompt_errors": []
   },
   {
     "id": 4,
