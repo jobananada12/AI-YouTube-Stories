@@ -1,0 +1,15 @@
+AI YOUTUBE STORIES - PROMPT AUDIT V3.4
+Architecture: structured scene -> requirements extraction -> prompt -> LLM coverage validation -> deterministic guard.
+Legacy scene.prompt is ignored.
+Mandatory concrete actions, objects, relationships, time, character, and clothing are required.
+English-only final prompts; 25-58 words.
+
+SCENE 1: PASS | words=38 | missing=[] | invented=[] | contradictions=[] | errors=[]
+  REQUIREMENTS: {"character": ["Олександр"], "time": "Пізень ранок, 10:30", "location": "Старий парк у містяної громаді", "clothing": ["серовиртна куртка", "синій джемпер"], "actions": [{"id": "A1", "text": "Олександр прогулюється через старий парк.", "mandatory": true}, {"id": "A2", "text": "Він зупиняється поза будиночком, що виглядає залежно від років але не прийнятим для життя.", "mandatory": true}, {"id": "A3", "text": "Олександр прив'язує обережну інтерес до цього будинку.", "mandatory": true}, {"id": "A4", "text": "Він починає досліджувати будинок.", "mandatory": true}, {"id": "A5", "text": "Олександр спостерігає за будинком, вивчає його форму та розміри.", "mandatory": true}, {"id": "A6", "text": "Він натрапляє на закриту дверь у середньому секторі будинку.", "mandatory": true}], "objects": [{"id": "O1", "text": "закрита дверь"}, {"id": "O2", "text": "будинок"}], "relations": [], "atmosphere": ["мистецьке", "загадкове"]}
+  PROMPT: Alexander in a gray windbreaker and blue sweater strolls through an old park at 10:30 AM. He stops near a dilapidated house, showing cautious interest before examining its structure, finding a closed door in the middle section.
+SCENE 2: FAIL | PIPELINE_ERROR:JSONDecodeError:Expecting ',' delimiter: line 13 column 104 (char 374)
+SCENE 3: FAIL | words=29 | missing=[{'id': '2', 'text': 'Bachat protsi, shcho yhnya vykhidne vikno mozhne byti vrichanoju ali zablokovanoju'}, {'id': '3', 'text': 'Rozkryvayut yshe te nevykhodne vikno'}, {'id': '4', 'text': 'Obokladuvayut do komyiny'}] | invented=[{'id': '', 'text': 'Examines old ecology books, referencing his own'}] | contradictions=[] | errors=['SEMANTIC_COVERAGE_FAILED']
+  REQUIREMENTS: {"character": ["Олександр"], "time": "Одинадцять вечора, 23:00", "location": "Старий парк у містяної громаді", "clothing": [], "actions": [{"id": "1", "text": "Починає шукати інші способы вхіду", "mandatory": true}, {"id": "2", "text": "Бачать, що одна з верхніх вікон може бути відрізаною або заблокованою", "mandatory": true}, {"id": "3", "text": "Розкривають це вікно", "mandatory": true}, {"id": "4", "text": "Обокладують до кімнати", "mandatory": true}], "objects": [{"id": "1", "text": "старий стол з книгами про екологію та природу", "mandatory": true}], "relations": [{"id": "1", "text": "Олександр розглядає старі книги і посилається на свої власні", "mandatory": true}], "atmosphere": ["Мистецьке"]}
+  PROMPT: Alexander at 11 PM in a city park, searches for other entry ways; notices a blocked upper window, opens it, climbs inside, examines old ecology books, referencing his own.
+
+SUMMARY: processed=3, passed=1, failed=2
