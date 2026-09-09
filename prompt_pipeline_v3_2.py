@@ -14,7 +14,7 @@ DEFAULT_AUDIT = BASE_DIR / "prompt_audit_v3_2.txt"
 MAX_WORDS = 58
 CYRILLIC_RE = re.compile(r"[\u0400-\u052F]")
 META_RE = re.compile(r"(?:^|\s)(?:mood|location|time|camera|description|action)\s*:\s*", re.I)
-AWKWARD_PHRASE_RE = re.compile(r"\b(?:gaze reflecting on personal reflections|internally pondering|reflecting on reflections|pondering internally)\b", re.I)
+AWKWARD_PHRASE_RE = re.compile(r"\b(?:gaze reflecting on personal reflections|internally pondering|reflecting on reflections|pondering internally|reflecting on his own reflections)\b", re.I)
 
 TRANSLATOR_SYSTEM = """You are a professional screenplay-to-image-prompt translator and cinematic continuity editor.
 The Ukrainian structured scene is the ONLY source of truth.
@@ -23,34 +23,51 @@ Write one coherent visual description suitable for Stable Diffusion.
 
 HARD CONTINUITY RULES:
 - The ACTION field is mandatory and is the core of the prompt. Preserve every important, visually representable action.
-- Preserve the sequence of multiple actions when the scene contains a sequence: for example, opens -> climbs through -> enters -> looks around must remain an equivalent visible sequence.
+- DESCRIPTION and ACTION are complementary. Use both together to understand the intended scene moment. If they describe an ordered sequence, preserve the meaningful sequence naturally.
+- Preserve concrete action sequences such as opens -> climbs through -> enters -> looks around when the structured scene supports that sequence.
 - Never replace a concrete action with a weaker generic verb such as observes, stands, or looks when the source specifies a stronger action.
-- Preserve important people, objects, clothing, location, exact time cues, and events. Do not invent, remove, swap, or move them.
-- Preserve the source character name exactly when one is given.
-- Preserve specific clothing words when supported by the source; do not generalize parka to jacket, for example.
-- Do not invent a different time of day.
+- Preserve important people, objects, clothing, location, exact time, and important events. Do not invent, remove, swap, or contradict them.
+- The TIME field is authoritative. If it says 12:00, write noon, 12 PM, or another exact equivalent. Never turn 12:00 into early morning or late evening.
+- Preserve the clothing category and material/type when supported. A jacket/parka is NOT a trench coat. A sweater is NOT a shirt.
+- Use natural English character names. For the Ukrainian name Олександр, use Alexander, not Oleksandr, unless the structured scene explicitly uses a different Latin name.
+- Preserve specific clothing words when supported by the source; do not invent a more specific garment.
+- Location can be expressed in natural English. Do not invent a different place, but do not force every administrative descriptor into awkward English.
+- Context such as 'over several days' is not mandatory in every still-image prompt unless it is visually important to the depicted moment.
+- If DESCRIPTION and ACTION refer to different moments of the same short sequence, choose a coherent visual moment that preserves the important concrete action and key objects without inventing a new event.
 - Camera information is composition guidance, not a reason to add story facts.
 - Abstract thoughts may be omitted or rendered only through visible facial expression, posture, or atmosphere when clearly supported. Never invent a new object or event to visualize a thought.
-- If a fact is important but difficult to visualize, express it naturally through the visible scene without changing its meaning.
 
 QUALITY RULES:
 - Use concrete cinematic English written by a native English speaker.
-- Prefer subject + setting + action + key objects + time/lighting + useful mood/composition.
-- Avoid literal thought phrases such as 'internally pondering' or 'gaze reflecting on personal reflections'.
+- Prefer subject + setting + action + key objects + exact time/lighting + useful mood/composition.
+- Avoid literal thought phrases such as 'internally pondering', 'reflecting on his own reflections', or other awkward introspective wording.
 - Do not use headings, metadata labels, explanations, Ukrainian/Russian text, or quotation marks around the prompt.
 - Do not use the old prompt as a story source.
 - Return valid JSON only with exactly {\"prompt_en\": \"...\"}.
 - The prompt must be 25-55 words."""
 
-VALIDATOR_SYSTEM = """You are a strict semantic continuity and natural-language editor.
-Compare the Ukrainian structured scene with the proposed English Stable Diffusion prompt. The Ukrainian scene is authoritative.
+VALIDATOR_SYSTEM = """You are a strict but intelligent semantic continuity and natural-language editor.
+Compare the Ukrainian structured scene with the proposed English Stable Diffusion prompt. The Ukrainian structured scene is authoritative.
 Return valid JSON only: {\"ok\": true/false, \"missing\": [\"...\"], \"invented\": [\"...\"]}.
 
-Fail ok=false when any important person, object, clothing detail, action, action sequence, setting, exact time cue, or event is missing, weakened into a materially different action, invented, swapped, or contradicted.
-In particular, a concrete action such as entering, opening, climbing, taking, reading, writing, or walking must not be replaced by merely observing or looking.
-Also fail if the English is clearly unnatural, fragmented, contradictory, or contains awkward literal thought phrases.
-Minor grammatical differences and harmless cinematic phrasing are acceptable.
-Never require details absent from the Ukrainian scene."""
+VALIDATION PRINCIPLES:
+- Compare MEANING, not literal wording. Natural English paraphrases are allowed.
+- DESCRIPTION and ACTION are complementary. A prompt is valid when it faithfully represents the same scene moment or a logically supported moment in the described action sequence.
+- Do NOT mark a fact as invented when it is explicitly supported anywhere in DESCRIPTION, ACTION, LOCATION, TIME, or the other structured fields.
+- Do NOT require every contextual phrase. Duration such as 'over several days' may be omitted from a single still-image prompt unless it is essential to the visible moment.
+- Location may be naturally shortened. For example, 'old park in an urban community' may become 'an old park' without being a semantic failure.
+- The TIME field is strict and authoritative. A materially different time of day is a failure. Example: 12:00 cannot become 'early morning'.
+- Clothing type is strict. 'gray jacket' or 'gray parka' cannot become 'charcoal trench coat'.
+- Character identity must remain consistent. Олександр may naturally become Alexander in English; do not require Ukrainian transliteration such as Oleksandr.
+- Do not flag valid action sequences as invented. If the source says he opens an upper window and gets into the room, 'opens the upper window and climbs through it' is valid even if the wording is not identical.
+- Concrete actions such as opening, entering, climbing, taking, reading, writing, or walking must not be replaced by merely observing or looking when the action is important.
+- Flag genuinely missing central objects when their omission materially changes the scene, but do not demand every minor background detail.
+- Flag genuinely invented people, objects, clothing, places, times, actions, or events.
+- Flag contradictions, wrong time, wrong clothing category, wrong character identity, or materially different action.
+- Also fail if the English is clearly unnatural, fragmented, contradictory, or contains awkward literal thought phrases.
+- Minor grammatical differences and harmless cinematic phrasing are acceptable.
+
+The goal is a useful professional prompt, not a literal translation test."""
 
 
 def clean_json_text(text: str) -> str:
@@ -147,7 +164,7 @@ def scene_payload(scene: dict) -> str:
 def translate_scene(client: OllamaClient, scene: dict, correction: str = "") -> str:
     extra = ""
     if correction:
-        extra = f"\nA previous draft failed validation. Correct these exact problems and preserve all other facts: {correction}\n"
+        extra = f"\nA previous draft failed validation. Correct these exact problems and preserve all other facts. Do not introduce new facts while correcting it: {correction}\n"
     prompt = f"""Create one natural cinematic English image prompt from this complete structured scene.
 {extra}
 STRUCTURED SCENE (AUTHORITATIVE):
@@ -157,18 +174,23 @@ MANDATORY CHECK BEFORE ANSWERING:
 1. Extract the main person or people.
 2. Extract every important concrete object.
 3. Extract the exact action or ordered action sequence from ACTION and DESCRIPTION.
-4. Extract location and exact time.
-5. Preserve supported clothing details.
-6. Convert the above into one fluent visual sentence or short paragraph.
+4. Extract the authoritative exact time from TIME.
+5. Extract supported clothing details and keep their garment type.
+6. Extract the location without inventing a different place.
+7. Convert the above into one fluent visual sentence or short paragraph.
 
 REQUIREMENTS:
 - ACTION is mandatory. Do not weaken concrete actions into generic observing/looking.
-- Preserve action order when there are multiple actions.
-- Preserve exact names, important objects, clothing, location, time, and events.
+- Preserve action order when multiple actions are explicitly supported.
+- Preserve exact time. 12:00 means noon/12 PM, not early morning.
+- Preserve exact character identity. Олександр should become Alexander in natural English.
+- Preserve important objects, clothing, location, and key events.
 - Do not invent cats, photographs, corridors, documents, furniture, rooms, doors, clothing, people, or other details unless supported by the structured scene.
+- Do not invent a more specific garment: jacket/parka must not become trench coat.
+- Contextual duration may be omitted when it is not visually important to the single frame.
 - Do not copy or repair the legacy prompt.
 - Do not write labels such as Mood:, Location:, Time:, Camera:, Action:.
-- Avoid literal descriptions of thoughts.
+- Avoid literal descriptions of thoughts and awkward introspective phrases.
 - The result must sound like polished cinematic English written by a native speaker.
 - Return JSON only with prompt_en.
 - 25-55 words."""
@@ -188,7 +210,7 @@ STRUCTURED SCENE:
 PROPOSED ENGLISH PROMPT:
 {prompt}
 
-Pay special attention to the ACTION field and whether every important concrete action remains visible and in the correct order.
+Evaluate semantic meaning, not literal word matching. DESCRIPTION and ACTION are complementary. TIME is strict. Clothing category is strict. Do not flag natural paraphrases, valid action sequences, or details explicitly supported elsewhere in the structured scene.
 Return JSON only."""
     return parse_json_object(client.generate(request, system=VALIDATOR_SYSTEM))
 
@@ -217,7 +239,7 @@ def process_scene(client: OllamaClient, scene: dict, max_attempts: int = 3) -> t
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="AI YouTube Stories Prompt Pipeline V3.2")
+    parser = argparse.ArgumentParser(description="AI YouTube Stories Prompt Pipeline V3.3")
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
@@ -238,11 +260,12 @@ def main() -> int:
     client = OllamaClient(model=args.model) if args.model else OllamaClient()
     output = []
     audit_lines = [
-        "AI YOUTUBE STORIES - PROMPT AUDIT V3.2",
+        "AI YOUTUBE STORIES - PROMPT AUDIT V3.3",
         "Source of truth: structured Ukrainian scene fields.",
         "Legacy scene.prompt is intentionally ignored by the translator.",
         "Final Stable Diffusion prompts must be English-only and <= 58 words.",
         "Action preservation is mandatory, including ordered multi-action sequences.",
+        "TIME is strict; clothing type is strict; natural semantic paraphrases are allowed.",
         "",
     ]
 
@@ -257,13 +280,13 @@ def main() -> int:
             continue
 
         sid = scene.get("id")
-        print(f"[V3.2] scene {sid}: translating + validating...", flush=True)
+        print(f"[V3.3] scene {sid}: translating + validating...", flush=True)
         try:
             prompt, errors, validation = process_scene(client, scene)
             item = deepcopy(scene)
             item["prompt_v3_2"] = prompt
             item["prompt"] = prompt
-            item["prompt_source"] = "structured_scene_v3_2"
+            item["prompt_source"] = "structured_scene_v3_3"
             item["prompt_validation"] = validation
             item["prompt_errors"] = errors
             output.append(item)
@@ -278,14 +301,14 @@ def main() -> int:
             item = deepcopy(scene)
             item["prompt_v3_2"] = ""
             item["prompt"] = ""
-            item["prompt_source"] = "structured_scene_v3_2"
+            item["prompt_source"] = "structured_scene_v3_3"
             item["prompt_validation"] = {"ok": False, "missing": [], "invented": []}
             item["prompt_errors"] = [f"PIPELINE_ERROR:{type(exc).__name__}:{exc}"]
             output.append(item)
             audit_lines.append(f"SCENE {sid}: FAIL | PIPELINE_ERROR:{type(exc).__name__}:{exc}")
 
-    processed = sum(1 for s in output if s.get("prompt_source") == "structured_scene_v3_2")
-    passed = sum(1 for s in output if s.get("prompt_source") == "structured_scene_v3_2" and not s.get("prompt_errors"))
+    processed = sum(1 for s in output if s.get("prompt_source") == "structured_scene_v3_3")
+    passed = sum(1 for s in output if s.get("prompt_source") == "structured_scene_v3_3" and not s.get("prompt_errors"))
     failed = processed - passed
     audit_lines += ["", f"SUMMARY: processed={processed}, passed={passed}, failed={failed}"]
 
