@@ -1,0 +1,10 @@
+AI YOUTUBE STORIES - PROMPT AUDIT V3.2
+Source of truth: structured Ukrainian scene fields.
+Legacy scene.prompt is intentionally ignored by the translator.
+Final Stable Diffusion prompts must be English-only and <= 58 words.
+
+SCENE 1: FAIL | PIPELINE_ERROR:ConnectionError:HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение"))
+SCENE 2: FAIL | PIPELINE_ERROR:ConnectionError:HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение"))
+SCENE 3: FAIL | PIPELINE_ERROR:ConnectionError:HTTPConnectionPool(host='127.0.0.1', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=11434): Failed to establish a new connection: [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение"))
+
+SUMMARY: processed=3, passed=0, failed=3
