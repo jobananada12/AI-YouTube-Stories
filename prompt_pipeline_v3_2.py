@@ -15,20 +15,28 @@ MAX_WORDS = 58
 CYRILLIC_RE = re.compile(r"[\u0400-\u052F]")
 META_RE = re.compile(r"(?:^|\s)(?:mood|location|time|camera|description|action)\s*:\s*", re.I)
 DUPLICATE_OBJECT_RE = re.compile(r"\b(house|room|door|cat|dog|journal|basement)\b.*\b\1\b", re.I)
+AWKWARD_PHRASE_RE = re.compile(r"\b(?:gaze reflecting on personal reflections|internally pondering|reflecting on reflections)\b", re.I)
 
 TRANSLATOR_SYSTEM = """You are a professional screenplay-to-image-prompt translator.
 The Ukrainian structured scene is the ONLY source of truth.
-Translate the meaning of the WHOLE scene into natural English; never translate word-by-word and never concatenate dictionary fragments.
+Translate the meaning of the WHOLE scene into natural, cinematic English; never translate word-by-word and never concatenate dictionary fragments.
+Write one coherent visual description, not a literal translation of every grammatical mistake in the source.
 Do not invent, remove, swap, or move people, objects, actions, locations, time, or events.
+Preserve the intended visual facts even when the Ukrainian wording is awkward.
+Abstract thoughts may be omitted or expressed only through visible facial expression, posture, or atmosphere when that is clearly supported by the scene; never invent a new event or object.
+Use character names consistently and preserve the source name exactly when one is given.
+Prefer concrete visual details: subject, setting, action, key object, time/lighting, and mood/camera when useful.
+Avoid awkward literal phrases such as 'gaze reflecting on personal reflections' or 'internally pondering'.
 Do not use the old prompt as a source of story facts.
 Return valid JSON only with exactly: {\"prompt_en\": \"...\"}.
 The prompt must be a single natural English visual description for Stable Diffusion, 25-55 words, with no headings, metadata labels, explanations, Ukrainian/Russian text, or quotation marks around the prompt."""
 
-VALIDATOR_SYSTEM = """You are a strict semantic continuity editor.
+VALIDATOR_SYSTEM = """You are a strict semantic continuity and natural-language editor.
 Compare the Ukrainian structured scene with the proposed English Stable Diffusion prompt.
 The Ukrainian scene is authoritative.
 Return valid JSON only: {\"ok\": true/false, \"missing\": [\"...\"], \"invented\": [\"...\"]}.
 Mark ok=false if an important person, object, action, setting, time cue, or event is missing or invented.
+Also mark ok=false if the English is clearly unnatural, fragmented, contradictory, or contains awkward literal thought phrases that do not form a usable cinematic prompt.
 Minor grammatical differences and harmless visual phrasing are acceptable.
 Never require details that are absent from the Ukrainian scene."""
 
@@ -100,6 +108,8 @@ def local_audit(prompt: str) -> list[str]:
         errors.append("CYRILLIC_IN_FINAL_PROMPT")
     if META_RE.search(prompt):
         errors.append("METADATA_LABEL_IN_PROMPT")
+    if AWKWARD_PHRASE_RE.search(prompt):
+        errors.append("AWKWARD_LITERAL_PHRASE")
     n = len(words(prompt))
     if n > MAX_WORDS:
         errors.append(f"WORD_LIMIT_EXCEEDED:{n}")
@@ -128,20 +138,23 @@ def scene_payload(scene: dict) -> str:
 def translate_scene(client: OllamaClient, scene: dict, correction: str = "") -> str:
     extra = ""
     if correction:
-        extra = f"\nA previous draft failed semantic validation. Correct only these problems: {correction}\n"
-    prompt = f"""Translate this complete structured scene into one natural English visual prompt.
+        extra = f"\nA previous draft failed semantic or quality validation. Correct only these problems: {correction}\n"
+    prompt = f"""Translate this complete structured scene into one natural cinematic English visual prompt.
 {extra}
 STRUCTURED SCENE (authoritative):
 {scene_payload(scene)}
 
 Requirements:
 - Preserve every important event and action that is visually representable.
-- Preserve named people exactly as names.
-- Preserve the stated location and time when visually useful.
+- Preserve named people exactly as names; do not shorten or rename them.
+- Preserve the stated location and time when visually useful and do not invent a different time of day.
 - Use camera information only as shot/composition guidance.
+- Convert awkward abstract wording into concise visual language when possible, without inventing facts.
 - Do not copy or repair the legacy prompt.
 - Do not add cats, photographs, corridors, documents, furniture, clothing, rooms, doors, or other details unless the structured scene supports them.
 - Do not write labels such as Mood:, Location:, Time:, Camera:, Action:.
+- Avoid phrases such as "internally pondering", "gaze reflecting on personal reflections", or other literal descriptions of thoughts.
+- The result must read like a polished cinematic image prompt written by a native English speaker.
 - Return JSON only."""
     data = parse_json_object(client.generate(prompt, system=TRANSLATOR_SYSTEM))
     result = normalize_prompt(str(data.get("prompt_en", "")))
