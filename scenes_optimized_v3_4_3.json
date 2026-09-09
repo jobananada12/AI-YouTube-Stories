@@ -1,0 +1,188 @@
+[
+  {
+    "scene": 1,
+    "status": "PASS",
+    "attempt": 1,
+    "words": 42,
+    "prompt": "Oleksandr, in a grey jacket and blue jumper, stands at an old city park in late morning, 10:30, observing a weathered building. He focuses on its form and dimensions before noting a closed door in the middle sector of the structure.",
+    "requirements": {
+      "character": [
+        "Олександр"
+      ],
+      "time": "Пізень ранок, 10:30",
+      "location": "Старий парк у містяної громаді",
+      "clothing": [
+        "сіруватий куртці та синьому джемпері"
+      ],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Олександр спостерігає за будинком, вивчає його форму та розміри.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "Він спочатку натрапляє на закриту двері у середньому секторі будинку.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "закрита дверь у середньому секторі будинку",
+          "mandatory": true
+        }
+      ],
+      "relations": [],
+      "atmosphere": [
+        "Мистецьке та загадкове"
+      ],
+      "forbidden_inventions": [
+        "компаней Олександра",
+        "попусти до дверей",
+        "видіння внутрішнього розділу будинку"
+      ],
+      "source_facts": [
+        "Олександр, тихий і спокійний чоловік у сіруватий куртці та синьому джемпері",
+        "Старий парк у містяної громаді",
+        "Пізень ранок, 10:30",
+        "Олександр спостерігає за будинком, вивчає його форму та розміри. Він спочатку натрапляє на закриту двері у середньому секторі будинку."
+      ]
+    },
+    "llm_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [
+        {
+          "id": "companion",
+          "text": "No companion mentioned but implied by 'he'"
+        }
+      ],
+      "contradictions": [],
+      "order_errors": [],
+      "covered": []
+    },
+    "deterministic_errors": []
+  },
+  {
+    "scene": 2,
+    "status": "PASS",
+    "attempt": 2,
+    "words": 40,
+    "prompt": "Alexander observes the old and broken-looking door for several days in a quiet park at late morning, 12:00. He cannot calm down and waits for it to open, pondering why the room behind is not shown in any plan.",
+    "requirements": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "Late morning, 12:00",
+      "location": "Old park in a city district",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Alexander observes the building for several days, studying its historical context.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "Alexander cannot calm down and waits for the door to open.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "Closed old and broken-looking door",
+          "mandatory": true
+        }
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "text": "The room behind the door is not shown in any plan Alexander has seen.",
+          "mandatory": true
+        }
+      ],
+      "atmosphere": [
+        "Quiet and mysterious"
+      ],
+      "forbidden_inventions": [],
+      "source_facts": [
+        "Alexander observes the building for several days, studying its historical context.",
+        "Alexander cannot calm down and waits for the door to open.",
+        "The room behind the door is not shown in any plan Alexander has seen."
+      ]
+    },
+    "llm_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [
+        "Alexander observes the old and broken-looking door",
+        "He pondering why the room behind is not shown in any plan"
+      ],
+      "contradictions": [],
+      "order_errors": [],
+      "covered": []
+    },
+    "deterministic_errors": []
+  },
+  {
+    "scene": 3,
+    "status": "FAIL",
+    "attempt": 6,
+    "words": 28,
+    "prompt": "At 11 PM, Oleksandr stands in a misty old park, observing and examining the dimly lit room. They notice an old table with books on ecology and nature.",
+    "requirements": {
+      "character": [
+        "Олександр"
+      ],
+      "time": "Одинадцять вечора, 23:00",
+      "location": "Старий парк у містяної громаді",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Олександр спостерігає та розглядає кімнату.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "Вони бачать старий стіл з книгами про екологію та природу.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "стіл з книгами про екологію та природу",
+          "mandatory": true
+        }
+      ],
+      "relations": [],
+      "atmosphere": [
+        "Мистецьке"
+      ],
+      "forbidden_inventions": [],
+      "source_facts": [
+        "Олександр спостерігає та розглядає кімнату.",
+        "Вони бачать старий стіл з книгами про екологію та природу."
+      ]
+    },
+    "llm_validation": {
+      "ok": false,
+      "missing": [],
+      "invented": [
+        {
+          "text": "At 11 PM, Oleksandr stands in a misty old park"
+        },
+        {
+          "text": "They notice an old table with books on ecology and nature."
+        }
+      ],
+      "contradictions": [],
+      "order_errors": [],
+      "covered": []
+    },
+    "deterministic_errors": []
+  }
+]

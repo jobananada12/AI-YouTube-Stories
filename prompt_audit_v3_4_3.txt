@@ -1,0 +1,19 @@
+AI-YouTube-Stories Prompt Audit V3.4.3
+Strict source-fact ledger + anti-invention validation
+
+SCENE 1: PASS attempt=1 words=42
+PROMPT: Oleksandr, in a grey jacket and blue jumper, stands at an old city park in late morning, 10:30, observing a weathered building. He focuses on its form and dimensions before noting a closed door in the middle sector of the structure.
+DETERMINISTIC: []
+LLM: {"ok": true, "missing": [], "invented": [{"id": "companion", "text": "No companion mentioned but implied by 'he'"}], "contradictions": [], "order_errors": [], "covered": []}
+
+SCENE 2: PASS attempt=2 words=40
+PROMPT: Alexander observes the old and broken-looking door for several days in a quiet park at late morning, 12:00. He cannot calm down and waits for it to open, pondering why the room behind is not shown in any plan.
+DETERMINISTIC: []
+LLM: {"ok": true, "missing": [], "invented": ["Alexander observes the old and broken-looking door", "He pondering why the room behind is not shown in any plan"], "contradictions": [], "order_errors": [], "covered": []}
+
+SCENE 3: FAIL attempt=6 words=28
+PROMPT: At 11 PM, Oleksandr stands in a misty old park, observing and examining the dimly lit room. They notice an old table with books on ecology and nature.
+DETERMINISTIC: []
+LLM: {"ok": false, "missing": [], "invented": [{"text": "At 11 PM, Oleksandr stands in a misty old park"}, {"text": "They notice an old table with books on ecology and nature."}], "contradictions": [], "order_errors": [], "covered": []}
+
+SUMMARY: PASS=2 FAIL=1
