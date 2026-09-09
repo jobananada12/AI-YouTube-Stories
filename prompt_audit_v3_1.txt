@@ -1,0 +1,316 @@
+AI YOUTUBE STORIES - PROMPT OPTIMIZER V3.1 AUDIT
+========================================================================
+
+Scenes processed: 50
+Scenes without warnings: 0
+Total warnings: 50
+
+V3.1 policy:
+- structured description + action are authoritative scene facts
+- camera is read from the dedicated camera field
+- original_prompt is fallback/style input only and cannot override scene facts
+- no invented people, animals, rooms, objects, events or relationships
+- canonical Alexander / Irina / cat appearance is applied only when present
+- Irina is never Alexander's daughter
+- final Stable Diffusion prompt contains no Cyrillic
+
+SCENE   1 | Знайомство з закритою room
+Characters: alexander
+Words: 79
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, quiet calm man, old park. Alexander ' house begins. Alexander observes, studies. closed door house. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old park. Time: late morning, 10:30. Mood:. Camera: high-angle shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   2 | Замкнена door
+Characters: alexander
+Words: 72
+Warnings: MALFORMED_METADATA
+Prompt: Alexander observes,. closed door, shows room. Alexander observes door,. begins, room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old park. Time: late morning, 12:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   3 | Виявлення hidden room
+Characters: alexander
+Words: 73
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, door, begins., upper windows. window into the room. Alexander room,. old. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old park. Time: 11 PM, 23:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   4 | Знаходження сокровища
+Characters: alexander, cat
+Words: 96
+Warnings: MALFORMED_METADATA
+Prompt: Alexander begins books on the table. sees old cat, room,. Alexander begins read,. opens satchel old notebook. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old park. Time: 11 PM, 23:15. Mood:. Camera: tracking shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   5 | Розкриття та поглиблення
+Characters: alexander, cat
+Words: 91
+Warnings: MALFORMED_METADATA
+Prompt: Alexander begins notebook, drawings notes., room. Alexander begins read notebook. old notebook. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old park. Time: 11 PM, 23:30. Mood:. Camera: tracking shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   6 | Mysterious sound
+Characters: alexander
+Words: 73
+Warnings: MALFORMED_METADATA
+Prompt: Alexander whisper,. Quiet. Alexander begins source noise,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 10:30. Mood: Tense mysterious. Camera: high-angle shot, detail shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   7 | Found повітряний шар
+Characters: alexander
+Words: 68
+Warnings: MALFORMED_METADATA
+Prompt: drawings, door. Alexander ', door. Alexander tries open door,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 10:45. Mood: Tense,. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   8 | Заметка на задній стіนі
+Characters: alexander
+Words: 70
+Warnings: MALFORMED_METADATA
+Prompt: door Alexander wall. begins, handle. Alexander, wall., room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 10:57. Mood: '. Camera: detail shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE   9 | Нове обличчя
+Characters: alexander
+Words: 73
+Warnings: MALFORMED_METADATA
+Prompt: Alexander room, window. wall portrait photograph. Alexander begins,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 11:05. Mood: Quiet, calm mysterious. Camera: detail shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  10 | Заключення
+Characters: alexander
+Words: 68
+Warnings: MALFORMED_METADATA
+Prompt: Alexander begins, room. Alexander begins, inside the room. room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 11:30. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  11 | Знайомство з котом
+Characters: alexander, cat
+Words: 87
+Warnings: MALFORMED_METADATA
+Prompt: Alexander examines, cat. Cat Alexander. Alexander cat, begins. Cat begins. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: hidden room old house. Time:. Mood:. Camera: wide shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  12 | Прочитання nature books
+Characters: alexander, cat
+Words: 79
+Warnings: MALFORMED_METADATA
+Prompt: Alexander begins read. Cat begins. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: hidden room old house. Time:. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  13 | Обговорення зі співробітниками парку
+Characters: alexander
+Words: 66
+Warnings: MALFORMED_METADATA
+Prompt: Alexander in the park omy old house. Alexander, '. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: Park local community. Time:. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  14 | Відкриття нової части бути
+Characters: alexander
+Words: 71
+Warnings: MALFORMED_METADATA
+Prompt: Alexander opens door, house. Alexander enters into the room begins old. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: in the evening. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  15 | Кінець дня inside the room
+Characters: alexander, cat
+Words: 85
+Warnings: MALFORMED_METADATA
+Prompt: Alexander sits inside the room, cat. day. Alexander,. Cat begins. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: hidden room old house. Time: Night. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  16 | Знайомство з невиданим
+Characters: alexander
+Words: 66
+Warnings: MALFORMED_METADATA
+Prompt: Alexander old house,. searches door,. Alexander old house searches,. begins. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time: Morning. Mood: Quiet. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  17 | Знайомство з невідомими
+Characters: alexander, cat
+Words: 83
+Warnings: MALFORMED_METADATA
+Prompt: Alexander cat begins light, '. books,. Alexander begins light cat. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old house. Time: Morning. Mood: Mysterious. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  18 | Дослідження
+Characters: alexander
+Words: 66
+Warnings: MALFORMED_METADATA
+Prompt: Alexander begins room, light. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: Morning. Mood: Quiet. Camera: detail shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  19 | Розкриття
+Characters: alexander
+Words: 62
+Warnings: MALFORMED_METADATA
+Prompt: Alexander documents, house. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: Morning. Mood: Mysterious. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  20 | Кінець дня
+Characters: alexander
+Words: 62
+Warnings: MALFORMED_METADATA
+Prompt: Alexander,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: in the evening. Mood: Quiet. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  21 | Історичне звернення
+Characters: alexander
+Words: 68
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, old documents, house 50. -in the park, '. Alexander,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 16:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  22 | Контакт з прошлістю
+Characters: alexander
+Words: 64
+Warnings: MALFORMED_METADATA
+Prompt: , Alexander ', house. Alexander tries, old. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 18:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  23 | Накази та запорожчання
+Characters: alexander, cat
+Words: 80
+Warnings: MALFORMED_METADATA
+Prompt: , Alexander tries house. Alexander cat room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old house. Time: 20:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  24 | Новий додаток
+Characters: alexander
+Words: 64
+Warnings: MALFORMED_METADATA
+Prompt: Alexander found. tries, '. Alexander photographs. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time: 23:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  25 | Відкриття
+Characters: alexander, cat
+Words: 81
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, documents house. Alexander reads documents, cat. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old house. Time: 01:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  26 | Знайомство з історією
+Characters: alexander
+Words: 77
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, in the park, observes. tries, room, ' house. Alexander examines old house, observes. tries into the room, finds. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time: Morning. Mood: Quiet. Camera: high-angle shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  27 | Знайомство з підрядником
+Characters: alexander
+Words: 65
+Warnings: MALFORMED_METADATA
+Prompt: Alexander meets, in the park. house. Alexander meets, house. room,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time: Day. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  28 | Знайомство з істориком
+Characters: alexander
+Words: 66
+Warnings: MALFORMED_METADATA
+Prompt: Alexander archive, finds documents house. room,. Alexander documents house. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time: in the evening. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  29 | Знайомство з котом
+Characters: alexander, cat
+Words: 90
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, hidden room, tries,. observes, inside the room. Alexander observes, door. Cat tries. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old house. Time: in the morning. Mood: Quiet calm. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  30 | Знайомство з мистецтвом
+Characters: alexander
+Words: 68
+Warnings: MALFORMED_METADATA
+Prompt: Alexander museum, finds old. house room. Alexander old books, house. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time: in the morning. Mood: calm. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  31 | Знайомство з істориком
+Characters: alexander
+Words: 67
+Warnings: MALFORMED_METADATA
+Prompt: Alexander archive, finds documents house. room,. Alexander, tries documents house. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time: in the morning. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  32 | Знайомство з попередньою обитальцею
+Characters: alexander, cat
+Words: 86
+Warnings: MALFORMED_METADATA
+Prompt: Alexander museum finds. house, found. Cat begins. Alexander reads, cat looks. house. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: Museum. Time: 14:00. Mood: Quiet. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  33 | Знайомство з старим житлом
+Characters: alexander, cat
+Words: 82
+Warnings: MALFORMED_METADATA
+Prompt: Alexander old, finds room,. tries, room '. Alexander tries, room '. Cat begins. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Time: 16:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  34 | Розкриття загадки
+Characters: alexander
+Words: 67
+Warnings: MALFORMED_METADATA
+Prompt: Alexander found documents, room. Alexander studies documents tries. room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: archive. Time: 18:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  35 | Знайомство з documents
+Characters: alexander, cat
+Words: 94
+Warnings: MALFORMED_METADATA
+Prompt: Alexander, finds old books. room, found inside the house. Cat begins Alexander. Alexander documents, cat. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: Museum. Time, 14:00. Mood: Mysterious. Camera: high-angle shot, detail shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  36 | Розкриття нової інформації
+Characters: alexander, cat
+Words: 84
+Warnings: MALFORMED_METADATA
+Prompt: Alexander found documents, room., room. Cat begins documents. Alexander documents talks. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: Old. Time, 10:30. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  37 | Знайомство з старим науковцем
+Characters: alexander
+Words: 62
+Warnings: MALFORMED_METADATA
+Prompt: Alexander museum finds., room. Alexander tries. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time, 15:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  38 | Знайомство з дочерою former scientist
+Characters: alexander
+Words: 57
+Warnings: MALFORMED_METADATA
+Prompt: Alexander museum office. room,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Time:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  39 | Розкриття історичних та екологічних documents
+Characters: alexander
+Words: 66
+Warnings: MALFORMED_METADATA
+Prompt: Alexander daughter former scientist room, inside the house. documents, ' room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  40 | Розуміння майбутнього ризику
+Characters: alexander
+Words: 61
+Warnings: MALFORMED_METADATA
+Prompt: Alexander daughter former scientist, ' room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Setting: old house. Time:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  41 | Знайомство з documents
+Characters: alexander, irina
+Words: 99
+Warnings: MALFORMED_METADATA
+Prompt: Alexander daughter former scientist, Irina, documents room. Alexander Irina documents,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: office. Time: 14:00. Mood:. Camera: high-angle shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  42 | План захисту
+Characters: alexander, irina
+Words: 93
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina room. Alexander Irina, documents. room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: office. Time: 15:30. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  43 | Представництво ідеї
+Characters: alexander, irina
+Words: 88
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina documents. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting:. Time: 16:00. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  44 | Знайомство з котом
+Characters: alexander, irina, cat
+Words: 118
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina inside the room, cat. Cat. Alexander cat '. Alexander,. Irina observes. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. a domestic cat with short gray-and-white fur, alert eyes and a cautious but curious expression. Setting: old house. Time: Evening. Mood: Quiet, calm. Camera: POV shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  45 | Розкриття історії room
+Characters: alexander, irina
+Words: 101
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina old documents room., room laboratory. Alexander Irina documents,. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: old house. Time: in the evening. Mood,. Camera: POV shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  46 | План захисту room
+Characters: alexander, irina
+Words: 94
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: old house. Time: in the evening. Mood:. Camera: POV shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  47 | Знайомство з documents
+Characters: alexander, irina
+Words: 94
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina old documents room., room laboratory., laboratory. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: old house. Time: Evening. Mood:. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  48 | Перегляд лабораторії
+Characters: alexander, irina
+Words: 97
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina, - into the room. Alexander Irina, documents. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: old house. Time: in the evening. Mood: Mysterious. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  49 | Розкриття загадки
+Characters: alexander, irina
+Words: 98
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina found, '., - into the room. Alexander Irina, room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: old house. Time: in the evening. Mood: mysterious. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
+SCENE  50 | Розкриття
+Characters: alexander, irina
+Words: 100
+Warnings: MALFORMED_METADATA
+Prompt: Alexander Irina,. into the room,. room:. Alexander Irina, room. Alexander, 35 years old, a thin but muscular man with sun-tanned weathered skin, short tousled dark hair, thoughtful eyes, light stubble, wearing a worn brown-gray jacket, a blue sweater with a subtle tree pattern, dark trousers and worn boots. Irina, daughter of the former scientist, a woman in her early thirties with shoulder-length dark hair, an intelligent thoughtful expression, wearing a simple dark coat and practical trousers. Setting: old house in the park. Time:. Mood:. Camera: high-angle shot. cinematic realism, natural anatomy, coherent perspective, realistic lighting, detailed environment, subtle film grain
+------------------------------------------------------------------------
