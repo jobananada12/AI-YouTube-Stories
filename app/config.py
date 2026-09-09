@@ -8,7 +8,7 @@ load_dotenv()
 @dataclass(frozen=True)
 class Settings:
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
-    ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:7b-32k")
+    ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
     filmdubua_path: str = os.getenv("FILMDUBUA_PATH", r"C:\FilmDubUA")
     filmdubua_voice: str = os.getenv("FILMDUBUA_VOICE", "")
     filmdubua_voice_profile: str = os.getenv("FILMDUBUA_VOICE_PROFILE", "neutral")
