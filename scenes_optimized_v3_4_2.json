@@ -1,0 +1,292 @@
+[
+  {
+    "id": 1,
+    "title": "Знайомство з закритою кімнатою",
+    "description": "Олександр, тихий і спокійний чоловік у серовиртній куртці та синьому джемпері, прогулюється через старий парк. Він зупиняється поза будиночком, що виглядає залежно від років але не прийнятим для життя. Олександр прив'язує обережну інтерес до цього будинку і починає досліджувати його.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Пізень ранок, 10:30",
+    "action": "Олександр спостерігає за будинком, вивчає його форму та розміри. Він спочатку натрапляє на закриту дверь у середньому секторі будинку.",
+    "camera": "Високорозібровий план будинку з кімнатою, яка виглядає замкненою. Схована камера в джерлі парку спостерігає за Олександром.",
+    "mood": "Мистецьке та загадкове",
+    "prompt": "In late morning at a city park, Alexander in a gray jacket and blue sweater observes a mysterious house, examining its shape and dimensions, then notes a closed door in the middle sector.",
+    "prompt_requirements_v3_4_2": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "Late morning, 10:30",
+      "location": "A city park in an urban district",
+      "clothing": [
+        "gray jacket",
+        "blue sweater"
+      ],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Alexander observes the house with a cautious interest.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "He examines the shape and dimensions of the house.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "closed door in the middle sector of the house",
+          "mandatory": true
+        }
+      ],
+      "relations": [],
+      "atmosphere": [
+        "Mystical and mysterious"
+      ]
+    },
+    "prompt_v3_4_2": "In late morning at a city park, Alexander in a gray jacket and blue sweater observes a mysterious house, examining its shape and dimensions, then notes a closed door in the middle sector.",
+    "prompt_source": "structured_scene_v3_4_2_requirements",
+    "prompt_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [],
+      "contradictions": [],
+      "covered": [
+        {
+          "character": "Alexander observes the house with a cautious interest.",
+          "actionId": "a1",
+          "mandatory": true
+        },
+        {
+          "character": "He examines the shape and dimensions of the house.",
+          "actionId": "a2",
+          "mandatory": true
+        },
+        {
+          "object": "closed door in the middle sector of the house",
+          "objectId": "o1",
+          "mandatory": true
+        },
+        {
+          "character": "Late morning, 10:30",
+          "time": "Late morning, 10:30",
+          "mandatory": true
+        },
+        {
+          "character": "A city park in an urban district",
+          "location": "A city park in an urban district",
+          "mandatory": true
+        },
+        {
+          "character": "gray jacket",
+          "clothing": "gray jacket",
+          "mandatory": true
+        },
+        {
+          "character": "blue sweater",
+          "clothing": "blue sweater",
+          "mandatory": true
+        }
+      ]
+    },
+    "prompt_errors": [],
+    "prompt_attempts": 1
+  },
+  {
+    "id": 2,
+    "title": "Замкнена дверь",
+    "description": "Олександр спостерігає за будинком у протяжності кількох днів, вивчаючи його сучасне історичне місце. Натомість він натрапляє на закриту дверь, яка здається старим та розбитим, але жодний план не показує цієї кімнати.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Пізень ранок, 12:00",
+    "action": "Олександр спостерігає за дверю та не може заспокоїтися, чекаючи на те, що вона буде відкрита. Він починає думати про сценарії і причини того, що така кімната ніколи не зображена.",
+    "camera": "Замкнута камера показує Олександра спостерігаючим за закритою дверню. Слухнімо шум блискучого листя та птахів.",
+    "mood": "Тихе і загадкове",
+    "prompt": "Alexander waits at the old park at 12:00, observing a closed, ancient-looking broken door for days, pondering why the room remains unseen.",
+    "prompt_requirements_v3_4_2": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "Late morning, 12:00",
+      "location": "Old park in the city district",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Alexander observes the door for several days.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "Alexander cannot settle down, waiting for the door to be opened.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "A closed old and broken door",
+          "mandatory": true
+        }
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "text": "Alexander thinks about scenarios and reasons why the room is never shown.",
+          "mandatory": true
+        }
+      ],
+      "atmosphere": [
+        "Silent and mysterious"
+      ]
+    },
+    "prompt_v3_4_2": "Alexander waits at the old park at 12:00, observing a closed, ancient-looking broken door for days, pondering why the room remains unseen.",
+    "prompt_source": "structured_scene_v3_4_2_requirements",
+    "prompt_validation": {
+      "ok": true,
+      "missing": [],
+      "invented": [],
+      "contradictions": [],
+      "covered": [
+        {
+          "character": "Alexander waits at the old park at 12:00",
+          "time": "Late morning, 12:00",
+          "location": "Old park in the city district",
+          "clothing": [],
+          "actions": [
+            {
+              "id": "a1",
+              "text": "Alexander observes the door for several days."
+            },
+            {
+              "id": "a2",
+              "text": "Alexander waits for the door to be opened, pondering why the room remains unseen."
+            }
+          ],
+          "objects": [
+            {
+              "id": "o1",
+              "text": "A closed old and broken door"
+            }
+          ],
+          "relations": [
+            {
+              "id": "r1",
+              "text": "Alexander thinks about scenarios and reasons why the room is never shown."
+            }
+          ],
+          "atmosphere": "Silent and mysterious"
+        }
+      ]
+    },
+    "prompt_errors": [
+      "WORD_LIMIT_TOO_SHORT:23",
+      "MISSING_ACTION:a1:duration_several_days",
+      "MISSING_ACTION:a1:observe",
+      "MISSING_ACTION:a2:open"
+    ],
+    "prompt_attempts": 5
+  },
+  {
+    "id": 3,
+    "title": "Виявлення закритої кімнати",
+    "description": "Олександр, очевидно не вдаючись впливати на двері, починає шукати інші способы вхіду. Вони бачать, що одна з верхніх вікон може бути відрізаною або заблокованою. Вони розкривають це вікно та обокладують до кімнати.",
+    "location": "Старий парк у містяної громаді",
+    "time": "Одинадцять вечора, 23:00",
+    "action": "Олександр вже здатний спостерігати та розглядати кімнату, яка виглядає диким і пустим. Вони бачать старий стол з книгами про екологію та природу.",
+    "camera": "Внутрішній план закритої кімнати з Олександром, що розглядає старі книги і посилається на свої власні.",
+    "mood": "Мистецьке",
+    "prompt": "At 23:00, Alexander fails to open the door of a dim, empty room in an old park. He looks for other entry ways and notices one upper window may be cut or blocked. With an unseen companion, he opens the window and climbs through into the room, where he examines old books about ecology and nature.",
+    "prompt_requirements_v3_4_2": {
+      "character": [
+        "Alexander"
+      ],
+      "time": "23:00",
+      "location": "A room in an old park in a city district",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Alexander tries to influence the door but fails.",
+          "mandatory": true
+        },
+        {
+          "id": "a2",
+          "text": "Alexander starts looking for other ways of entry.",
+          "mandatory": true
+        },
+        {
+          "id": "a3",
+          "text": "Alexander and an unseen companion notice that one of the upper windows may be cut or blocked.",
+          "mandatory": true
+        },
+        {
+          "id": "a4",
+          "text": "Alexander and an unseen companion open the window.",
+          "mandatory": true
+        },
+        {
+          "id": "a5",
+          "text": "Alexander climbs through the window into the room.",
+          "mandatory": true
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "A table with old books about ecology and nature in the room.",
+          "mandatory": true
+        }
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "text": "One of the upper windows is either cut or blocked.",
+          "mandatory": true
+        },
+        {
+          "id": "r2",
+          "text": "Alexander can observe and examine a dim and empty room.",
+          "mandatory": true
+        }
+      ],
+      "atmosphere": [
+        "Mysterious"
+      ]
+    },
+    "prompt_v3_4_2": "At 23:00, Alexander fails to open the door of a dim, empty room in an old park. He looks for other entry ways and notices one upper window may be cut or blocked. With an unseen companion, he opens the window and climbs through into the room, where he examines old books about ecology and nature.",
+    "prompt_source": "structured_scene_v3_4_2_requirements",
+    "prompt_validation": {
+      "ok": false,
+      "missing": [
+        {
+          "type": "action",
+          "id": "a1"
+        }
+      ],
+      "invented": [],
+      "contradictions": [],
+      "covered": [
+        {
+          "id": "a2",
+          "text": "Alexander starts looking for other ways of entry."
+        },
+        {
+          "id": "a3",
+          "text": "Alexander and an unseen companion notice that one of the upper windows may be cut or blocked."
+        },
+        {
+          "id": "a4",
+          "text": "Alexander and an unseen companion open the window."
+        },
+        {
+          "id": "a5",
+          "text": "Alexander climbs through the window into the room."
+        }
+      ]
+    },
+    "prompt_errors": [
+      "MISSING_OBJECT:o1:table",
+      "WEAKENED_SPECIFICITY:a3:window"
+    ],
+    "prompt_attempts": 5
+  }
+]

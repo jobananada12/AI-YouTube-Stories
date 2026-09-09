@@ -1,0 +1,265 @@
+AI YouTube Stories — Prompt Audit V3.4.2
+=======================================================
+
+SCENE 1: PASS
+Attempts: 1
+Words: 33
+Prompt: In late morning at a city park, Alexander in a gray jacket and blue sweater observes a mysterious house, examining its shape and dimensions, then notes a closed door in the middle sector.
+Requirements:
+{
+  "character": [
+    "Alexander"
+  ],
+  "time": "Late morning, 10:30",
+  "location": "A city park in an urban district",
+  "clothing": [
+    "gray jacket",
+    "blue sweater"
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "text": "Alexander observes the house with a cautious interest.",
+      "mandatory": true
+    },
+    {
+      "id": "a2",
+      "text": "He examines the shape and dimensions of the house.",
+      "mandatory": true
+    }
+  ],
+  "objects": [
+    {
+      "id": "o1",
+      "text": "closed door in the middle sector of the house",
+      "mandatory": true
+    }
+  ],
+  "relations": [],
+  "atmosphere": [
+    "Mystical and mysterious"
+  ]
+}
+Validation:
+{
+  "ok": true,
+  "missing": [],
+  "invented": [],
+  "contradictions": [],
+  "covered": [
+    {
+      "character": "Alexander observes the house with a cautious interest.",
+      "actionId": "a1",
+      "mandatory": true
+    },
+    {
+      "character": "He examines the shape and dimensions of the house.",
+      "actionId": "a2",
+      "mandatory": true
+    },
+    {
+      "object": "closed door in the middle sector of the house",
+      "objectId": "o1",
+      "mandatory": true
+    },
+    {
+      "character": "Late morning, 10:30",
+      "time": "Late morning, 10:30",
+      "mandatory": true
+    },
+    {
+      "character": "A city park in an urban district",
+      "location": "A city park in an urban district",
+      "mandatory": true
+    },
+    {
+      "character": "gray jacket",
+      "clothing": "gray jacket",
+      "mandatory": true
+    },
+    {
+      "character": "blue sweater",
+      "clothing": "blue sweater",
+      "mandatory": true
+    }
+  ]
+}
+Deterministic errors: []
+
+SCENE 2: FAIL
+Attempts: 5
+Words: 23
+Prompt: Alexander waits at the old park at 12:00, observing a closed, ancient-looking broken door for days, pondering why the room remains unseen.
+Requirements:
+{
+  "character": [
+    "Alexander"
+  ],
+  "time": "Late morning, 12:00",
+  "location": "Old park in the city district",
+  "clothing": [],
+  "actions": [
+    {
+      "id": "a1",
+      "text": "Alexander observes the door for several days.",
+      "mandatory": true
+    },
+    {
+      "id": "a2",
+      "text": "Alexander cannot settle down, waiting for the door to be opened.",
+      "mandatory": true
+    }
+  ],
+  "objects": [
+    {
+      "id": "o1",
+      "text": "A closed old and broken door",
+      "mandatory": true
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "text": "Alexander thinks about scenarios and reasons why the room is never shown.",
+      "mandatory": true
+    }
+  ],
+  "atmosphere": [
+    "Silent and mysterious"
+  ]
+}
+Validation:
+{
+  "ok": true,
+  "missing": [],
+  "invented": [],
+  "contradictions": [],
+  "covered": [
+    {
+      "character": "Alexander waits at the old park at 12:00",
+      "time": "Late morning, 12:00",
+      "location": "Old park in the city district",
+      "clothing": [],
+      "actions": [
+        {
+          "id": "a1",
+          "text": "Alexander observes the door for several days."
+        },
+        {
+          "id": "a2",
+          "text": "Alexander waits for the door to be opened, pondering why the room remains unseen."
+        }
+      ],
+      "objects": [
+        {
+          "id": "o1",
+          "text": "A closed old and broken door"
+        }
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "text": "Alexander thinks about scenarios and reasons why the room is never shown."
+        }
+      ],
+      "atmosphere": "Silent and mysterious"
+    }
+  ]
+}
+Deterministic errors: ['WORD_LIMIT_TOO_SHORT:23', 'MISSING_ACTION:a1:duration_several_days', 'MISSING_ACTION:a1:observe', 'MISSING_ACTION:a2:open']
+
+SCENE 3: FAIL
+Attempts: 5
+Words: 57
+Prompt: At 23:00, Alexander fails to open the door of a dim, empty room in an old park. He looks for other entry ways and notices one upper window may be cut or blocked. With an unseen companion, he opens the window and climbs through into the room, where he examines old books about ecology and nature.
+Requirements:
+{
+  "character": [
+    "Alexander"
+  ],
+  "time": "23:00",
+  "location": "A room in an old park in a city district",
+  "clothing": [],
+  "actions": [
+    {
+      "id": "a1",
+      "text": "Alexander tries to influence the door but fails.",
+      "mandatory": true
+    },
+    {
+      "id": "a2",
+      "text": "Alexander starts looking for other ways of entry.",
+      "mandatory": true
+    },
+    {
+      "id": "a3",
+      "text": "Alexander and an unseen companion notice that one of the upper windows may be cut or blocked.",
+      "mandatory": true
+    },
+    {
+      "id": "a4",
+      "text": "Alexander and an unseen companion open the window.",
+      "mandatory": true
+    },
+    {
+      "id": "a5",
+      "text": "Alexander climbs through the window into the room.",
+      "mandatory": true
+    }
+  ],
+  "objects": [
+    {
+      "id": "o1",
+      "text": "A table with old books about ecology and nature in the room.",
+      "mandatory": true
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "text": "One of the upper windows is either cut or blocked.",
+      "mandatory": true
+    },
+    {
+      "id": "r2",
+      "text": "Alexander can observe and examine a dim and empty room.",
+      "mandatory": true
+    }
+  ],
+  "atmosphere": [
+    "Mysterious"
+  ]
+}
+Validation:
+{
+  "ok": false,
+  "missing": [
+    {
+      "type": "action",
+      "id": "a1"
+    }
+  ],
+  "invented": [],
+  "contradictions": [],
+  "covered": [
+    {
+      "id": "a2",
+      "text": "Alexander starts looking for other ways of entry."
+    },
+    {
+      "id": "a3",
+      "text": "Alexander and an unseen companion notice that one of the upper windows may be cut or blocked."
+    },
+    {
+      "id": "a4",
+      "text": "Alexander and an unseen companion open the window."
+    },
+    {
+      "id": "a5",
+      "text": "Alexander climbs through the window into the room."
+    }
+  ]
+}
+Deterministic errors: ['MISSING_OBJECT:o1:table', 'WEAKENED_SPECIFICITY:a3:window']
+
+SUMMARY: PASS=1 FAIL=2
