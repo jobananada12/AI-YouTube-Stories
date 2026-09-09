@@ -1,0 +1,16 @@
+AI YOUTUBE STORIES - PROMPT AUDIT V3.3
+Source of truth: structured Ukrainian scene fields.
+Legacy scene.prompt is ignored.
+Concrete actions and important objects are mandatory.
+Ordered action sequences must remain semantically visible.
+TIME and clothing category are strict.
+English-only final prompts; 25-58 words.
+
+SCENE 1: PASS | words=28 | missing=[] | invented=[] | contradictions=[] | errors=[]
+  PROMPT: Alexander, in a navy sweater and brown jacket, observes an old house in a city park at 10:30 AM, noting a closed door in the middle section.
+SCENE 2: FAIL | words=28 | missing=['repeatedly trying to open it'] | invented=['waiting for it to be revealed'] | contradictions=[] | errors=['SEMANTIC_VALIDATION_FAILED']
+  PROMPT: Alexander watches an old, seemingly broken door in a city park, repeatedly trying to open it, waiting for it to be revealed. It is late morning, 12:00.
+SCENE 3: PASS | words=25 | missing=[] | invented=[] | contradictions=[] | errors=[]
+  PROMPT: Alexander climbs through a broken window at 11 PM and enters the dimly lit room filled with old books on ecology, evoking a mysterious mood.
+
+SUMMARY: processed=3, passed=2, failed=1
