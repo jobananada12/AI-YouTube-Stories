@@ -8,8 +8,8 @@
     "action": "Олександр спостерігає за будинком, вивчає його форму та розміри. Він спочатку натрапляє на закриту дверь у середньому секторі будинку.",
     "camera": "Високорозібровий план будинку з кімнатою, яка виглядає замкненою. Схована камера в джерлі парку спостерігає за Олександром.",
     "mood": "Мистецьке та загадкове",
-    "prompt": "In a misty early morning park, Alex, in a gray parka and blue sweater, observes an old, weathered house that seems abandoned but intriguing. He focuses on a closed door in the middle of the structure.",
-    "prompt_v3_2": "In a misty early morning park, Alex, in a gray parka and blue sweater, observes an old, weathered house that seems abandoned but intriguing. He focuses on a closed door in the middle of the structure.",
+    "prompt": "Alexander, a quiet man in a gray jacket and blue sweater, observes an old house in a city park at late morning. He studies the building’s structure, focusing on a closed door in the middle section.",
+    "prompt_v3_2": "Alexander, a quiet man in a gray jacket and blue sweater, observes an old house in a city park at late morning. He studies the building’s structure, focusing on a closed door in the middle section.",
     "prompt_source": "structured_scene_v3_2",
     "prompt_validation": {
       "ok": true
@@ -25,13 +25,11 @@
     "action": "Олександр спостерігає за дверю та не може заспокоїтися, чекаючи на те, що вона буде відкрита. Він починає думати про сценарії і причини того, що така кімната ніколи не зображена.",
     "camera": "Замкнута камера показує Олександра спостерігаючим за закритою дверню. Слухнімо шум блискучого листя та птахів.",
     "mood": "Тихе і загадкове",
-    "prompt": "Alexander observes an old park in a city district over several days, focusing on a mysterious closed door that seems ancient and broken, while internally pondering why this room is never shown, in the quiet early afternoon.",
-    "prompt_v3_2": "Alexander observes an old park in a city district over several days, focusing on a mysterious closed door that seems ancient and broken, while internally pondering why this room is never shown, in the quiet early afternoon.",
+    "prompt": "Alexander watches an old, seemingly broken door in a city park, unable to calm down as he waits for it to open. He ponders the unshown room behind it amidst rustling leaves and bird chirps.",
+    "prompt_v3_2": "Alexander watches an old, seemingly broken door in a city park, unable to calm down as he waits for it to open. He ponders the unshown room behind it amidst rustling leaves and bird chirps.",
     "prompt_source": "structured_scene_v3_2",
     "prompt_validation": {
-      "ok": true,
-      "missing": [],
-      "invented": []
+      "ok": true
     },
     "prompt_errors": []
   },
@@ -44,13 +42,11 @@
     "action": "Олександр вже здатний спостерігати та розглядати кімнату, яка виглядає диким і пустим. Вони бачать старий стол з книгами про екологію та природу.",
     "camera": "Внутрішній план закритої кімнати з Олександром, що розглядає старі книги і посилається на свої власні.",
     "mood": "Мистецьке",
-    "prompt": "At 11 PM in a city park, Alexander peeks inside a dim, abandoned room filled with old books on nature and ecology, his gaze reflecting on personal reflections.",
-    "prompt_v3_2": "At 11 PM in a city park, Alexander peeks inside a dim, abandoned room filled with old books on nature and ecology, his gaze reflecting on personal reflections.",
+    "prompt": "At 11 PM in an old park, Alexander peers into a dimly lit, abandoned room filled with books on ecology and nature, his expression contemplative in the dusky light.",
+    "prompt_v3_2": "At 11 PM in an old park, Alexander peers into a dimly lit, abandoned room filled with books on ecology and nature, his expression contemplative in the dusky light.",
     "prompt_source": "structured_scene_v3_2",
     "prompt_validation": {
-      "ok": true,
-      "missing": [],
-      "invented": []
+      "ok": true
     },
     "prompt_errors": []
   },

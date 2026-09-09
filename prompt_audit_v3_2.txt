@@ -3,11 +3,11 @@ Source of truth: structured Ukrainian scene fields.
 Legacy scene.prompt is intentionally ignored by the translator.
 Final Stable Diffusion prompts must be English-only and <= 58 words.
 
-SCENE 1: PASS | words=36 | missing=[] | invented=[] | errors=[]
-  PROMPT: In a misty early morning park, Alex, in a gray parka and blue sweater, observes an old, weathered house that seems abandoned but intriguing. He focuses on a closed door in the middle of the structure.
-SCENE 2: PASS | words=37 | missing=[] | invented=[] | errors=[]
-  PROMPT: Alexander observes an old park in a city district over several days, focusing on a mysterious closed door that seems ancient and broken, while internally pondering why this room is never shown, in the quiet early afternoon.
-SCENE 3: PASS | words=28 | missing=[] | invented=[] | errors=[]
-  PROMPT: At 11 PM in a city park, Alexander peeks inside a dim, abandoned room filled with old books on nature and ecology, his gaze reflecting on personal reflections.
+SCENE 1: PASS | words=37 | missing=[] | invented=[] | errors=[]
+  PROMPT: Alexander, a quiet man in a gray jacket and blue sweater, observes an old house in a city park at late morning. He studies the building’s structure, focusing on a closed door in the middle section.
+SCENE 2: PASS | words=35 | missing=[] | invented=[] | errors=[]
+  PROMPT: Alexander watches an old, seemingly broken door in a city park, unable to calm down as he waits for it to open. He ponders the unshown room behind it amidst rustling leaves and bird chirps.
+SCENE 3: PASS | words=29 | missing=[] | invented=[] | errors=[]
+  PROMPT: At 11 PM in an old park, Alexander peers into a dimly lit, abandoned room filled with books on ecology and nature, his expression contemplative in the dusky light.
 
 SUMMARY: processed=3, passed=3, failed=0
