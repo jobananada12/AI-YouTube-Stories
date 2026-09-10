@@ -13,6 +13,17 @@ class FinalProjectPackager:
     """Validate and package one completed YouTube story project."""
 
     REQUIRED_FILES = ("story.json", "script.md", "character_bible.json", "scenes.json")
+    IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp")
+
+    @classmethod
+    def _scene_images(cls, project: Path) -> list[Path]:
+        images_dir = project / "images"
+        if not images_dir.exists():
+            return []
+        return sorted(
+            [p for p in images_dir.iterdir() if p.is_file() and p.name.startswith("scene_") and p.suffix.lower() in cls.IMAGE_EXTENSIONS],
+            key=lambda p: p.name.lower(),
+        )
 
     def validate(self, project_dir: str | Path, require_video: bool = True) -> dict:
         project = Path(project_dir)
@@ -20,13 +31,17 @@ class FinalProjectPackager:
             raise FinalPackageError(f"Проєкт не знайдено: {project}")
         missing: list[str] = [name for name in self.REQUIRED_FILES if not (project / name).is_file()]
         audio_files = sorted((project / "audio").glob("narration_*.wav")) if (project / "audio").exists() else []
-        image_files = sorted((project / "images").glob("scene_*.png")) if (project / "images").exists() else []
+        image_files = self._scene_images(project)
         if not audio_files:
             missing.append("audio/narration_*.wav")
         if not image_files:
-            missing.append("images/scene_*.png")
+            missing.append("images/scene_*.{png,jpg,jpeg,webp}")
         if audio_files and image_files and len(audio_files) != len(image_files):
             missing.append(f"однакова кількість audio/images (audio={len(audio_files)}, images={len(image_files)})")
+        if audio_files and len(audio_files) != 100:
+            missing.append(f"рівно 100 WAV-сегментів (знайдено={len(audio_files)})")
+        if image_files and len(image_files) != 100:
+            missing.append(f"рівно 100 зображень сцен (знайдено={len(image_files)})")
         thumbnail = project / "thumbnail" / "thumbnail.jpg"
         youtube_json = project / "youtube" / "youtube.json"
         youtube_md = project / "youtube" / "youtube.md"
@@ -40,6 +55,7 @@ class FinalProjectPackager:
         report = {
             "project": str(project), "valid": not missing, "missing": missing,
             "audio_segments": len(audio_files), "image_segments": len(image_files),
+            "expected_scene_count": 100,
             "has_thumbnail": thumbnail.is_file(),
             "has_youtube_metadata": youtube_json.is_file() or youtube_md.is_file(),
             "has_music": any((project / "music").glob("*.wav")) if (project / "music").exists() else False,
