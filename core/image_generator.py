@@ -56,14 +56,19 @@ class ImageGenerator:
             options = response.json()
             mode = options.get("generation_mode", "unknown")
             memory = options.get("memory_mode", "unknown")
-            base = options.get("base_generation_size", "unknown")
+            tile_size = options.get("tile_size", "unknown")
             final = options.get("final_size", "unknown")
             tiles = options.get("tile_grid", "unknown")
-            print(f"  🧠 SD server: {mode}, tiles={tiles}, tile={base}, final={final}, memory={memory}")
-            if options.get("final_size") != "1920x1080":
+            print(
+                f"  🧠 SD server: {mode}, tiles={tiles}, tile={tile_size}, "
+                f"final={final}, memory={memory}"
+            )
+            if final != "1920x1080":
                 raise ImageGenerationError("SD server не налаштований на фінальний canvas 1920x1080.")
-            if not options.get("tile_generation"):
-                raise ImageGenerationError("SD server не працює у 8-tile режимі.")
+            if mode != "ONE_SCENE_8_CONTEXT_TILES" or tiles != "4x2":
+                raise ImageGenerationError(
+                    "SD server не працює у потрібному режимі ONE_SCENE_8_CONTEXT_TILES (4x2)."
+                )
         except ImageGenerationError:
             raise
         except requests.RequestException as exc:
