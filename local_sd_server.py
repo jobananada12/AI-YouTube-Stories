@@ -22,27 +22,31 @@ FINAL_WIDTH = 1920
 FINAL_HEIGHT = 1080
 GRID_COLS = 4
 GRID_ROWS = 2
-TILE_OUT_WIDTH = FINAL_WIDTH // GRID_COLS   # 480
-TILE_OUT_HEIGHT = FINAL_HEIGHT // GRID_ROWS  # 540
-OVERLAP = int(os.getenv("SD_TILE_OVERLAP", "96"))
-TILE_WIDTH = TILE_OUT_WIDTH + OVERLAP * 2
-TILE_HEIGHT = TILE_OUT_HEIGHT + OVERLAP * 2
-# Keep every individual SD call small enough for a 2 GB GPU.
+# One SD call creates one tile. Tiles overlap in the final canvas and are
+# feather-blended, so the eight calls form ONE continuous scene.
 TILE_GEN_WIDTH = int(os.getenv("SD_TILE_GEN_WIDTH", "512"))
 TILE_GEN_HEIGHT = int(os.getenv("SD_TILE_GEN_HEIGHT", "576"))
+STEP_X = FINAL_WIDTH // GRID_COLS  # 480
+STEP_Y = FINAL_HEIGHT // GRID_ROWS  # 540
+TOTAL_TILE_WIDTH = STEP_X * (GRID_COLS - 1) + TILE_GEN_WIDTH
+TOTAL_TILE_HEIGHT = STEP_Y * (GRID_ROWS - 1) + TILE_GEN_HEIGHT
+CROP_X = max(0, TOTAL_TILE_WIDTH - FINAL_WIDTH) // 2
+CROP_Y = max(0, TOTAL_TILE_HEIGHT - FINAL_HEIGHT) // 2
 
 if TILE_GEN_WIDTH % 8 or TILE_GEN_HEIGHT % 8:
     raise RuntimeError("SD_TILE_GEN_WIDTH та SD_TILE_GEN_HEIGHT повинні ділитися на 8.")
+if TILE_GEN_WIDTH < STEP_X or TILE_GEN_HEIGHT < STEP_Y:
+    raise RuntimeError("Розмір tile повинен бути не меншим за крок сітки для перекриття.")
 
 if not torch.cuda.is_available():
     raise RuntimeError("CUDA недоступна. Цей локальний генератор налаштований на GPU.")
 
 print(f"Завантажую Stable Diffusion з: {MODEL_PATH}")
-print(f"CUDA: {torch.cuda.is_available()}")
 print(f"GPU: {torch.cuda.get_device_name(0)}")
 print(f"Фінальний canvas: {FINAL_WIDTH}x{FINAL_HEIGHT}")
-print(f"Режим: {GRID_COLS}x{GRID_ROWS}=8 tiles -> seamless merge -> {FINAL_WIDTH}x{FINAL_HEIGHT}")
-print(f"Кожен SD tile: {TILE_GEN_WIDTH}x{TILE_GEN_HEIGHT}; overlap={OVERLAP}px")
+print(f"Режим: 4x2=8 tiles -> overlap blend -> exact {FINAL_WIDTH}x{FINAL_HEIGHT}")
+print(f"Tile generation: {TILE_GEN_WIDTH}x{TILE_GEN_HEIGHT}; steps: {STEP_X}x{STEP_Y}")
+print(f"Загальне перекриття: X={TILE_GEN_WIDTH - STEP_X}px, Y={TILE_GEN_HEIGHT - STEP_Y}px")
 
 pipe = StableDiffusionPipeline.from_pretrained(
     str(MODEL_PATH),
@@ -74,10 +78,11 @@ def _tile_prompt(global_prompt: str, col: int, row: int) -> str:
         "bottom-left", "bottom-center-left", "bottom-center-right", "bottom-right",
     ][row * GRID_COLS + col]
     return (
-        f"{global_prompt}, ONE CONTINUOUS SCENE, this is tile {row * GRID_COLS + col + 1} of 8 "
-        f"from the SAME 1920x1080 image, {position} area of the frame, "
-        "continue objects and environment naturally beyond every edge, "
-        "no new scene, no panel, no border, no frame, no collage, no grid"
+        f"{global_prompt}, ONE SINGLE CONTINUOUS SCENE, this is tile {row * GRID_COLS + col + 1} of 8 "
+        f"from the SAME 1920x1080 image, {position} area of the same frame, "
+        "continue every object, character, architecture and background naturally across all edges, "
+        "the scene continues outside this tile, same perspective and same lighting, "
+        "single coherent composition, no new scene"
     )
 
 
@@ -98,54 +103,53 @@ def generate_tile(prompt: str, negative_prompt: str, steps: int, cfg: float, see
     del result
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
+    if image.size != (TILE_GEN_WIDTH, TILE_GEN_HEIGHT):
+        image.close()
+        raise RuntimeError("Stable Diffusion повернув tile неправильного розміру")
     return image
 
 
 def feather_mask(width: int, height: int) -> Image.Image:
-    # Smooth alpha over the overlap so neighboring tiles merge without hard seams.
+    # The mask fades only inside the actual overlap area. Interior pixels stay opaque.
+    overlap_x = max(1, width - STEP_X)
+    overlap_y = max(1, height - STEP_Y)
     mask = Image.new("L", (width, height), 255)
     draw = ImageDraw.Draw(mask)
-    edge = min(OVERLAP, width // 4, height // 4)
-    for x in range(edge):
-        v = int(255 * x / max(1, edge - 1))
-        draw.line((x, 0, x, height - 1), fill=v)
-        draw.line((width - 1 - x, 0, width - 1 - x, height - 1), fill=v)
-    for y in range(edge):
-        v = int(255 * y / max(1, edge - 1))
-        draw.line((0, y, width - 1, y), fill=min(mask.getpixel((width // 2, y)), v))
-        draw.line((0, height - 1 - y, width - 1, height - 1 - y), fill=min(mask.getpixel((width // 2, height - 1 - y)), v))
+    for x in range(overlap_x):
+        alpha = int(255 * (x + 1) / (overlap_x + 1))
+        draw.line((x, 0, x, height - 1), fill=alpha)
+        draw.line((width - 1 - x, 0, width - 1 - x, height - 1), fill=alpha)
+    for y in range(overlap_y):
+        alpha = int(255 * (y + 1) / (overlap_y + 1))
+        draw.line((0, y, width - 1, y), fill=min(mask.getpixel((width // 2, y)), alpha))
+        draw.line((0, height - 1 - y, width - 1, height - 1 - y), fill=min(mask.getpixel((width // 2, height - 1 - y)), alpha))
     return mask
-
-
-def prepare_tile(image: Image.Image) -> Image.Image:
-    # The model's native tile is resized only to the requested tile working area;
-    # there is no final-image upscale. The output canvas is assembled at exact 1920x1080.
-    return image.resize((TILE_OUT_WIDTH, TILE_OUT_HEIGHT), Image.Resampling.LANCZOS)
 
 
 def merge_tiles(tiles: list[Image.Image]) -> Image.Image:
     if len(tiles) != 8:
         raise RuntimeError(f"Очікувалося 8 tiles, отримано {len(tiles)}")
 
-    canvas = Image.new("L", (FINAL_WIDTH, FINAL_HEIGHT), 255)
-    weights = Image.new("F", (FINAL_WIDTH, FINAL_HEIGHT), 0.0)
+    # Work on an oversized canvas because neighboring tiles intentionally overlap.
+    canvas = Image.new("L", (TOTAL_TILE_WIDTH, TOTAL_TILE_HEIGHT), 255)
+    coverage = Image.new("L", (TOTAL_TILE_WIDTH, TOTAL_TILE_HEIGHT), 0)
+    mask = feather_mask(TILE_GEN_WIDTH, TILE_GEN_HEIGHT)
 
     for index, tile in enumerate(tiles):
         col = index % GRID_COLS
         row = index // GRID_COLS
-        x = col * TILE_OUT_WIDTH
-        y = row * TILE_OUT_HEIGHT
-        tile = prepare_tile(tile)
-        mask = feather_mask(tile.width, tile.height)
+        x = col * STEP_X
+        y = row * STEP_Y
         canvas.paste(tile, (x, y), mask)
-        # A second normalized accumulation pass is intentionally avoided here:
-        # feathered alpha removes visible hard borders while preserving one canvas.
-        tile.close()
+        # Keep track of the covered area so final edge crop is deterministic.
+        coverage.paste(255, (x, y), mask)
 
-    # Enforce monochrome graphite presentation and exact output size.
-    canvas = ImageOps.autocontrast(canvas, cutoff=1)
-    canvas = ImageEnhance.Contrast(canvas).enhance(1.08)
-    return canvas.resize((FINAL_WIDTH, FINAL_HEIGHT), Image.Resampling.LANCZOS)
+    # Center-crop only the overlap margin. This is not an upscale: the final
+    # pixels are directly assembled from the generated tiles at native size.
+    final = canvas.crop((CROP_X, CROP_Y, CROP_X + FINAL_WIDTH, CROP_Y + FINAL_HEIGHT))
+    final = ImageOps.autocontrast(final, cutoff=1)
+    final = ImageEnhance.Contrast(final).enhance(1.08)
+    return final
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -167,7 +171,8 @@ class Handler(BaseHTTPRequestHandler):
                 "memory_mode": OFFLOAD_MODE,
                 "tile_generation": True,
                 "tile_grid": "4x2",
-                "tile_overlap": OVERLAP,
+                "tile_overlap_x": TILE_GEN_WIDTH - STEP_X,
+                "tile_overlap_y": TILE_GEN_HEIGHT - STEP_Y,
                 "upscale_final": False,
             })
             return
@@ -199,24 +204,23 @@ class Handler(BaseHTTPRequestHandler):
                 "collage, grid, 2x2, 2x4, 4x2, multiple panels, separate panels, split screen, "
                 "contact sheet, storyboard, comic panels, diptych, triptych, multiple images, "
                 "multiple scenes, duplicated character, repeated character, borders, frames, "
-                "dividers, seams, tiled layout, text, watermark, logo, low quality"
+                "dividers, seams, hard seam, tiled layout, text, watermark, logo, low quality"
             )
 
-            print(f"Генерую ОДНУ сцену частинами: 8 tiles -> {FINAL_WIDTH}x{FINAL_HEIGHT}")
+            print(f"Генерую ОДНУ сцену: 8 tiles -> seamless overlap blend -> {FINAL_WIDTH}x{FINAL_HEIGHT}")
             tiles: list[Image.Image] = []
             try:
                 for index in range(8):
                     col = index % GRID_COLS
                     row = index // GRID_COLS
                     print(f"  🖼 Tile {index + 1}/8 ({col + 1},{row + 1}) {TILE_GEN_WIDTH}x{TILE_GEN_HEIGHT}...")
-                    tile = generate_tile(
+                    tiles.append(generate_tile(
                         _tile_prompt(prompt, col, row),
                         negative,
                         steps,
                         cfg,
                         base_seed + index,
-                    )
-                    tiles.append(tile)
+                    ))
 
                 final_image = merge_tiles(tiles)
                 try:
@@ -227,14 +231,11 @@ class Handler(BaseHTTPRequestHandler):
                     final_image.close()
             finally:
                 for tile in tiles:
-                    try:
-                        tile.close()
-                    except Exception:
-                        pass
+                    tile.close()
 
             self._send_json(200, {
                 "images": [encoded],
-                "info": "One 1920x1080 monochrome graphite scene assembled from 8 VRAM-safe tiles with feathered seams",
+                "info": "One exact 1920x1080 monochrome graphite scene assembled from 8 overlapping VRAM-safe tiles; no final upscale",
             })
 
         except torch.cuda.OutOfMemoryError as exc:
@@ -242,9 +243,9 @@ class Handler(BaseHTTPRequestHandler):
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
             self._send_json(500, {
-                "error": "Навіть один tile не помістився у VRAM.",
+                "error": "Tile не помістився у 2 GB VRAM.",
                 "details": str(exc),
-                "hint": "Зменш SD_TILE_GEN_WIDTH/SD_TILE_GEN_HEIGHT, наприклад до 448x512 або 384x448.",
+                "hint": "Зменш SD_TILE_GEN_WIDTH/SD_TILE_GEN_HEIGHT до 448x512 або 384x448.",
             })
         except Exception as exc:
             print(f"ПОМИЛКА ГЕНЕРАЦІЇ: {exc}")
