@@ -15,7 +15,7 @@ SEED:
 TARGET LENGTH: approximately {minutes} minutes.
 
 Return ONLY valid JSON matching this exact structure:
-{
+{{
   "title": "...",
   "genre": "...",
   "tone": "...",
@@ -27,10 +27,10 @@ Return ONLY valid JSON matching this exact structure:
   "central_conflict": "...",
   "ending_type": "...",
   "characters": [
-    {"name":"...","role":"...","age":"...","appearance":"...","personality":"...","motivation":"..."}
+    {{"name":"...","role":"...","age":"...","appearance":"...","personality":"...","motivation":"..."}}
   ],
   "outline": ["...", "..."]
-}
+}}
 
 Rules:
 - Everything must be newly invented.
