@@ -15,7 +15,7 @@ class ImageGenerationError(RuntimeError):
 
 
 class ImageGenerator:
-    """Generate scene PNGs through the local tile-based SD API."""
+    """Generate one coherent scene image through the local SD API."""
 
     def __init__(self, api_url: str | None = None, model: str | None = None):
         self.api_url = (api_url or settings.image_api_url).rstrip("/")
@@ -28,10 +28,22 @@ class ImageGenerator:
             if match and match.image_prompt_anchor:
                 anchors.append(match.image_prompt_anchor)
 
-        parts = [scene.visual_prompt.strip()]
+        parts = [
+            "ONE SINGLE CONTINUOUS IMAGE",
+            "one coherent cinematic composition filling the entire frame",
+            "black and white graphite pencil drawing",
+            "hand-drawn pencil sketch",
+            "monochrome graphite",
+            "visible graphite strokes",
+            "realistic pencil shading",
+            "cross-hatching",
+            "subtle paper texture",
+            "illustrated, not a photograph",
+            scene.visual_prompt.strip(),
+        ]
         if anchors:
             parts.extend(anchors)
-        parts.append("cinematic still, realistic lighting, detailed environment, 16:9 composition")
+        parts.append("16:9 composition")
         return ", ".join(p for p in parts if p)
 
     def _check_server(self) -> None:
@@ -40,9 +52,9 @@ class ImageGenerator:
             response.raise_for_status()
             options = response.json()
             mode = options.get("generation_mode", "unknown")
-            tile = options.get("tile_size", "unknown")
             memory = options.get("memory_mode", "unknown")
-            print(f"  🧠 SD server: {mode}, tile={tile}, memory={memory}")
+            base = options.get("base_generation_size", "unknown")
+            print(f"  🧠 SD server: {mode}, base={base}, memory={memory}")
         except requests.RequestException as exc:
             raise ImageGenerationError(
                 f"Не можу підключитися до локального генератора: {self.api_url}. "
@@ -63,11 +75,14 @@ class ImageGenerator:
             payload = {
                 "prompt": self._prompt(scene, bible),
                 "negative_prompt": (
-                    "text, watermark, logo, celebrity, copyrighted character, franchise, "
-                    "deformed hands, extra fingers, duplicate person, blurry, low quality"
+                    "color, colored, photorealistic, photograph, photo, 3d render, CGI, "
+                    "collage, grid, 2x2, 2x4, 4x2, multiple panels, separate panels, "
+                    "split screen, contact sheet, storyboard, comic panels, diptych, triptych, "
+                    "multiple images, multiple scenes, duplicated character, repeated character, "
+                    "borders, frames, dividers, seams, tiles, tiled layout, text, watermark, logo, "
+                    "celebrity, copyrighted character, franchise, deformed hands, extra fingers, "
+                    "blurry, low quality"
                 ),
-                # The API receives the required final canvas size. The local server
-                # internally renders it as 8 native 480x540 tiles and assembles them.
                 "width": settings.image_width,
                 "height": settings.image_height,
                 "steps": settings.image_steps,
@@ -78,7 +93,7 @@ class ImageGenerator:
             if self.model:
                 payload["override_settings"] = {"sd_model_checkpoint": self.model}
 
-            print(f"  🖼 Сцена {index}/{total}: генерую фінальний кадр {settings.image_width}x{settings.image_height} через 8 тайлів...")
+            print(f"  🖼 Сцена {index}/{total}: генерую ОДНЕ цілісне зображення {settings.image_width}x{settings.image_height}...")
             try:
                 response = requests.post(
                     f"{self.api_url}/sdapi/v1/txt2img",
