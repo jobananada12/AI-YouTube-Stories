@@ -15,16 +15,13 @@ class ImageGenerationError(RuntimeError):
 
 
 class ImageGenerator:
-    """Generate scene PNGs through a local Automatic1111-compatible API."""
+    """Generate scene PNGs through the local tile-based SD API."""
 
     def __init__(self, api_url: str | None = None, model: str | None = None):
         self.api_url = (api_url or settings.image_api_url).rstrip("/")
         self.model = model or settings.image_model
 
     def _prompt(self, scene, bible: CharacterBible) -> str:
-        # scene.visual_prompt is validated by ScenePlanner and must be English-only.
-        # Character anchors are appearance canon and are appended only for characters
-        # explicitly present in this scene.
         anchors = []
         for name in scene.characters:
             match = next((c for c in bible.characters if c.name == name), None)
@@ -41,10 +38,15 @@ class ImageGenerator:
         try:
             response = requests.get(f"{self.api_url}/sdapi/v1/options", timeout=10)
             response.raise_for_status()
+            options = response.json()
+            mode = options.get("generation_mode", "unknown")
+            tile = options.get("tile_size", "unknown")
+            memory = options.get("memory_mode", "unknown")
+            print(f"  🧠 SD server: {mode}, tile={tile}, memory={memory}")
         except requests.RequestException as exc:
             raise ImageGenerationError(
                 f"Не можу підключитися до локального генератора: {self.api_url}. "
-                "Запусти Automatic1111/сумісний API з --api та перевір IMAGE_API_URL у .env."
+                "Запусти local_sd_server.py та перевір IMAGE_API_URL у .env."
             ) from exc
 
     def generate(self, scene_plan: ScenePlan, bible: CharacterBible, output_dir: str | Path) -> list[Path]:
@@ -64,6 +66,8 @@ class ImageGenerator:
                     "text, watermark, logo, celebrity, copyrighted character, franchise, "
                     "deformed hands, extra fingers, duplicate person, blurry, low quality"
                 ),
+                # The API receives the required final canvas size. The local server
+                # internally renders it as 8 native 480x540 tiles and assembles them.
                 "width": settings.image_width,
                 "height": settings.image_height,
                 "steps": settings.image_steps,
@@ -74,15 +78,26 @@ class ImageGenerator:
             if self.model:
                 payload["override_settings"] = {"sd_model_checkpoint": self.model}
 
-            print(f"  🖼 Сцена {index}/{total}: генерую {settings.image_width}x{settings.image_height}...")
+            print(f"  🖼 Сцена {index}/{total}: генерую фінальний кадр {settings.image_width}x{settings.image_height} через 8 тайлів...")
             try:
                 response = requests.post(
                     f"{self.api_url}/sdapi/v1/txt2img",
                     json=payload,
                     timeout=settings.image_timeout,
                 )
-                response.raise_for_status()
+                if not response.ok:
+                    detail = response.text.strip()
+                    try:
+                        body = response.json()
+                        detail = body.get("error") or body.get("details") or detail
+                    except ValueError:
+                        pass
+                    raise ImageGenerationError(
+                        f"SD API HTTP {response.status_code}: {detail or 'невідома помилка сервера'}"
+                    )
                 data = response.json()
+            except ImageGenerationError:
+                raise
             except requests.RequestException as exc:
                 raise ImageGenerationError(f"Помилка генерації сцени {scene.number}: {exc}") from exc
 
