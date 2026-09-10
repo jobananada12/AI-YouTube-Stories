@@ -9,9 +9,10 @@ env/
 .idea/
 .vscode/
 *.log
-.DS_Store
+.DS_Store/
 
-# Generated projects / media
+# Local TTS models and generated media
+tts/models/
 projects/*/audio/
 projects/*/images/
 projects/*/video/
