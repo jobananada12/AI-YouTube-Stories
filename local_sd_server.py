@@ -9,7 +9,7 @@ from pathlib import Path
 
 import torch
 from diffusers import StableDiffusionPipeline
-from PIL import Image
+from PIL import Image, ImageEnhance, ImageOps
 
 HOST = os.getenv("SD_SERVER_HOST", "127.0.0.1")
 PORT = int(os.getenv("SD_SERVER_PORT", "7860"))
@@ -20,12 +20,23 @@ MODEL_PATH = Path(os.getenv(
 
 FINAL_WIDTH = 1920
 FINAL_HEIGHT = 1080
-TILE_COLS = 4
-TILE_ROWS = 2
-TILE_WIDTH = FINAL_WIDTH // TILE_COLS
-# SD requires both dimensions to be divisible by 8. 540 is not divisible by 8,
-# so split the 1080px height into two valid heights: 536 + 544 = 1080.
-TILE_HEIGHTS = (536, 544)
+
+# IMPORTANT:
+# We never generate 8 independent SD images anymore. That was the source of
+# the 2x4 collage. Stable Diffusion creates ONE coherent composition at a
+# memory-safe base resolution, then ordinary image processing enlarges that
+# single image to the required 1920x1080 canvas.
+#
+# Override with SD_BASE_WIDTH / SD_BASE_HEIGHT when more VRAM is available.
+# Recommended SD 1.5 sizes:
+#   768x432  -> very low VRAM
+#   896x504  -> low/medium VRAM
+#   1024x576 -> about 6-8GB+ VRAM depending on settings
+SD_BASE_WIDTH = int(os.getenv("SD_BASE_WIDTH", "768"))
+SD_BASE_HEIGHT = int(os.getenv("SD_BASE_HEIGHT", "432"))
+
+if SD_BASE_WIDTH % 8 or SD_BASE_HEIGHT % 8:
+    raise RuntimeError("SD_BASE_WIDTH та SD_BASE_HEIGHT повинні ділитися на 8.")
 
 if not torch.cuda.is_available():
     raise RuntimeError("CUDA недоступна. Цей локальний генератор налаштований на GPU.")
@@ -34,7 +45,7 @@ print(f"Завантажую Stable Diffusion з: {MODEL_PATH}")
 print(f"CUDA: {torch.cuda.is_available()}")
 print(f"GPU: {torch.cuda.get_device_name(0)}")
 print(f"Фінальний розмір: {FINAL_WIDTH}x{FINAL_HEIGHT}")
-print(f"Режим: {TILE_COLS}x{TILE_ROWS} = 8 тайлів; ширина {TILE_WIDTH}px; висоти {TILE_HEIGHTS[0]}px + {TILE_HEIGHTS[1]}px")
+print(f"ЄДИНА генерація: {SD_BASE_WIDTH}x{SD_BASE_HEIGHT} -> upscale -> {FINAL_WIDTH}x{FINAL_HEIGHT}")
 
 pipe = StableDiffusionPipeline.from_pretrained(
     str(MODEL_PATH),
@@ -47,6 +58,7 @@ pipe.enable_attention_slicing("max")
 if hasattr(pipe.vae, "enable_slicing"):
     pipe.vae.enable_slicing()
 if hasattr(pipe.vae, "enable_tiling"):
+    # This is VAE tiling only. It does NOT create eight independent scenes.
     pipe.vae.enable_tiling()
 
 OFFLOAD_MODE = "none"
@@ -59,64 +71,47 @@ except Exception as exc:
     pipe = pipe.to("cuda")
 
 print(f"Stable Diffusion готовий. Memory mode: {OFFLOAD_MODE}")
-print("Кожна сцена: 8 окремих генерацій -> одна PNG 1920x1080.")
+print("Режим: 1 coherent scene -> 1 image -> grayscale -> upscale -> 1920x1080")
 
 
-def generate_tile(prompt: str, negative_prompt: str, steps: int, cfg: float, tile_index: int, tile_height: int) -> Image.Image:
-    print(f"  🧩 Тайл {tile_index}/8: {TILE_WIDTH}x{tile_height}")
+def generate_one_image(prompt: str, negative_prompt: str, steps: int, cfg: float) -> Image.Image:
+    print(f"  🎨 ОДНА SD генерація: {SD_BASE_WIDTH}x{SD_BASE_HEIGHT}")
     with torch.inference_mode():
         result = pipe(
             prompt=prompt,
             negative_prompt=negative_prompt,
-            width=TILE_WIDTH,
-            height=tile_height,
+            width=SD_BASE_WIDTH,
+            height=SD_BASE_HEIGHT,
             num_inference_steps=steps,
             guidance_scale=cfg,
             num_images_per_prompt=1,
         )
+
     image = result.images[0].convert("RGB")
     del result
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
-    if image.size != (TILE_WIDTH, tile_height):
+
+    if image.size != (SD_BASE_WIDTH, SD_BASE_HEIGHT):
         actual_size = image.size
         image.close()
-        raise RuntimeError(f"Тайл {tile_index} має неправильний розмір: {actual_size}")
+        raise RuntimeError(f"SD повернув неправильний розмір: {actual_size}")
+
     return image
 
 
-def build_full_image(prompt: str, negative_prompt: str, steps: int, cfg: float) -> Image.Image:
-    canvas = Image.new("RGB", (FINAL_WIDTH, FINAL_HEIGHT))
-    tiles = []
-    try:
-        for index in range(8):
-            col = index % TILE_COLS
-            row = index // TILE_COLS
-            tile_height = TILE_HEIGHTS[row]
-            tile_prompt = (
-                f"{prompt}, full scene detail, tile {index + 1} of 8, "
-                f"composition area {col + 1} of {TILE_COLS} horizontally and "
-                f"{row + 1} of {TILE_ROWS} vertically"
-            )
-            tile = generate_tile(tile_prompt, negative_prompt, steps, cfg, index + 1, tile_height)
-            tiles.append(tile)
-            canvas.paste(tile, (col * TILE_WIDTH, sum(TILE_HEIGHTS[:row])))
-            tile.close()
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-    finally:
-        for tile in tiles:
-            try:
-                tile.close()
-            except Exception:
-                pass
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+def make_final_image(image: Image.Image) -> Image.Image:
+    # Guarantee the visual language requested by the project even if SD adds
+    # a small amount of color despite the prompt.
+    gray = ImageOps.grayscale(image)
+    gray = ImageOps.autocontrast(gray, cutoff=1)
 
-    if canvas.size != (FINAL_WIDTH, FINAL_HEIGHT):
-        canvas.close()
-        raise RuntimeError(f"Фінальний кадр має неправильний розмір: {canvas.size}")
-    return canvas
+    # Preserve the exact 16:9 composition and enlarge the ONE existing image.
+    final = gray.resize((FINAL_WIDTH, FINAL_HEIGHT), Image.Resampling.LANCZOS)
+
+    # A restrained contrast boost makes graphite strokes clearer after upscale.
+    final = ImageEnhance.Contrast(final).enhance(1.08)
+    return final.convert("L")
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -132,9 +127,12 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/sdapi/v1/options":
             self._send_json(200, {
                 "sd_model_checkpoint": "stable-diffusion-v1-5-local",
-                "generation_mode": "8_tiles_1920x1080",
-                "tile_size": f"{TILE_WIDTH}x({TILE_HEIGHTS[0]}+{TILE_HEIGHTS[1]})",
+                "generation_mode": "single_coherent_image_upscale",
+                "base_generation_size": f"{SD_BASE_WIDTH}x{SD_BASE_HEIGHT}",
+                "final_size": f"{FINAL_WIDTH}x{FINAL_HEIGHT}",
                 "memory_mode": OFFLOAD_MODE,
+                "tile_generation": False,
+                "vae_tiling": True,
             })
             return
         self._send_json(404, {"error": "not found"})
@@ -159,18 +157,30 @@ class Handler(BaseHTTPRequestHandler):
                     f"Клієнт повинен запитувати фінальний розмір 1920x1080. Отримано {width}x{height}."
                 )
 
-            print(f"Генерую сцену 1920x1080 через 8 тайлів ({TILE_WIDTH}x{TILE_HEIGHTS[0]} та {TILE_WIDTH}x{TILE_HEIGHTS[1]}), steps={steps}, cfg={cfg}")
-            image = build_full_image(prompt, negative_prompt, steps, cfg)
+            if not prompt:
+                raise ValueError("Порожній prompt.")
+
+            print(
+                f"Генерую ОДНУ цілісну сцену: base={SD_BASE_WIDTH}x{SD_BASE_HEIGHT}, "
+                f"final={FINAL_WIDTH}x{FINAL_HEIGHT}, steps={steps}, cfg={cfg}"
+            )
+            image = generate_one_image(prompt, negative_prompt, steps, cfg)
             try:
-                buffer = io.BytesIO()
-                image.save(buffer, format="PNG")
-                encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
-            finally:
+                final_image = make_final_image(image)
                 image.close()
+                try:
+                    buffer = io.BytesIO()
+                    final_image.save(buffer, format="PNG", optimize=True)
+                    encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
+                finally:
+                    final_image.close()
+            except Exception:
+                image.close()
+                raise
 
             self._send_json(200, {
                 "images": [encoded],
-                "info": "1920x1080 assembled from 8 native tiles",
+                "info": "One coherent grayscale graphite scene, upscaled to 1920x1080",
             })
 
         except torch.cuda.OutOfMemoryError as exc:
@@ -178,10 +188,9 @@ class Handler(BaseHTTPRequestHandler):
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
             self._send_json(500, {
-                "error": "Навіть один тайл не помістився у VRAM.",
+                "error": "Навіть базове цілісне зображення не помістилося у VRAM.",
                 "details": str(exc),
-                "final_resolution": "1920x1080",
-                "tile_resolution": f"{TILE_WIDTH}x{TILE_HEIGHTS[0]}/{TILE_WIDTH}x{TILE_HEIGHTS[1]}",
+                "hint": "Зменш SD_BASE_WIDTH/SD_BASE_HEIGHT, наприклад до 640x360 або 512x288.",
             })
         except Exception as exc:
             print(f"ПОМИЛКА ГЕНЕРАЦІЇ: {exc}")
