@@ -20,19 +20,56 @@ from core.video_renderer import VideoRenderer
 def load_authored_content(content_path: str | Path) -> tuple[StorySpec, CharacterBible, ScenePlan]:
     """Load a hand-authored story and its ready-made image prompts.
 
-    Ollama is NOT used here. The story, scenes and visual prompts are already
-    authored and stored in the repository. The program only performs production:
-    TTS -> local Stable Diffusion -> FFmpeg video.
+    Supports both the normal StorySpec JSON shape and the repository's
+    wrapped format where the authored JSON is stored in a top-level
+    ``content`` string. Ollama is NOT used here.
     """
     path = Path(content_path)
     if not path.is_file():
         raise FileNotFoundError(f"Контент не знайдено: {path}")
 
-    data = json.loads(path.read_text(encoding="utf-8"))
-    story = StorySpec.model_validate({k: v for k, v in data.items() if k in StorySpec.model_fields})
+    raw = json.loads(path.read_text(encoding="utf-8"))
+
+    if isinstance(raw, dict) and isinstance(raw.get("content"), str):
+        try:
+            unwrapped = json.loads(raw["content"])
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"Поле content у {path} містить некоректний JSON: {exc}") from exc
+        if not isinstance(unwrapped, dict):
+            raise ValueError(f"Поле content у {path} має бути JSON-об'єктом")
+        data = unwrapped
+    else:
+        data = raw
+
+    if not isinstance(data, dict):
+        raise ValueError(f"Авторський контент у {path} має бути JSON-об'єктом")
+
+    scenes_data = data.get("scenes", [])
+    characters_data = data.get("characters", [])
+    protagonist = next((c for c in characters_data if c.get("role") == "protagonist"), {})
+
+    story_data = {k: v for k, v in data.items() if k in StorySpec.model_fields}
+    story_data.setdefault(
+        "protagonist_goal",
+        protagonist.get("motivation") or data.get("premise") or "Розкрити таємницю будинку.",
+    )
+    story_data.setdefault(
+        "central_conflict",
+        data.get("premise") or data.get("logline") or "Герой намагається розкрити приховану правду.",
+    )
+    story_data.setdefault("ending_type", "revelation")
+    if not story_data.get("outline"):
+        derived_outline = [
+            str(scene.get("title", "")).strip()
+            for scene in scenes_data
+            if str(scene.get("title", "")).strip()
+        ]
+        story_data["outline"] = derived_outline[:24]
+
+    story = StorySpec.model_validate(story_data)
 
     characters = []
-    for character in data.get("characters", []):
+    for character in characters_data:
         appearance = character.get("appearance", "")
         characters.append({
             "name": character.get("name", ""),
@@ -60,7 +97,7 @@ def load_authored_content(content_path: str | Path) -> tuple[StorySpec, Characte
     bible = CharacterBible.model_validate({"characters": characters})
 
     scenes = []
-    for item in data.get("scenes", []):
+    for item in scenes_data:
         scenes.append(SceneSpec.model_validate({
             "number": item["number"],
             "title": item.get("title", f"Scene {item['number']}"),
