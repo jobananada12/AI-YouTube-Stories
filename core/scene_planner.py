@@ -1,69 +1,51 @@
 import json
 import re
-from typing import Iterable
 
+from core.character_bible_schema import CharacterBible
 from core.llm import OllamaClient
 from core.scene_schema import ScenePlan, SceneSpec
 from core.story_schema import StorySpec
 
 
 SCENE_PROMPT = """
-Ти — режисер і сторібордист YouTube-історій.
+You are a strict storyboard planner for an original YouTube narration.
+Convert the supplied narration chunks into visual scene metadata.
 
-Отримуєш оригінальну історію та її готовий текст оповіді українською.
-Твоє завдання — перетворити текст на режисерський план сцен для подальшого
-створення AI-зображень, озвучки та монтажу.
+NON-NEGOTIABLE RULES:
+- The narration supplied for each candidate is authoritative. Never rewrite it.
+- Do not invent events, objects, characters, relationships, actions, locations or
+  emotions that are not supported by that narration and the story facts.
+- Use only characters explicitly present in the candidate narration. An absent
+  character MUST NOT be added just because they exist in the Character Bible.
+- visual_prompt MUST be clean English only. Never use Cyrillic, Ukrainian or Russian.
+- visual_prompt must describe only what is actually visible in this narration chunk.
+- Do not add cinematic events, props or background people merely to make the image
+  more interesting.
+- For a character that is present, copy the exact English image_prompt_anchor from
+  the Character Bible and then add only the visible action, setting, lighting and
+  composition supported by the narration.
+- Do not mention real people, actors, franchises, copyrighted characters or living artists.
+- Preserve the candidate order exactly. Return exactly one scene for every candidate.
+- Keep titles, purpose, mood and continuity notes concise.
+- estimated_duration_seconds is only an estimate; later TTS timing is authoritative.
+- Return ONLY valid JSON. No markdown and no explanation.
 
-ВАЖЛИВІ ПРАВИЛА:
-- Історія повністю оригінальна. Не копіюй і не імітуй відомі фільми, книги,
-  ігри, мультфільми, авторів або YouTube-канали.
-- Не вигадуй нових подій, яких немає в наданій оповіді.
-- Поле narration має містити ДОСЛІВНО відповідний фрагмент наданого тексту,
-  без перефразування, скорочення чи додавання.
-- Зберігай порядок усіх фрагментів.
-- Кожен фрагмент має належати лише одній сцені.
-- visual_prompt — детальний опис кадру для генератора зображень: персонажі,
-  зовнішність, дія, локація, освітлення, атмосфера, композиція. Не називай
-  реальних акторів, відомі франшизи чи конкретні художні стилі живих авторів.
-- Підтримуй візуальну послідовність персонажів і локацій.
-- Орієнтуйся приблизно на 25–50 секунд оповіді на сцену, але не ламай речення.
-- Відповідь — ТІЛЬКИ валідний JSON без markdown і без пояснень.
+JSON FORMAT:
+{"scenes":[{"number":1,"title":"...","purpose":"...","narration":"exact candidate text","estimated_duration_seconds":35,"characters":["..."],"location":"...","time_of_day":"...","action":"...","visual_prompt":"clean English prompt","mood":"...","continuity_notes":"...","transition":"cut"}]}
 
-Формат:
-{
-  "scenes": [
-    {
-      "number": 1,
-      "title": "...",
-      "purpose": "...",
-      "narration": "дослівний фрагмент",
-      "estimated_duration_seconds": 35,
-      "characters": ["..."],
-      "location": "...",
-      "time_of_day": "...",
-      "action": "...",
-      "visual_prompt": "...",
-      "mood": "...",
-      "continuity_notes": "...",
-      "transition": "cut"
-    }
-  ]
-}
-
-ІСТОРІЯ:
+STORY FACTS:
 {story_json}
 
-ТЕКСТ ОПОВІДІ:
+CHARACTER BIBLE:
+{bible_json}
+
+NARRATION CANDIDATES:
 {script}
 """
 
 
-def _normalize_text(text: str) -> str:
-    return re.sub(r"\s+", " ", text).strip()
-
-
 def split_script(script: str, target_words: int = 85) -> list[str]:
-    """Split narration into natural chunks without rewriting the source text."""
+    """Split narration into natural chunks without rewriting source text."""
     paragraphs = [p.strip() for p in re.split(r"\n\s*\n", script) if p.strip()]
     chunks: list[str] = []
     current: list[str] = []
@@ -77,7 +59,6 @@ def split_script(script: str, target_words: int = 85) -> list[str]:
             words = 0
         current.append(paragraph)
         words += p_words
-
         if words >= target_words:
             chunks.append("\n\n".join(current))
             current = []
@@ -92,24 +73,31 @@ class ScenePlanner:
     def __init__(self, client: OllamaClient | None = None):
         self.client = client or OllamaClient()
 
-    def plan(self, story: StorySpec, script: str, minutes: int = 30) -> ScenePlan:
-        # First create natural chunks. The LLM then enriches them with visual metadata.
+    def plan(
+        self,
+        story: StorySpec,
+        script: str,
+        minutes: int = 30,
+        character_bible: CharacterBible | None = None,
+    ) -> ScenePlan:
         chunks = split_script(script)
-        chunked_script = "\n\n--- СЦЕНА-КАНДИДАТ ---\n\n".join(chunks)
+        chunked_script = "\n\n--- SCENE CANDIDATE ---\n\n".join(chunks)
+
+        if character_bible is not None:
+            bible_json = json.dumps(character_bible.model_dump(), ensure_ascii=False, indent=2)
+        else:
+            bible_json = '{"characters":[]}'
 
         prompt = SCENE_PROMPT.format(
             story_json=json.dumps(story.model_dump(), ensure_ascii=False, indent=2),
+            bible_json=bible_json,
             script=chunked_script,
         )
         raw = self.client.generate(prompt)
         data = self._parse_json(raw)
-
         scenes = [SceneSpec.model_validate(item) for item in data.get("scenes", [])]
         if not scenes:
             raise ValueError("Модель не повернула жодної сцени")
-
-        # Keep source narration authoritative. This prevents the LLM from silently
-        # changing the script that will later be sent to TTS.
         if len(scenes) != len(chunks):
             raise ValueError(
                 f"Кількість сцен ({len(scenes)}) не збігається з кількістю фрагментів ({len(chunks)})."
@@ -119,6 +107,9 @@ class ScenePlanner:
             scene.number = index
             scene.narration = source
             scene.estimated_duration_seconds = max(1, round(len(source.split()) / 2.3))
+            # A final defensive check: generated SD prompts must never contain Cyrillic.
+            if re.search(r"[\u0400-\u04FF]", scene.visual_prompt or ""):
+                raise ValueError(f"Сцена {index}: visual_prompt містить кирилицю")
 
         total = sum(scene.estimated_duration_seconds for scene in scenes)
         return ScenePlan(
