@@ -1,16 +1,16 @@
 {
   "engine": "piper",
-  "voice": "uk_UA-oleksa-high",
-  "voice_role": "Ukrainian male narrator",
-  "style": "warm, low, calm, clear, cinematic storyteller",
+  "voice": "uk_UA-mykyta-high",
+  "voice_role": "Ukrainian mature male narrator",
+  "style": "warm, deep, calm, gentle, slow, clear, cinematic storyteller",
   "language": "uk_UA",
-  "speed": 0.96,
-  "sentence_silence": 0.28,
-  "paragraph_silence": 0.65,
+  "speed": 0.80,
+  "sentence_silence": 0.40,
+  "paragraph_silence": 0.90,
   "sample_rate": 22050,
   "output_format": "wav",
   "model_dir": "tts/models",
   "output_dir": "projects/_tts_preview",
-  "alternative_voice": "uk_UA-mykyta-high",
+  "alternative_voice": "uk_UA-oleksa-high",
   "note": "This is a distinct synthetic narrator voice. It is not intended to clone or impersonate the YouTube reference speaker."
 }
