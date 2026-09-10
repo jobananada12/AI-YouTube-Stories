@@ -22,17 +22,20 @@ class ImageGenerator:
         self.model = model or settings.image_model
 
     def _prompt(self, scene, bible: CharacterBible) -> str:
+        # scene.visual_prompt is validated by ScenePlanner and must be English-only.
+        # Character anchors are appearance canon and are appended only for characters
+        # explicitly present in this scene.
         anchors = []
         for name in scene.characters:
             match = next((c for c in bible.characters if c.name == name), None)
-            if match:
+            if match and match.image_prompt_anchor:
                 anchors.append(match.image_prompt_anchor)
-        return (
-            "Оригінальна вигадана сцена для YouTube-історії. "
-            "Кінематографічна композиція, природне освітлення, деталізоване середовище, "
-            "виразні емоції, 16:9. Не використовуй реальних людей, відомих персонажів, "
-            "франшизи або імена художників. " + scene.visual_prompt + " " + " ".join(anchors)
-        )
+
+        parts = [scene.visual_prompt.strip()]
+        if anchors:
+            parts.extend(anchors)
+        parts.append("cinematic still, realistic lighting, detailed environment, 16:9 composition")
+        return ", ".join(p for p in parts if p)
 
     def _check_server(self) -> None:
         try:
@@ -51,7 +54,7 @@ class ImageGenerator:
             raise ImageGenerationError("IMAGE_API_URL не задано.")
 
         self._check_server()
-        result = []
+        result: list[Path] = []
         total = len(scene_plan.scenes)
 
         for index, scene in enumerate(scene_plan.scenes, 1):
@@ -81,9 +84,7 @@ class ImageGenerator:
                 response.raise_for_status()
                 data = response.json()
             except requests.RequestException as exc:
-                raise ImageGenerationError(
-                    f"Помилка генерації сцени {scene.number}: {exc}"
-                ) from exc
+                raise ImageGenerationError(f"Помилка генерації сцени {scene.number}: {exc}") from exc
 
             images = data.get("images") or []
             if not images:
