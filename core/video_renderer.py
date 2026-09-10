@@ -54,6 +54,14 @@ class VideoRenderer:
         if current >= total:
             print()
 
+    @staticmethod
+    def _find_scene_image(images_dir: Path, scene_number: int) -> Path | None:
+        for extension in (".png", ".jpg", ".jpeg", ".webp"):
+            candidate = images_dir / f"scene_{scene_number:03d}{extension}"
+            if candidate.exists():
+                return candidate
+        return None
+
     def _normalize_image(self, image: Path, output: Path) -> None:
         # Never stretch the source image: preserve its aspect ratio and pad to exact 1920x1080.
         self._run([
@@ -64,7 +72,6 @@ class VideoRenderer:
 
     def _render_scene(self, image: Path, audio: Path, output: Path, duration: float) -> None:
         # The image remains visible for the exact narration duration plus a silent 0.25s tail.
-        # apad makes that tail real silence in the scene audio, so scene boundaries stay aligned.
         self._run([
             self.ffmpeg_bin, "-y",
             "-loop", "1", "-i", str(image),
@@ -102,10 +109,10 @@ class VideoRenderer:
 
         print(f"Рендер сцен: {total_scenes} шт. | 1920x1080 | 30 FPS")
         for index, scene in enumerate(scene_plan.scenes, start=1):
-            image = project_dir / "images" / f"scene_{scene.number:03d}.png"
+            image = self._find_scene_image(project_dir / "images", scene.number)
             audio = project_dir / "audio" / f"narration_{scene.number:03d}.wav"
-            if not image.exists():
-                raise VideoRenderError(f"Відсутнє зображення сцени {scene.number}: {image}")
+            if image is None:
+                raise VideoRenderError(f"Відсутнє зображення сцени {scene.number}: scene_{scene.number:03d}.png/.jpg/.jpeg/.webp")
             if not audio.exists():
                 raise VideoRenderError(f"Відсутня озвучка сцени {scene.number}: {audio}")
 
