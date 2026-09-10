@@ -1,31 +1,83 @@
-__pycache__/
-*.py[cod]
+﻿# =========================
+# Python environments
+# =========================
 .venv/
 venv/
 env/
-.env
-.env.*
-!.env.example
-.idea/
-.vscode/
-*.log
-.DS_Store/
+.tts_uk_venv/
+.uktts_venv/
+.styletts2_venv/
 
-# Local TTS models and generated media
+# =========================
+# Python cache
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+
+# =========================
+# Build / packaging
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Local models / checkpoints
+# =========================
+models/
 tts/models/
-projects/*/audio/
-projects/*/images/
-projects/*/video/
-projects/*/renders/
-projects/*/cache/
-projects/*/tmp/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.ark
+*.npz
+
+# =========================
+# Generated video / audio
+# =========================
+output/
+outputs/
+final/
+render_work/
+generated_scenes/
+projects/
+
+tts/chunks/
+tts/narration_parts/
+tts/tests/
+tts/uktts_tests/
+
 *.mp3
 *.wav
-*.ogg
+*.webm
 *.mp4
-*.mov
-*.mkv
-*.png
-*.jpg
-*.jpeg
-*.webp
+
+# =========================
+# Generated data
+# =========================
+scene_timing.json
+whisper_transcription.json
+
+# =========================
+# Secrets
+# =========================
+.env
+*.env
+tts/google-tts-key.json
+*google*key*.json
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS
+# =========================
+Thumbs.db
+.DS_Store
+
+test_sd.png
