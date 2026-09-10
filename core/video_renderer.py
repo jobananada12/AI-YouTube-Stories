@@ -44,7 +44,18 @@ class VideoRenderer:
         except (wave.Error, OSError, ValueError) as exc:
             raise VideoRenderError(f"Не вдалося визначити тривалість WAV: {path}: {exc}") from exc
 
+    @staticmethod
+    def _progress(current: int, total: int, label: str) -> None:
+        width = 32
+        ratio = current / max(total, 1)
+        filled = int(width * ratio)
+        bar = "#" * filled + "-" * (width - filled)
+        print(f"\r{label}: [{bar}] {current}/{total} ({ratio * 100:5.1f}%)", end="", flush=True)
+        if current >= total:
+            print()
+
     def _normalize_image(self, image: Path, output: Path) -> None:
+        # Never stretch the source image: preserve its aspect ratio and pad to exact 1920x1080.
         self._run([
             self.ffmpeg_bin, "-y", "-i", str(image),
             "-vf", f"scale={self.width}:{self.height}:force_original_aspect_ratio=decrease,pad={self.width}:{self.height}:(ow-iw)/2:(oh-ih)/2,format=yuv420p",
@@ -52,7 +63,7 @@ class VideoRenderer:
         ])
 
     def _render_scene(self, image: Path, audio: Path, output: Path, duration: float) -> None:
-        # The image is held for the exact narration duration plus a tiny silent visual tail.
+        # The image remains visible for the exact narration duration plus a silent 0.25s tail.
         self._run([
             self.ffmpeg_bin, "-y",
             "-loop", "1", "-i", str(image),
@@ -86,8 +97,10 @@ class VideoRenderer:
 
         scene_files: list[Path] = []
         timing: list[dict] = []
+        total_scenes = len(scene_plan.scenes)
 
-        for scene in scene_plan.scenes:
+        print(f"Рендер сцен: {total_scenes} шт. | 1920x1080 | 30 FPS")
+        for index, scene in enumerate(scene_plan.scenes, start=1):
             image = project_dir / "images" / f"scene_{scene.number:03d}.png"
             audio = project_dir / "audio" / f"narration_{scene.number:03d}.wav"
             if not image.exists():
@@ -111,10 +124,12 @@ class VideoRenderer:
                 "video_seconds": round(duration + self.tail_seconds, 3),
                 "tail_seconds": self.tail_seconds,
             })
+            self._progress(index, total_scenes, "Сцени")
 
         if not scene_files:
             raise VideoRenderError("Немає сцен для рендерингу")
 
+        print("Збираю відео без чорних кадрів...")
         concat_file = work_dir / "scenes.txt"
         with concat_file.open("w", encoding="utf-8", newline="\n") as f:
             for scene_file in scene_files:
@@ -144,12 +159,13 @@ class VideoRenderer:
         else:
             audio_input = narration_audio
 
-        silent_concat = work_dir / "visual_concat.mp4"
         self._run([
             self.ffmpeg_bin, "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file),
-            "-c", "copy", str(silent_concat),
+            "-c", "copy", str(work_dir / "visual_concat.mp4"),
         ])
 
+        silent_concat = work_dir / "visual_concat.mp4"
+        print("Нормалізую фінальний звук: -16 LUFS / -1.5 dBTP...")
         self._run([
             self.ffmpeg_bin, "-y", "-i", str(silent_concat), "-i", str(audio_input),
             "-map", "0:v:0", "-map", "1:a:0",
@@ -157,6 +173,7 @@ class VideoRenderer:
             "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
             "-movflags", "+faststart", str(output),
         ])
+        print(f"Готово: {output}")
 
         manifest = {
             "output": str(output),
