@@ -7,26 +7,28 @@ from core.story_schema import StorySpec
 
 
 CHARACTER_BIBLE_PROMPT = '''
-Ти — художник персонажів для оригінального YouTube-проєкту.
-Створи Character Bible для ВСІХ персонажів наданої історії.
+You are the character continuity designer for an original YouTube story.
+Create a Character Bible for ALL characters in the supplied story.
 
-Мета: один і той самий персонаж повинен мати максимально стабільну зовнішність
-на всіх майбутніх AI-зображеннях.
+The goal is stable image generation: the same character must keep the same face,
+body, hair, age, clothing and distinctive features in every future Stable Diffusion shot.
 
-ПРАВИЛА:
-- Не копіюй зовнішність реальних людей або відомих персонажів.
-- Не посилайся на акторів, фільми, ігри, книги, франшизи чи живих художників.
-- Не змінюй ім'я, роль або базову зовнішність персонажа.
-- Конкретно зафіксуй волосся, очі, обличчя, статуру, вік та одяг.
-- Вкажи унікальні прикмети та постійний одяг.
-- image_prompt_anchor — детальний стабільний опис для кожного майбутнього кадру.
-- Усі текстові значення українською.
-- Відповідь — ТІЛЬКИ валідний JSON.
+RULES:
+- Do not copy real people or famous fictional characters.
+- Do not mention actors, films, games, books, franchises or living artists.
+- Never invent a character that is not present in the story.
+- Keep each supplied character name and role unchanged.
+- Fix concrete visual traits: age, presentation, height, build, skin, face, eyes,
+  eyebrows, nose, lips, hair, facial hair, clothing, footwear and accessories.
+- image_prompt_anchor MUST be written in clean English and be directly usable in a
+  Stable Diffusion prompt. It must describe appearance only, not events or actions.
+- All other text values may be Ukrainian; image_prompt_anchor must be English.
+- Return ONLY valid JSON.
 
-Формат:
+FORMAT:
 {"characters":[{"name":"...","role":"...","age":"...","gender_presentation":"...","height":"...","build":"...","skin":"...","face":"...","eyes":"...","eyebrows":"...","nose":"...","lips":"...","hair":"...","facial_hair":"...","signature_clothing":"...","footwear":"...","accessories":"...","distinctive_features":"...","typical_expression":"...","color_palette":["..."],"image_prompt_anchor":"..."}]}
 
-ІСТОРІЯ:
+STORY:
 {story_json}
 '''
 
@@ -34,8 +36,8 @@ CHARACTER_BIBLE_PROMPT = '''
 def _parse_json(raw: str) -> dict:
     text = raw.strip()
     if text.startswith('```'):
-        text = re.sub(r'^```(?:json)?\s*', '', text)
-        text = re.sub(r'\s*```$', '', text)
+        text = re.sub(r'^```(?:json)?\\s*', '', text)
+        text = re.sub(r'\\s*```$', '', text)
     try:
         return json.loads(text)
     except json.JSONDecodeError as exc:
