@@ -11,8 +11,10 @@ class Settings:
     ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
     filmdubua_path: str = os.getenv("FILMDUBUA_PATH", r"C:\FilmDubUA")
     filmdubua_voice: str = os.getenv("FILMDUBUA_VOICE", "")
-    filmdubua_voice_profile: str = os.getenv("FILMDUBUA_VOICE_PROFILE", "neutral")
-    tts_rate: int = int(os.getenv("TTS_RATE", "170"))
+    filmdubua_voice_profile: str = os.getenv("FILMDUBUA_VOICE_PROFILE", "mykyta")
+    tts_voice: str = os.getenv("TTS_VOICE", "uk_UA-mykyta-high")
+    tts_speed: float = float(os.getenv("TTS_SPEED", "0.80"))
+    tts_rate: int = int(os.getenv("TTS_RATE", "136"))
     tts_volume: float = float(os.getenv("TTS_VOLUME", "1.0"))
 
     # Local AI image generation. Generation itself is always requested at the
