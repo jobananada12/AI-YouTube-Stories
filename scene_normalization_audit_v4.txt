@@ -1,0 +1,9 @@
+AI YouTube Stories — Scene Normalization V4
+Source: structured fields only; legacy scene.prompt ignored.
+Universal/story-agnostic conservative normalization.
+
+SCENE 1: PASS (attempts=1)
+SCENE 2: PASS (attempts=1)
+SCENE 3: PASS (attempts=1)
+
+TOTAL=3 PASS=3 FAIL=0
