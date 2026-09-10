@@ -15,7 +15,7 @@ class ImageGenerationError(RuntimeError):
 
 
 class ImageGenerator:
-    """Generate one 1920x1080 coherent scene through the local 8-tile SD API."""
+    """Generate one complete 16:9 scene through the local SD server."""
 
     def __init__(self, api_url: str | None = None, model: str | None = None):
         self.api_url = (api_url or settings.image_api_url).rstrip("/")
@@ -29,9 +29,11 @@ class ImageGenerator:
                 anchors.append(match.image_prompt_anchor)
 
         parts = [
-            "ONE SINGLE CONTINUOUS IMAGE",
-            "ONE SINGLE SCENE, ONE COHERENT CINEMATIC COMPOSITION",
-            "the entire final frame is one connected environment, not separate pictures",
+            "ONE SINGLE COMPLETE IMAGE",
+            "ONE SINGLE CONTINUOUS SCENE",
+            "ONE COHERENT CINEMATIC COMPOSITION",
+            "the entire frame is one connected environment, not separate pictures",
+            "wide 16:9 composition",
             "black and white graphite pencil drawing",
             "hand-drawn graphite pencil sketch",
             "pure monochrome grayscale",
@@ -41,12 +43,10 @@ class ImageGenerator:
             "detailed paper texture",
             "illustrated drawing, not a photograph",
             "consistent character appearance, perspective, lighting and architecture",
-            "objects and characters continue naturally across image boundaries",
             scene.visual_prompt.strip(),
         ]
         if anchors:
             parts.extend(anchors)
-        parts.append("16:9 composition")
         return ", ".join(p for p in parts if p)
 
     def _check_server(self) -> None:
@@ -55,19 +55,21 @@ class ImageGenerator:
             response.raise_for_status()
             options = response.json()
             mode = options.get("generation_mode", "unknown")
-            memory = options.get("memory_mode", "unknown")
-            tile_size = options.get("tile_size", "unknown")
+            generation = options.get("generation_size", "unknown")
             final = options.get("final_size", "unknown")
-            tiles = options.get("tile_grid", "unknown")
+            upscale = options.get("upscale_final", False)
+            memory = options.get("memory_mode", "unknown")
             print(
-                f"  🧠 SD server: {mode}, tiles={tiles}, tile={tile_size}, "
-                f"final={final}, memory={memory}"
+                f"  🧠 SD server: {mode}, generate={generation}, "
+                f"final={final}, upscale={upscale}, memory={memory}"
             )
             if final != "1920x1080":
-                raise ImageGenerationError("SD server не налаштований на фінальний canvas 1920x1080.")
-            if mode != "ONE_SCENE_8_CONTEXT_TILES" or tiles != "4x2":
+                raise ImageGenerationError("SD server не налаштований на фінальний розмір 1920x1080.")
+            if generation != "768x432":
+                raise ImageGenerationError("SD server не налаштований на генерацію 768x432 (16:9).")
+            if mode != "ONE_COMPLETE_SCENE_UPSCALE" or not upscale:
                 raise ImageGenerationError(
-                    "SD server не працює у потрібному режимі ONE_SCENE_8_CONTEXT_TILES (4x2)."
+                    "SD server не працює у режимі одна повна сцена 16:9 -> upscale."
                 )
         except ImageGenerationError:
             raise
@@ -92,14 +94,14 @@ class ImageGenerator:
                 "prompt": self._prompt(scene, bible),
                 "negative_prompt": (
                     "color, colored, photorealistic, photograph, photo, 3d render, CGI, "
-                    "collage, grid, 2x2, 2x4, 4x2, multiple panels, separate panels, "
-                    "split screen, contact sheet, storyboard, comic panels, diptych, triptych, "
+                    "collage, grid, multiple panels, separate pictures, split screen, "
+                    "contact sheet, storyboard, comic panels, diptych, triptych, "
                     "multiple images, multiple scenes, duplicated character, repeated character, "
-                    "borders, frames, dividers, hard seams, visible seams, tiled layout, "
-                    "text, watermark, logo, low quality"
+                    "borders, frames, dividers, seams, tiled layout, text, watermark, logo, "
+                    "low quality, blurry, deformed, cropped subject"
                 ),
-                # The server always returns exactly one final 1920x1080 canvas.
-                # Internally it creates 8 overlapping VRAM-safe tiles and merges them.
+                # Client asks for the final canvas. The local server generates one
+                # complete 768x432 composition and upscales that same image to 1920x1080.
                 "width": settings.image_width,
                 "height": settings.image_height,
                 "steps": settings.image_steps,
@@ -108,18 +110,16 @@ class ImageGenerator:
                 "n_iter": 1,
                 "seed": 100000 + int(scene.number),
             }
-            if self.model:
-                payload["override_settings"] = {"sd_model_checkpoint": self.model}
 
             print(
-                f"  🖼 Сцена {index}/{total}: 8 частин ОДНІЄЇ сцени -> "
-                f"цілісний {settings.image_width}x{settings.image_height} без фінального upscale..."
+                f"  🖼 Сцена {index}/{total}: ОДНА ПОВНА КАРТИНА "
+                "768x432 -> 1920x1080, без тайлів і без обрізання..."
             )
             try:
                 response = requests.post(
                     f"{self.api_url}/sdapi/v1/txt2img",
                     json=payload,
-                    timeout=settings.image_timeout * 8,
+                    timeout=settings.image_timeout,
                 )
                 if not response.ok:
                     detail = response.text.strip()
