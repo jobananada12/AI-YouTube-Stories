@@ -15,12 +15,12 @@ class Settings:
     tts_rate: int = int(os.getenv("TTS_RATE", "170"))
     tts_volume: float = float(os.getenv("TTS_VOLUME", "1.0"))
 
-    # Local AI image generation. GT 1030 is VRAM-constrained, so the defaults
-    # deliberately generate a small 16:9 frame and let FFmpeg upscale it later.
+    # Local AI image generation. Generation itself is always requested at the
+    # final 1920x1080 resolution. There is intentionally no fallback upscale.
     image_api_url: str = os.getenv("IMAGE_API_URL", "http://127.0.0.1:7860")
     image_model: str = os.getenv("IMAGE_MODEL", "")
-    image_width: int = int(os.getenv("IMAGE_WIDTH", "640"))
-    image_height: int = int(os.getenv("IMAGE_HEIGHT", "360"))
+    image_width: int = int(os.getenv("IMAGE_WIDTH", "1920"))
+    image_height: int = int(os.getenv("IMAGE_HEIGHT", "1080"))
     image_steps: int = int(os.getenv("IMAGE_STEPS", "16"))
     image_cfg_scale: float = float(os.getenv("IMAGE_CFG_SCALE", "7.0"))
     image_timeout: int = int(os.getenv("IMAGE_TIMEOUT", "900"))
