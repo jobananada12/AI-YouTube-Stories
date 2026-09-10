@@ -23,7 +23,9 @@ FINAL_HEIGHT = 1080
 TILE_COLS = 4
 TILE_ROWS = 2
 TILE_WIDTH = FINAL_WIDTH // TILE_COLS
-TILE_HEIGHT = FINAL_HEIGHT // TILE_ROWS
+# SD requires both dimensions to be divisible by 8. 540 is not divisible by 8,
+# so split the 1080px height into two valid heights: 536 + 544 = 1080.
+TILE_HEIGHTS = (536, 544)
 
 if not torch.cuda.is_available():
     raise RuntimeError("CUDA недоступна. Цей локальний генератор налаштований на GPU.")
@@ -32,7 +34,7 @@ print(f"Завантажую Stable Diffusion з: {MODEL_PATH}")
 print(f"CUDA: {torch.cuda.is_available()}")
 print(f"GPU: {torch.cuda.get_device_name(0)}")
 print(f"Фінальний розмір: {FINAL_WIDTH}x{FINAL_HEIGHT}")
-print(f"Режим: {TILE_COLS}x{TILE_ROWS} = 8 тайлів по {TILE_WIDTH}x{TILE_HEIGHT}")
+print(f"Режим: {TILE_COLS}x{TILE_ROWS} = 8 тайлів; ширина {TILE_WIDTH}px; висоти {TILE_HEIGHTS[0]}px + {TILE_HEIGHTS[1]}px")
 
 pipe = StableDiffusionPipeline.from_pretrained(
     str(MODEL_PATH),
@@ -41,7 +43,6 @@ pipe = StableDiffusionPipeline.from_pretrained(
     safety_checker=None,
 )
 
-# Максимальне зниження пікового використання VRAM без зміни розміру тайла.
 pipe.enable_attention_slicing("max")
 if hasattr(pipe.vae, "enable_slicing"):
     pipe.vae.enable_slicing()
@@ -51,8 +52,6 @@ if hasattr(pipe.vae, "enable_tiling"):
 OFFLOAD_MODE = "none"
 try:
     import accelerate  # noqa: F401
-    # Sequential offload економніший за model_cpu_offload на 2 GB VRAM.
-    # Компоненти моделі переміщуються на GPU лише тоді, коли реально потрібні.
     pipe.enable_sequential_cpu_offload()
     OFFLOAD_MODE = "sequential_cpu_offload"
 except Exception as exc:
@@ -63,14 +62,14 @@ print(f"Stable Diffusion готовий. Memory mode: {OFFLOAD_MODE}")
 print("Кожна сцена: 8 окремих генерацій -> одна PNG 1920x1080.")
 
 
-def generate_tile(prompt: str, negative_prompt: str, steps: int, cfg: float, tile_index: int) -> Image.Image:
-    print(f"  🧩 Тайл {tile_index}/8: {TILE_WIDTH}x{TILE_HEIGHT}")
+def generate_tile(prompt: str, negative_prompt: str, steps: int, cfg: float, tile_index: int, tile_height: int) -> Image.Image:
+    print(f"  🧩 Тайл {tile_index}/8: {TILE_WIDTH}x{tile_height}")
     with torch.inference_mode():
         result = pipe(
             prompt=prompt,
             negative_prompt=negative_prompt,
             width=TILE_WIDTH,
-            height=TILE_HEIGHT,
+            height=tile_height,
             num_inference_steps=steps,
             guidance_scale=cfg,
             num_images_per_prompt=1,
@@ -79,9 +78,10 @@ def generate_tile(prompt: str, negative_prompt: str, steps: int, cfg: float, til
     del result
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
-    if image.size != (TILE_WIDTH, TILE_HEIGHT):
+    if image.size != (TILE_WIDTH, tile_height):
+        actual_size = image.size
         image.close()
-        raise RuntimeError(f"Тайл {tile_index} має неправильний розмір: {image.size}")
+        raise RuntimeError(f"Тайл {tile_index} має неправильний розмір: {actual_size}")
     return image
 
 
@@ -92,14 +92,15 @@ def build_full_image(prompt: str, negative_prompt: str, steps: int, cfg: float) 
         for index in range(8):
             col = index % TILE_COLS
             row = index // TILE_COLS
+            tile_height = TILE_HEIGHTS[row]
             tile_prompt = (
                 f"{prompt}, full scene detail, tile {index + 1} of 8, "
                 f"composition area {col + 1} of {TILE_COLS} horizontally and "
                 f"{row + 1} of {TILE_ROWS} vertically"
             )
-            tile = generate_tile(tile_prompt, negative_prompt, steps, cfg, index + 1)
+            tile = generate_tile(tile_prompt, negative_prompt, steps, cfg, index + 1, tile_height)
             tiles.append(tile)
-            canvas.paste(tile, (col * TILE_WIDTH, row * TILE_HEIGHT))
+            canvas.paste(tile, (col * TILE_WIDTH, sum(TILE_HEIGHTS[:row])))
             tile.close()
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
@@ -132,7 +133,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json(200, {
                 "sd_model_checkpoint": "stable-diffusion-v1-5-local",
                 "generation_mode": "8_tiles_1920x1080",
-                "tile_size": f"{TILE_WIDTH}x{TILE_HEIGHT}",
+                "tile_size": f"{TILE_WIDTH}x({TILE_HEIGHTS[0]}+{TILE_HEIGHTS[1]})",
                 "memory_mode": OFFLOAD_MODE,
             })
             return
@@ -158,7 +159,7 @@ class Handler(BaseHTTPRequestHandler):
                     f"Клієнт повинен запитувати фінальний розмір 1920x1080. Отримано {width}x{height}."
                 )
 
-            print(f"Генерую сцену 1920x1080 через 8 тайлів {TILE_WIDTH}x{TILE_HEIGHT}, steps={steps}, cfg={cfg}")
+            print(f"Генерую сцену 1920x1080 через 8 тайлів ({TILE_WIDTH}x{TILE_HEIGHTS[0]} та {TILE_WIDTH}x{TILE_HEIGHTS[1]}), steps={steps}, cfg={cfg}")
             image = build_full_image(prompt, negative_prompt, steps, cfg)
             try:
                 buffer = io.BytesIO()
@@ -177,10 +178,10 @@ class Handler(BaseHTTPRequestHandler):
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
             self._send_json(500, {
-                "error": "Навіть один тайл 480x540 не помістився у VRAM.",
+                "error": "Навіть один тайл не помістився у VRAM.",
                 "details": str(exc),
                 "final_resolution": "1920x1080",
-                "tile_resolution": f"{TILE_WIDTH}x{TILE_HEIGHT}",
+                "tile_resolution": f"{TILE_WIDTH}x{TILE_HEIGHTS[0]}/{TILE_WIDTH}x{TILE_HEIGHTS[1]}",
             })
         except Exception as exc:
             print(f"ПОМИЛКА ГЕНЕРАЦІЇ: {exc}")
