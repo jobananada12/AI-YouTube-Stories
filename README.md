@@ -9,7 +9,7 @@ Local-first studio for producing original long-form Ukrainian YouTube stories.
 3. Character Bible for visual consistency
 4. Scene/director plan
 5. Local AI scene images through an Automatic1111-compatible API
-6. Ukrainian narration through FilmDubUA/Piper
+6. Dedicated local Ukrainian narrator through Piper TTS
 7. Original procedural background music and optional SFX
 8. FFmpeg MP4 assembly
 9. 1280x720 YouTube thumbnail
@@ -17,6 +17,26 @@ Local-first studio for producing original long-form Ukrainian YouTube stories.
 11. Final validation and ZIP project package
 
 The pipeline is designed to avoid external copyrighted media. Generated media is created locally where configured; this does not constitute a legal guarantee against every possible copyright or platform claim.
+
+## Local narrator
+
+The project has its own narrator module in `tts/`. It is independent of FilmDubUA and keeps one stable Ukrainian male synthetic voice for future stories.
+
+Default voice: `uk_UA-oleksa-high`.
+
+Setup:
+
+```powershell
+.\\tts\\setup_tts.ps1
+```
+
+Test:
+
+```powershell
+.\\.venv\\Scripts\\python.exe tts\\generate_narration.py --input narration_ua_30min.txt --output projects\\_tts_preview\\narration_ua.wav
+```
+
+The narrator is a distinct synthetic voice and is not intended to clone or impersonate a real reference speaker.
 
 ## Configuration
 
