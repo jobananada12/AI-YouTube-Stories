@@ -64,6 +64,7 @@ class VideoRenderer:
 
     def _render_scene(self, image: Path, audio: Path, output: Path, duration: float) -> None:
         # The image remains visible for the exact narration duration plus a silent 0.25s tail.
+        # apad makes that tail real silence in the scene audio, so scene boundaries stay aligned.
         self._run([
             self.ffmpeg_bin, "-y",
             "-loop", "1", "-i", str(image),
@@ -129,45 +130,35 @@ class VideoRenderer:
         if not scene_files:
             raise VideoRenderError("Немає сцен для рендерингу")
 
-        print("Збираю відео без чорних кадрів...")
+        print("Збираю відео та аудіо без чорних кадрів...")
         concat_file = work_dir / "scenes.txt"
         with concat_file.open("w", encoding="utf-8", newline="\n") as f:
             for scene_file in scene_files:
                 safe_path = scene_file.resolve().as_posix().replace("'", "'\\''")
                 f.write(f"file '{safe_path}'\n")
 
-        narration_audio = work_dir / "narration.wav"
-        audio_list = work_dir / "audio.txt"
-        with audio_list.open("w", encoding="utf-8", newline="\n") as f:
-            for scene in scene_plan.scenes:
-                audio = (project_dir / "audio" / f"narration_{scene.number:03d}.wav").resolve().as_posix().replace("'", "'\\''")
-                f.write(f"file '{audio}'\n")
-
+        visual_concat = work_dir / "visual_concat.mp4"
         self._run([
-            self.ffmpeg_bin, "-y", "-f", "concat", "-safe", "0", "-i", str(audio_list),
-            "-ar", "48000", "-ac", "2", "-c:a", "pcm_s16le", str(narration_audio),
+            self.ffmpeg_bin, "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file),
+            "-c", "copy", str(visual_concat),
         ])
 
+        # Use the audio embedded in the concatenated scene videos. Each scene already
+        # contains its exact WAV duration plus the required 0.25s silent tail.
         if music_file and Path(music_file).exists():
             mixed_audio = work_dir / "mixed.m4a"
             self._run([
-                self.ffmpeg_bin, "-y", "-i", str(narration_audio), "-stream_loop", "-1", "-i", str(music_file),
+                self.ffmpeg_bin, "-y", "-i", str(visual_concat), "-stream_loop", "-1", "-i", str(music_file),
                 "-filter_complex", "[0:a]volume=1.0[n];[1:a]volume=0.12[m];[n][m]amix=inputs=2:duration=first:dropout_transition=2:normalize=0[a]",
                 "-map", "[a]", "-c:a", "aac", "-b:a", "192k", "-shortest", str(mixed_audio),
             ])
             audio_input = mixed_audio
         else:
-            audio_input = narration_audio
+            audio_input = visual_concat
 
-        self._run([
-            self.ffmpeg_bin, "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file),
-            "-c", "copy", str(work_dir / "visual_concat.mp4"),
-        ])
-
-        silent_concat = work_dir / "visual_concat.mp4"
         print("Нормалізую фінальний звук: -16 LUFS / -1.5 dBTP...")
         self._run([
-            self.ffmpeg_bin, "-y", "-i", str(silent_concat), "-i", str(audio_input),
+            self.ffmpeg_bin, "-y", "-i", str(visual_concat), "-i", str(audio_input),
             "-map", "0:v:0", "-map", "1:a:0",
             "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
             "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
