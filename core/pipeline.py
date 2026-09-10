@@ -7,6 +7,7 @@ from pathlib import Path
 from app.config import settings
 from core.character_bible import CharacterBibleGenerator
 from core.final_package import FinalProjectPackager
+from core.image_generator import ImageGenerator
 from core.project import StoryProject
 from core.scene_planner import ScenePlanner
 from core.script_writer import ScriptWriter
@@ -21,14 +22,22 @@ class StoryPipeline:
         if not 10 <= minutes <= 120:
             raise ValueError("minutes must be between 10 and 120")
 
+        print("1/7 Створюю сюжет...")
         story = StoryGenerator().generate(topic, minutes)
+
+        print("2/7 Фіксую Character Bible...")
         character_bible = CharacterBibleGenerator().generate(story)
+
+        print("3/7 Пишу повний сценарій...")
         script = ScriptWriter().write(story, minutes)
-        scene_plan = ScenePlanner().plan(story, script, minutes)
+
+        print("4/7 Розбиваю сценарій на сцени та створюю SD-промпти...")
+        scene_plan = ScenePlanner().plan(story, script, minutes, character_bible)
 
         project_id = project_id or datetime.now().strftime("story_%Y%m%d_%H%M%S")
         project = StoryProject().create(story, script, project_id, scene_plan, character_bible.model_dump())
 
+        print("5/7 Генерую українську озвучку...")
         narration = NarrationGenerator().generate(
             scene_plan=scene_plan,
             output_dir=project / "audio",
@@ -40,12 +49,15 @@ class StoryPipeline:
             json.dumps(narration.model_dump(), ensure_ascii=False, indent=2), encoding="utf-8"
         )
 
-        # Use the first generated scene as the thumbnail source when available.
+        print("6/7 Генерую зображення Stable Diffusion...")
+        ImageGenerator().generate(scene_plan, character_bible, project / "images")
+
         first_image = project / "images" / "scene_001.png"
         if first_image.exists():
             ThumbnailGenerator().generate(story.title, first_image, project / "thumbnail")
 
         if render:
+            print("7/7 Збираю фінальне відео...")
             music_files = sorted((project / "music").glob("*.wav")) if (project / "music").exists() else []
             VideoRenderer(
                 ffmpeg_bin=settings.ffmpeg_bin,
