@@ -1,4 +1,5 @@
-import importlib.util
+import subprocess
+import sys
 import wave
 from pathlib import Path
 
@@ -8,30 +9,41 @@ from core.tts_schema import AudioSegment, NarrationManifest
 
 
 class NarrationGenerator:
-    """Generate Ukrainian narration through the local FilmDubUA Piper engine."""
+    """Generate Ukrainian scene narration with the local Piper voice model."""
 
-    def __init__(self, filmdubua_path: str | Path | None = None):
-        self.filmdubua_path = Path(filmdubua_path or settings.filmdubua_path).expanduser().resolve()
-        self._tts = None
+    def __init__(self, model_dir: str | Path = "tts/models"):
+        self.model_dir = Path(model_dir).expanduser().resolve()
+        self.voice = settings.tts_voice
+        self._voice = None
 
-    def _load_filmdubua_tts(self):
-        if self._tts is not None:
-            return self._tts
-        tts_path = self.filmdubua_path / "core" / "tts.py"
-        if not self.filmdubua_path.exists():
-            raise FileNotFoundError(f"FilmDubUA не знайдено: {self.filmdubua_path}. Вкажи FILMDUBUA_PATH у .env.")
-        if not tts_path.exists():
-            raise FileNotFoundError(f"У {self.filmdubua_path} немає core/tts.py. Потрібна актуальна версія FilmDubUA.")
+    def _ensure_voice(self):
+        if self._voice is not None:
+            return self._voice
 
-        # Load by absolute path so FilmDubUA's `core` package cannot collide
-        # with this project's own `core` package.
-        spec = importlib.util.spec_from_file_location("filmdubua_tts", tts_path)
-        if spec is None or spec.loader is None:
-            raise RuntimeError(f"Не вдалося завантажити FilmDubUA TTS: {tts_path}")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        self._tts = module
-        return module
+        self.model_dir.mkdir(parents=True, exist_ok=True)
+        model = self.model_dir / f"{self.voice}.onnx"
+        config = self.model_dir / f"{self.voice}.onnx.json"
+
+        if not model.exists() or not config.exists():
+            print(f"Завантажую голос Piper: {self.voice}...", flush=True)
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "piper.download_voices",
+                    "--data-dir",
+                    str(self.model_dir),
+                    self.voice,
+                ],
+                check=True,
+            )
+
+        if not model.exists() or not config.exists():
+            raise FileNotFoundError(f"Piper voice model not found: {model}")
+
+        from piper import PiperVoice
+        self._voice = PiperVoice.load(str(model))
+        return self._voice
 
     @staticmethod
     def _wav_duration(path: Path) -> float:
@@ -40,20 +52,54 @@ class NarrationGenerator:
             rate = wav.getframerate()
         return frames / rate if rate else 0.0
 
-    def generate(self, scene_plan: ScenePlan, output_dir: str | Path, voice_profile: str = "neutral", rate: int = 170, volume: float = 1.0) -> NarrationManifest:
-        tts = self._load_filmdubua_tts()
+    def generate(
+        self,
+        scene_plan: ScenePlan,
+        output_dir: str | Path,
+        voice_profile: str = "mykyta",
+        rate: int = 136,
+        volume: float = 1.0,
+    ) -> NarrationManifest:
+        voice = self._ensure_voice()
         output = Path(output_dir)
         output.mkdir(parents=True, exist_ok=True)
         segments: list[AudioSegment] = []
         total = 0.0
-        for scene in scene_plan.scenes:
+
+        from piper import SynthesisConfig
+        # 136 is intentionally slower than the old 170 rate.
+        length_scale = max(0.55, min(1.55, 170.0 / max(80, int(rate))))
+        syn_config = SynthesisConfig(
+            length_scale=length_scale,
+            volume=max(0.0, min(2.0, float(volume))),
+        )
+
+        for index, scene in enumerate(scene_plan.scenes, 1):
             text = scene.narration.strip()
             if not text:
                 continue
             target = output / f"narration_{scene.number:03d}.wav"
-            print(f"Озвучую сцену {scene.number}/{len(scene_plan.scenes)}...")
-            tts.synthesize_ukrainian(text=text, output_wav=str(target), rate=rate, volume=volume, profile=voice_profile)
+            print(f"Озвучую сцену {scene.number}/{len(scene_plan.scenes)}...", flush=True)
+            with wave.open(str(target), "wb") as wav_file:
+                voice.synthesize_wav(text, wav_file, syn_config=syn_config)
             duration = self._wav_duration(target)
-            segments.append(AudioSegment(scene_number=scene.number, text=text, file=target.name, duration_seconds=duration, voice_profile=voice_profile, rate=rate, volume=volume))
+            segments.append(
+                AudioSegment(
+                    scene_number=scene.number,
+                    text=text,
+                    file=target.name,
+                    duration_seconds=duration,
+                    voice_profile=voice_profile,
+                    rate=int(rate),
+                    volume=float(volume),
+                )
+            )
             total += duration
-        return NarrationManifest(provider="FilmDubUA/Piper", voice_profile=voice_profile, segments=segments, total_duration_seconds=total)
+            print(f"  [{index}/{len(scene_plan.scenes)}] {duration:.2f}s", flush=True)
+
+        return NarrationManifest(
+            provider="Piper local",
+            voice_profile=voice_profile,
+            segments=segments,
+            total_duration_seconds=total,
+        )
